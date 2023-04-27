@@ -1,0 +1,42 @@
+{
+    "name": "@shaunburdick/eslint-config",
+    "version": "0.0.1",
+    "description": "Shaun's style configuration",
+    "main": "es6/index.js",
+    "files": [
+        "es6",
+        "typescript"
+    ],
+    "scripts": {
+        "fix": "npm run lint:fix",
+        "lint:fix": "eslint . --fix",
+        "lint": "eslint .",
+        "test": "npm run lint",
+        "version": "chg release -y && git add -A CHANGELOG.md"
+    },
+    "keywords": [
+        "typescript",
+        "lint",
+        "eslint"
+    ],
+    "author": "Shaun Burdick <npm@shaunburdick.com>",
+    "license": "UNLICENSED",
+    "engines": {
+        "node": ">=12.22"
+    },
+    "peerDependencies": {
+        "eslint": ">=8",
+        "eslint-plugin-import": "^2.26.0"
+    },
+    "dependencies": {
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-jsdoc": "^43.1.1",
+        "eslint-plugin-security": "^1.5.0"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.46.1",
+        "@typescript-eslint/parser": "^5.46.1",
+        "chg": "^0.4.0",
+        "eslint": "^8.29.0"
+    }
+}
