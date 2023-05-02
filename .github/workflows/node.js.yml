@@ -25,10 +25,10 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
-                  cache-dependency-path: javascript/package-lock.json
+                  cache-dependency-path: eslint/package-lock.json
             - run: npm ci
-              working-directory: ./javascript
+              working-directory: ./eslint
             - run: npm run build --if-present
-              working-directory: ./javascript
+              working-directory: ./eslint
             - run: npm test
-              working-directory: ./javascript
+              working-directory: ./eslint

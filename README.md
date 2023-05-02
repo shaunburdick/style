@@ -8,7 +8,7 @@ Install by copying `.editorconfig` to the root of your source directory
 
 ## Javascript / Typescript
 
-Shaun's JS/TS Rules can be found in the [javascript](./javascript) directory
+Shaun's JS/TS [ESLint](https://eslint.org/) Rules can be found in the [eslint](./eslint) directory
 
 ## Versioning Policy
 
