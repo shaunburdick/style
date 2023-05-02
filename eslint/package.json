@@ -1,5 +1,5 @@
 {
-    "name": "@shaunburdick/eslint-config",
+    "name": "eslint-config-shaunburdick",
     "version": "0.0.1",
     "description": "Shaun's style configuration",
     "main": "es6/index.js",
@@ -17,7 +17,8 @@
     "keywords": [
         "typescript",
         "lint",
-        "eslint"
+        "eslint",
+        "eslintconfig"
     ],
     "author": "Shaun Burdick <npm@shaunburdick.com>",
     "license": "UNLICENSED",

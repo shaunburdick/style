@@ -8,7 +8,7 @@ used in my personal Javascript (etc) development.
 Install:
 
 ```sh
-npm install --save-dev eslint@8 eslint-plugin-import@2 @shaunburdick/eslint-config
+npm install --save-dev eslint@8 eslint-plugin-import@2 eslint-config-shaunburdick
 ```
 
 Create an .eslintrc.yml file with the following:
@@ -19,7 +19,7 @@ env:
     commonjs: true
     es2021: true
 extends:
-    - "@shaunburdick"
+    - "eslint-config-shaunburdick"
 parserOptions:
     ecmaVersion: 12
 ```
@@ -29,7 +29,7 @@ parserOptions:
 Install:
 
 ```sh
-npm install --save-dev eslint@8 eslint-plugin-import@2 @shaunburdick/eslint-config @typescript-eslint/parser@5 @typescript-eslint/eslint-plugin@5
+npm install --save-dev eslint@8 eslint-plugin-import@2 eslint-config-shaunburdick @typescript-eslint/parser@5 @typescript-eslint/eslint-plugin@5
 ```
 
 Create an `.eslintrc.yml` file with the following:
@@ -40,7 +40,7 @@ env:
     es2021: true
     node: true
 extends:
-    - "@shaunburdick/eslint-config/typescript"
+    - "eslint-config-shaunburdick/typescript"
 parserOptions:
     ecmaVersion: 12
     sourceType: module
