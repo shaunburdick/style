@@ -14,7 +14,7 @@ npm install --save-dev eslint@9 @shaunburdick/eslint-config
 Create an `eslint.config.mjs` file with the following:
 
 ```js
-import shaunburdick from '@shaunburdick/eslint-config';
+import shaunburdick from 'eslint-config-shaunburdick';
 
 export default [
     ...shaunburdick.config.js
@@ -32,7 +32,7 @@ npm install --save-dev eslint@9 @shaunburdick/eslint-config
 Create an `eslint.config.mjs` file with the following:
 
 ```js
-import shaunburdick from '@shaunburdick/eslint-config';
+import shaunburdick from 'eslint-config-shaunburdick';
 
 export default [
     ...shaunburdick.config.js,

@@ -1,5 +1,5 @@
 {
-    "name": "@shaunburdick/eslint-config",
+    "name": "eslint-config-shaunburdick",
     "version": "1.0.0",
     "description": "Shaun's style configuration",
     "main": "index.js",
