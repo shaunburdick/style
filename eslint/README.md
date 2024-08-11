@@ -8,20 +8,17 @@ used in my personal Javascript (etc) development.
 Install:
 
 ```sh
-npm install --save-dev eslint@8 eslint-plugin-import@2 eslint-config-shaunburdick
+npm install --save-dev eslint@9 @shaunburdick/eslint-config
 ```
 
-Create an .eslintrc.yml file with the following:
+Create an `eslint.config.mjs` file with the following:
 
-```yaml
-env:
-    browser: true
-    commonjs: true
-    es2021: true
-extends:
-    - "eslint-config-shaunburdick"
-parserOptions:
-    ecmaVersion: 12
+```js
+import shaunburdick from '@shaunburdick/eslint-config';
+
+export default [
+    ...shaunburdick.config.js
+];
 ```
 
 ## TypeScript
@@ -29,22 +26,18 @@ parserOptions:
 Install:
 
 ```sh
-npm install --save-dev eslint@8 eslint-plugin-import@2 eslint-config-shaunburdick @typescript-eslint/parser@5 @typescript-eslint/eslint-plugin@5
+npm install --save-dev eslint@9 @shaunburdick/eslint-config
 ```
 
-Create an `.eslintrc.yml` file with the following:
+Create an `eslint.config.mjs` file with the following:
 
-```yaml
-env:
-    browser: true
-    es2021: true
-    node: true
-extends:
-    - "eslint-config-shaunburdick/typescript"
-parserOptions:
-    ecmaVersion: 12
-    sourceType: module
-    project: ./tsconfig.json
+```js
+import shaunburdick from '@shaunburdick/eslint-config';
+
+export default [
+    ...shaunburdick.config.js,
+    ...shaunburdick.config.ts
+];
 ```
 
 ## Package Setup

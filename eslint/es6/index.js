@@ -1,14 +1,23 @@
-module.exports = {
-    env: {
-        browser: true,
-        es6: true,
-        node: true
-    },
-    parserOptions: {
-        ecmaVersion: 12,
-        sourceType: 'module'
-    },
-    plugins: ['security', 'eslint-plugin-import', 'eslint-plugin-jsdoc'],
-    extends: ['eslint:recommended', 'plugin:security/recommended', './rules'],
-    rules: {}
-};
+import js from '@eslint/js';
+import security from 'eslint-plugin-security';
+import jsdoc from 'eslint-plugin-jsdoc';
+import stylistic from '@stylistic/eslint-plugin';
+import rules from './rules.js';
+
+export default [
+    js.configs.recommended,
+    security.configs.recommended,
+    {
+        name: 'shaunburdick/js',
+        languageOptions: {
+            ecmaVersion: 12,
+            sourceType: 'module'
+        },
+        plugins: {
+            security,
+            jsdoc,
+            '@stylistic': stylistic
+        },
+        rules
+    }
+];
