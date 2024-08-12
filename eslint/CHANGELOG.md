@@ -1,10 +1,8 @@
 CHANGELOG
 =========
 
-## HEAD (Unreleased)
-_(none)_
-
----
+## 2.0.1 (2024-08-12)
+* Fixed missing `react` folder
 
 ## 2.0.0 (2024-08-12)
 * Added React rules

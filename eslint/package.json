@@ -1,11 +1,12 @@
 {
     "name": "eslint-config-shaunburdick",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Shaun's style configuration",
     "main": "index.js",
     "type": "module",
     "files": [
         "es6",
+        "react",
         "typescript",
         "index.js"
     ],
