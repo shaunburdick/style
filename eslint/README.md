@@ -3,7 +3,7 @@
 Rules for [eslint](https://github.com/eslint/eslint)
 used in my personal Javascript (etc) development.
 
-## Javascript (es6)
+## Install
 
 Install:
 
@@ -11,7 +11,7 @@ Install:
 npm install --save-dev eslint@9 @shaunburdick/eslint-config
 ```
 
-Create an `eslint.config.mjs` file with the following:
+Create an `eslint.config.mjs` file:
 
 ```js
 import shaunburdick from 'eslint-config-shaunburdick';
@@ -21,21 +21,21 @@ export default [
 ];
 ```
 
-## TypeScript
+### Additional Configurations
 
-Install:
+- *Typescript*: Additional rules for Typescript files
+  - To install, add `...shaunburdick.config.ts`
+- *React*: Additional rules for React
+  - To install, add `...shaunburdick.config.react`
 
-```sh
-npm install --save-dev eslint@9 @shaunburdick/eslint-config
-```
-
-Create an `eslint.config.mjs` file with the following:
+Example with all rules:
 
 ```js
 import shaunburdick from 'eslint-config-shaunburdick';
 
 export default [
     ...shaunburdick.config.js,
+    ...shaunburdick.config.react,
     ...shaunburdick.config.ts
 ];
 ```

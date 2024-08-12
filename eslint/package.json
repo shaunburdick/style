@@ -1,6 +1,6 @@
 {
     "name": "eslint-config-shaunburdick",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Shaun's style configuration",
     "main": "index.js",
     "type": "module",
@@ -13,8 +13,7 @@
         "fix": "npm run lint:fix",
         "lint:fix": "eslint . --fix",
         "lint": "eslint .",
-        "test": "npm run lint",
-        "version": "chg release -y && git add -A CHANGELOG.md"
+        "test": "npm run lint"
     },
     "keywords": [
         "typescript",
@@ -38,15 +37,18 @@
     "dependencies": {
         "@stylistic/eslint-plugin": "^2.6.2",
         "eslint-plugin-jsdoc": "^50.0.0",
+        "eslint-plugin-react": "^7.35.0",
         "eslint-plugin-security": "^3.0.1",
+        "globals": "^15.9.0",
         "typescript-eslint": "^8.0.1"
     },
     "devDependencies": {
         "@eslint/js": "^9.9.0",
         "@types/eslint__js": "^8.42.3",
         "@types/node": "^22.2.0",
-        "chg": "^0.4.0",
+        "@types/react": "^18.3.3",
         "eslint": "^9.8.0",
+        "react": "^18.3.1",
         "typescript": "^5.5.4"
     }
 }

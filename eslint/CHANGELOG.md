@@ -6,6 +6,9 @@ _(none)_
 
 ---
 
+## 2.0.0 (2024-08-12)
+* Added React rules
+
 ## 1.0.0 (2024-08-10)
 * Complete rewrite for eslint 9+
 * Added some test files to test some rules
