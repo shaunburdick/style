@@ -8,7 +8,7 @@ used in my personal Javascript (etc) development.
 Install:
 
 ```sh
-npm install --save-dev eslint@9 @shaunburdick/eslint-config
+npm install --save-dev eslint@9 eslint-config-shaunburdick
 ```
 
 Create an `eslint.config.mjs` file:
