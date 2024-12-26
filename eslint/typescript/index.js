@@ -1,5 +1,6 @@
 // @ts-check
 
+// eslint-disable-next-line import/no-unresolved
 import tseslint from 'typescript-eslint';
 import rules from './rules.js';
 

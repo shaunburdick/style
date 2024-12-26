@@ -34,27 +34,27 @@ export default Object.freeze({
     // Reports if a resolved path is imported more than once
     // Replaces eslint version with one that allows separate type imports
     // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-duplicates.md
-    // 'no-duplicate-imports': 'off',
-    // 'import/no-duplicates': ['error'],
+    'no-duplicate-imports': 'off',
+    'import/no-duplicates': ['error'],
 
-    // // Forbid the use of extraneous packages,
-    // // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
-    // 'import/no-extraneous-dependencies': ['error'],
+    // Forbid the use of extraneous packages,
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
+    'import/no-extraneous-dependencies': ['error'],
 
-    // // Prevent importing the submodules of other modules,
-    // // This is here to allowing more specific tree
-    // // shaking in Angular, add to user client
-    // // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-internal-modules.md
-    // // 'import/no-internal-modules': 'off',
+    // Prevent importing the submodules of other modules,
+    // This is here to allowing more specific tree
+    // shaking in Angular, add to user client
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-internal-modules.md
+    // 'import/no-internal-modules': 'off',
 
-    // // Enforce a convention in module import order,
-    // // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/order.md
-    // 'import/order': [
-    //     'error',
-    //     {
-    //         groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
-    //     },
-    // ],
+    // Enforce a convention in module import order,
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/order.md
+    'import/order': [
+        'error',
+        {
+            groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
+        },
+    ],
 
     // enforce consistent indentation, https://eslint.style/rules/default/indent
     '@stylistic/indent': [
