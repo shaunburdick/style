@@ -3,6 +3,8 @@
 Rules for [eslint](https://github.com/eslint/eslint)
 used in my personal Javascript (etc) development.
 
+Package: [eslint-config-shaunburdick](https://www.npmjs.com/package/eslint-config-shaunburdick)
+
 ## Install
 
 Install:

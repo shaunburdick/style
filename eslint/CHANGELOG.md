@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## 3.0.0-beta.0 (2024-12-16)
+* Re-added import library
+* Updated dependencies
+
 ## 2.0.1 (2024-08-12)
 * Fixed missing `react` folder
 
