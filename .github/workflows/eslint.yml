@@ -35,7 +35,7 @@ jobs:
     publish-eslint:
         name: Publish ES Lint Config
         needs: test-eslint
-        if: github.event_name == 'push' && github.base_branch == 'main'  # This condition limits the job to pushes to the main branch
+        if: github.event_name == 'push' && github.ref_name == 'main'  # This condition limits the job to pushes to the main branch
         runs-on: ubuntu-latest
 
         steps:
