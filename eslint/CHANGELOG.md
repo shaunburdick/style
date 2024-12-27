@@ -1,7 +1,10 @@
 CHANGELOG
 =========
 
-## 3.0.0-beta.0 (2024-12-16)
+## 3.0.0 (2024-12-26)
+* Release major version after testing
+
+## 3.0.0-beta.0 (2024-12-26)
 * Re-added import library
 * Updated dependencies
 
