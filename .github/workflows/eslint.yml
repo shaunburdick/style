@@ -46,7 +46,7 @@ jobs:
             - run: npm ci
               working-directory: ./eslint
             - id: publish
-              uses: JS-DevTools/npm-publish@v5
+              uses: JS-DevTools/npm-publish@v4
               with:
                 package: ./eslint
                 token: ${{ secrets.GH_STYLE_NPM_TOKEN }}
