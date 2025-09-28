@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+## 4.0.0 (2025-09-28)
+* Update dependencies
+* Added [you might not need an effect](https://github.com/NickvanDyke/eslint-plugin-react-you-might-not-need-an-effect)
+* Added [React Hooks](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks)
 
 ## 3.0.0 (2024-12-26)
 * Release major version after testing
