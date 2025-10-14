@@ -82,6 +82,8 @@ jobs:
               with:
                 node-version: 20
                 registry-url: 'https://registry.npmjs.org'
+            - name: Update npm
+              run: npm install -g npm@latest
             - run: npm ci
               working-directory: ./eslint
             - name: Get package version
