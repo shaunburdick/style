@@ -1,5 +1,19 @@
 CHANGELOG
 =========
+## 5.0.0 (2025-10-13)
+* **BREAKING:** Fixed React plugin configuration for ESLint flat config
+* **NEW:** Added proper React settings (automatic version detection)
+* **NEW:** Added comprehensive React rules including performance and accessibility
+* **NEW:** Added JSX accessibility rules (jsx-a11y plugin)
+* **NEW:** Added security rules (eslint-plugin-security)
+* **NEW:** Added code quality rules (eslint-plugin-sonarjs)
+* **NEW:** Added stylistic formatting rules (@stylistic/eslint-plugin)
+* **NEW:** Added import/export rules (eslint-plugin-import)
+* **NEW:** Added promise handling rules (eslint-plugin-promise)
+* **NEW:** Added modern JavaScript rules (eslint-plugin-unicorn)
+* **NEW:** Added JSDoc documentation rules (eslint-plugin-jsdoc)
+* **NEW:** Added TypeScript member ordering and accessibility rules
+
 ## 4.0.0 (2025-09-28)
 * Update dependencies
 * Added [you might not need an effect](https://github.com/NickvanDyke/eslint-plugin-react-you-might-not-need-an-effect)

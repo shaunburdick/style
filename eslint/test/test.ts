@@ -1,87 +1,151 @@
 /**
- * Represents a product with its details.
+ * TypeScript Code Pattern Examples
+ *
+ * This file demonstrates proper TypeScript patterns that should
+ * be used when following this ESLint configuration.
+ *
+ * Each example shows the CORRECT way to write TypeScript code.
  */
-interface Product {
-    /** Unique identifier for the product. */
-    id: number;
-    /** Name of the product. */
-    name: string;
-    /** Price of the product. */
-    price: number;
-    /** Indicates whether the product is in stock. */
-    inStock: boolean;
-    /** Additional details about the product. */
-    description?: string;
-    /** Categories the product belongs to. */
-    categories: string[];
+
+// ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
+
+// ✅ Use interfaces for object shapes
+interface User {
+    readonly id: number;
+    readonly name: string;
+    readonly email: string;
+    readonly role?: 'admin' | 'user';
 }
+
+// ✅ Use type aliases for unions and complex types
+type Status = 'pending' | 'approved' | 'rejected';
+type EventHandler<T> = (event: T) => void;
+
+// ✅ Use enums for related constants
+enum ApiEndpoint {
+    USERS = '/api/users',
+    PRODUCTS = '/api/products',
+    ORDERS = '/api/orders'
+}
+
+// ============================================================================
+// FUNCTION PATTERNS
+// ============================================================================
+
+// ✅ Properly typed function parameters and returns
+function formatUser(user: User): string {
+    const role = user.role ?? 'user';
+    return `${user.name} (${role})`;
+}
+
+// ✅ Generic functions with constraints
+function processItems<T extends { id: number }>(items: T[]): T[] {
+    return items.filter(item => item.id > 0);
+}
+
+// ✅ Async functions with proper return types
+async function fetchUser(id: number): Promise<User | null> {
+    try {
+        const response = await fetch(`/api/users/${id}`);
+
+        if (!response.ok) {
+            return null;
+        }
+
+        return await response.json() as User;
+    } catch {
+        return null;
+    }
+}
+
+// ============================================================================
+// CLASS PATTERNS
+// ============================================================================
 
 /**
- * Manages a collection of products.
+ * Well-structured TypeScript class
  */
-class ProductManager {
-    /**
-     * An array of products managed by the manager.
-     *
-     * @private
-     */
-    private products: Product[];
+class UserService {
+    // ✅ Use readonly for properties that don't change
+    private readonly baseUrl: string;
+    private readonly timeout: number;
 
-    /**
-     * Creates a new instance of ProductManager.
-     */
-    public constructor() {
-        this.products = [];
+    public constructor(baseUrl: string, timeout = 5000) {
+        this.baseUrl = baseUrl;
+        this.timeout = timeout;
     }
 
-    /**
-     * Adds a product to the collection.
-     *
-     * @param product The product to add.
-     */
-    public addProduct(product: Product): void {
-        this.products.push(product);
+    // ✅ Proper method typing
+    public async getUser(id: number): Promise<User | null> {
+        // Example of proper async method implementation
+        return await fetchUser(id);
     }
 
-    /**
-     * Finds a product by its ID.
-     *
-     * @param id The ID of the product to find.
-     * @returns The found product, or undefined if not found.
-     */
-    public findProductById(id: number): Product | undefined {
-        return this.products.find(p => p.id === id);
-    }
-
-    /**
-     * Calculates the total inventory value of all products.
-     *
-     * @returns The total inventory value.
-     */
-    public getTotalInventoryValue(): number {
-        return this.products.reduce((total, product) => total + product.price * (product.inStock ? 1 : 0), 0);
-    }
-
-    /**
-     * Gets all products in a specific category.
-     *
-     * @param category The category to filter by.
-     * @returns An array of products in the specified category.
-     */
-    public getProductsByCategory(category: string): Product[] {
-        return this.products.filter(product => product.categories.includes(category));
+    // ✅ Use type guards
+    public isAdmin(user: User): user is User & { role: 'admin' } {
+        return user.role === 'admin';
     }
 }
 
-// Example usage
-const productManager = new ProductManager();
-productManager.addProduct({
-    id: 1,
-    name: 'Laptop',
-    price: 999,
-    inStock: true,
-    description: 'Powerful laptop for work and play',
-    categories: ['Electronics', 'Computers']
-});
+// ============================================================================
+// PROPER SWITCH STATEMENTS
+// ============================================================================
 
-// ... add more products
+export function handleStatus(status: Status): string {
+    switch (status) {
+        case 'pending': {
+            // ✅ Use block scope for case statements
+            const message = 'Request is being processed';
+            return message;
+        }
+        case 'approved': {
+            const message = 'Request has been approved';
+            return message;
+        }
+        case 'rejected': {
+            const message = 'Request was rejected';
+            return message;
+        }
+        default:
+            return 'Unknown status';
+    }
+}
+
+// ============================================================================
+// OBJECT PATTERNS
+// ============================================================================
+
+// ✅ Use const assertions for immutable data
+const defaultConfig = {
+    apiUrl: 'https://api.example.com',
+    timeout: 5000,
+    retries: 3
+} as const;
+
+// ✅ Proper object destructuring with types
+export function processConfig(config: typeof defaultConfig = defaultConfig): string {
+    const { apiUrl, timeout } = config;
+    return `Connecting to ${apiUrl} with ${timeout}ms timeout`;
+}
+
+// ============================================================================
+// UTILITY TYPES
+// ============================================================================
+
+// ✅ Create partial types for updates
+type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;
+
+// ✅ Use utility types for transformations
+type UserResponse = Omit<User, 'id'> & {
+    userId: string;
+    createdAt: Date;
+};
+
+// ============================================================================
+// EXPORTS
+// ============================================================================
+
+export type { User, Status, EventHandler, UserUpdate, UserResponse };
+export { UserService, ApiEndpoint, formatUser, processItems, fetchUser };

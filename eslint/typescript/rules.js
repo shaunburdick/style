@@ -286,6 +286,41 @@ export default Object.freeze({
     // https://typescript-eslint.io/rules/no-non-null-assertion
     '@typescript-eslint/no-non-null-assertion': ['error'],
 
+    // Enhanced TypeScript Rules
+    // Prefer nullish coalescing over logical chaining, https://typescript-eslint.io/rules/prefer-nullish-coalescing
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+
+    // Prefer optional chaining expressions, https://typescript-eslint.io/rules/prefer-optional-chain
+    '@typescript-eslint/prefer-optional-chain': 'error',
+
+    // Enforce strict boolean expressions in conditionals, https://typescript-eslint.io/rules/strict-boolean-expressions
+    '@typescript-eslint/strict-boolean-expressions': [
+        'error',
+        {
+            allowString: false,
+            allowNumber: false,
+            allowNullableObject: false,
+        },
+    ],
+
+    // Require exhaustive checks for switch statements, https://typescript-eslint.io/rules/switch-exhaustiveness-check
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
+
+    // Disallow unnecessary conditionals, https://typescript-eslint.io/rules/no-unnecessary-condition
+    '@typescript-eslint/no-unnecessary-condition': 'error',
+
+    // Prefer readonly arrays and tuples, https://typescript-eslint.io/rules/prefer-readonly
+    '@typescript-eslint/prefer-readonly': 'error',
+
+    // Require returning awaited values in async functions, https://typescript-eslint.io/rules/return-await
+    // disable base rule in favor of typescript
+    'no-return-await': 'off',
+    '@typescript-eslint/return-await': ['error', 'always'],
+
+    // Enhanced Import Rules for TypeScript
+    // Enforce consistent type import style, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md
+    'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+
     // included in @typescript-eslint:recommended
     // "@typescript-eslint/adjacent-overload-signatures": "error",
     // "@typescript-eslint/no-empty-interface": "error",

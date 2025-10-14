@@ -221,6 +221,77 @@ export default Object.freeze({
     'security/detect-object-injection': 'off',
     'security/detect-non-literal-fs-filename': 'off', // many false positives
 
+    // Code Quality & Complexity Rules
+    // Enforce cognitive complexity limit, https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md
+    'sonarjs/cognitive-complexity': ['error', 15],
+
+    // Disallow duplicate string literals, https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicate-string.md
+    'sonarjs/no-duplicate-string': 'error',
+
+    // Disallow duplicated branches in if-else-if chains, https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicated-branches.md
+    'sonarjs/no-duplicated-branches': 'error',
+
+    // Disallow identical functions, https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-identical-functions.md
+    'sonarjs/no-identical-functions': 'error',
+
+    // Promise Best Practices
+    // Require return statements in Promise handlers, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/always-return.md
+    'promise/always-return': 'error',
+
+    // Disallow wrapping values in Promise.resolve or Promise.reject, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/no-return-wrap.md
+    'promise/no-return-wrap': 'error',
+
+    // Enforce consistent parameter names in Promise constructors, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/param-names.md
+    'promise/param-names': 'error',
+
+    // Require catch() or return statements in Promises, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/catch-or-return.md
+    'promise/catch-or-return': 'error',
+
+    // Disallow nested then() or catch() statements, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/no-nesting.md
+    'promise/no-nesting': 'error',
+
+    // Modern JavaScript Best Practices
+    // Prefer Node.js builtin protocol imports, https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-node-protocol.md
+    'unicorn/prefer-node-protocol': 'error',
+
+    // Prefer ES modules over CommonJS, https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-module.md
+    'unicorn/prefer-module': 'error',
+
+    // Prefer Array.some() over Array.forEach(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-for-each.md
+    'unicorn/no-array-for-each': 'error',
+
+    // Prefer Array.some() over Array.find(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-array-some.md
+    'unicorn/prefer-array-some': 'error',
+
+    // Prefer Array.includes() over Array.indexOf(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-includes.md
+    'unicorn/prefer-includes': 'error',
+
+    // Prefer String.startsWith() and String.endsWith(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-string-starts-ends-with.md
+    'unicorn/prefer-string-starts-ends-with': 'error',
+
+    // Enhanced Import Rules
+    // Disallow circular imports, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-cycle.md
+    'import/no-cycle': 'error',
+
+    // Disallow self imports, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-self-import.md
+    'import/no-self-import': 'error',
+
+    // Disallow useless path segments in imports, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-useless-path-segments.md
+    'import/no-useless-path-segments': 'error',
+
+    // Modern JavaScript Features
+    // Require destructuring from arrays and objects, https://eslint.org/docs/rules/prefer-destructuring
+    'prefer-destructuring': ['error', { object: true, array: false }],
+
+    // Require template literals instead of string concatenation, https://eslint.org/docs/rules/prefer-template
+    'prefer-template': 'error',
+
+    // Require rest parameters instead of arguments, https://eslint.org/docs/rules/prefer-rest-params
+    'prefer-rest-params': 'error',
+
+    // Require spread operators instead of apply(), https://eslint.org/docs/rules/prefer-spread
+    'prefer-spread': 'error',
+
     // Included in eslint:recommended
     // 'constructor-super': ['error'],
     // 'no-cond-assign': ['error'],
