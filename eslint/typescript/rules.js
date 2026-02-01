@@ -1,5 +1,5 @@
 // @ts-check
-/* eslint-disable @stylistic/max-len */
+/* eslint-disable @stylistic/max-len -- Some links are very long*/
 
 /** @type import('typescript-eslint').ConfigWithExtends['rules'] */
 export default Object.freeze({
@@ -333,3 +333,4 @@ export default Object.freeze({
     // '@typescript-eslint/indent': ['error'],
     // '@typescript-eslint/consistent-type-assertions': ['error'],
 });
+/* eslint-enable @stylistic/max-len -- turn it back on */

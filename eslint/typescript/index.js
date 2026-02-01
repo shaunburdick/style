@@ -1,6 +1,6 @@
 // @ts-check
 
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved -- the rules exist
 import tseslint from 'typescript-eslint';
 import rules from './rules.js';
 

@@ -197,6 +197,10 @@ export default Object.freeze({
     // enforce the consistent use of the radix argument when using `parseInt()`, https://eslint.org/docs/rules/radix
     radix: ['error'],
 
+    // warns directive comments without description,
+    // https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/require-description.html
+    '@eslint-community/eslint-comments/require-description': ['error'],
+
     // require or disallow semicolons instead of ASI, https://eslint.style/rules/default/semi
     '@stylistic/semi': ['error'],
 

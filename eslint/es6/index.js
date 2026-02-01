@@ -6,10 +6,12 @@ import importPlugin from 'eslint-plugin-import';
 import promise from 'eslint-plugin-promise';
 import sonarjs from 'eslint-plugin-sonarjs';
 import unicorn from 'eslint-plugin-unicorn';
+import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import rules from './rules.js';
 
 export default [
     js.configs.recommended,
+    comments.recommended,
     security.configs.recommended,
     importPlugin.flatConfigs.recommended,
     {
