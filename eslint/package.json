@@ -1,6 +1,6 @@
 {
     "name": "eslint-config-shaunburdick",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "description": "Shaun's style configuration",
     "main": "index.js",
     "type": "module",
@@ -41,6 +41,7 @@
     },
     "dependencies": {
         "@stylistic/eslint-plugin": "^5.7.1",
+        "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
         "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-jsdoc": "^62.5.0",
         "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -51,13 +52,12 @@
         "eslint-plugin-security": "^3.0.1",
         "eslint-plugin-sonarjs": "^3.0.6",
         "eslint-plugin-unicorn": "^62.0.0",
-        "globals": "^17.2.0",
+        "globals": "^17.3.0",
         "typescript-eslint": "^8.54.0"
     },
     "devDependencies": {
-        "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
         "@eslint/js": "^9.39.2",
-        "@types/node": "^25.1.0",
+        "@types/node": "^25.2.0",
         "@types/react": "^19.2.10",
         "eslint": "^9.39.2",
         "react": "^19.2.4",
