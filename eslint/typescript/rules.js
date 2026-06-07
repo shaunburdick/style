@@ -11,6 +11,10 @@ export default Object.freeze({
         },
     ],
 
+    // Disallow awaiting non-Promise values; AI often awaits non-async calls,
+    // https://typescript-eslint.io/rules/await-thenable
+    '@typescript-eslint/await-thenable': 'error',
+
     // enforce dot notation whenever possible,
     // https://typescript-eslint.io/rules/dot-notation
     '@typescript-eslint/dot-notation': ['error'],
@@ -263,6 +267,15 @@ export default Object.freeze({
     // https://typescript-eslint.io/rules/unified-signatures
     '@typescript-eslint/unified-signatures': ['error'],
 
+    // Ensure catch clause variables use `unknown` instead of `any`,
+    // https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
+
+    // Disallow calling methods without ensuring they're properly bound;
+    // AI often passes method references without binding,
+    // https://typescript-eslint.io/rules/unbound-method
+    '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+
     // https://typescript-eslint.io/rules/consistent-type-definitions
     '@typescript-eslint/consistent-type-definitions': [
         'error',
@@ -309,29 +322,13 @@ export default Object.freeze({
     // Disallow unnecessary conditionals, https://typescript-eslint.io/rules/no-unnecessary-condition
     '@typescript-eslint/no-unnecessary-condition': 'error',
 
-    // Prefer readonly arrays and tuples, https://typescript-eslint.io/rules/prefer-readonly
-    '@typescript-eslint/prefer-readonly': 'error',
-
-    // Require returning awaited values in async functions, https://typescript-eslint.io/rules/return-await
-    // disable base rule in favor of typescript
-    'no-return-await': 'off',
-    '@typescript-eslint/return-await': ['error', 'always'],
-
-    // Agentic Programming - Additional Type-Safe Rules
-    // These require type information and catch patterns AI agents commonly miss.
-
-    // Disallow awaiting non-Promise values; AI often awaits non-async calls,
-    // https://typescript-eslint.io/rules/await-thenable
-    '@typescript-eslint/await-thenable': 'error',
-
-    // Ensure catch clause variables use `unknown` instead of `any`,
-    // https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable
-    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
-
     // Disallow unnecessary type assertions that don't change the type,
     // AI frequently adds redundant `as Type` casts,
     // https://typescript-eslint.io/rules/no-unnecessary-type-assertion
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+
+    // Prefer readonly arrays and tuples, https://typescript-eslint.io/rules/prefer-readonly
+    '@typescript-eslint/prefer-readonly': 'error',
 
     // Restrict template literal expressions to prevent type coercion bugs,
     // AI often embeds non-stringifiable values in templates,
@@ -348,10 +345,10 @@ export default Object.freeze({
         },
     ],
 
-    // Disallow calling methods without ensuring they're properly bound;
-    // AI often passes method references without binding,
-    // https://typescript-eslint.io/rules/unbound-method
-    '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+    // Require returning awaited values in async functions, https://typescript-eslint.io/rules/return-await
+    // disable base rule in favor of typescript
+    'no-return-await': 'off',
+    '@typescript-eslint/return-await': ['error', 'always'],
 
     // Enhanced Import Rules for TypeScript
     // Enforce consistent type import style, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/consistent-type-specifier-style.md
