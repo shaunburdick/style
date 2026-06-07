@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 5.0.0
+**Current Version:** 7.0.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -41,16 +41,16 @@ This document provides comprehensive context about the `style` repository to hel
 
 ## Configuration Architecture
 
-The package uses **ESLint Flat Config** (ESLint 9+) format and provides three main configurations:
+The package uses **ESLint Flat Config** (ESLint 10+) format and provides three main configurations:
 
 ### 1. Base JavaScript/ES6 Config (`es6/`)
 - **Entry Point:** `es6/index.js`
 - **File Pattern:** All JavaScript files
-- **Base Config:** `@eslint/js` recommended + security + import plugins
+- **Base Config:** `@eslint/js` recommended + security + import-x plugins
 - **Key Plugins:**
   - `@stylistic/eslint-plugin` - Code formatting and style
   - `eslint-plugin-security` - Security vulnerability detection
-  - `eslint-plugin-import` - Import/export best practices
+  - `eslint-plugin-import-x` - Import/export best practices
   - `eslint-plugin-promise` - Promise handling
   - `eslint-plugin-sonarjs` - Code quality and complexity
   - `eslint-plugin-unicorn` - Modern JavaScript patterns
@@ -70,10 +70,10 @@ The package uses **ESLint Flat Config** (ESLint 9+) format and provides three ma
 - **Entry Point:** `react/index.js`
 - **File Pattern:** `**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}`
 - **Key Plugins:**
-  - `eslint-plugin-react` - React best practices
+  - `@eslint-react/eslint-plugin` - React best practices
   - `eslint-plugin-react-hooks` - Hooks rules
   - `eslint-plugin-react-you-might-not-need-an-effect` - Effect optimization
-  - `eslint-plugin-jsx-a11y` - Accessibility compliance
+  - `eslint-plugin-jsx-a11y-x` - Accessibility compliance
 - **Browser Globals:** Includes service worker and browser globals
 
 ## Key Configuration Patterns
@@ -106,19 +106,13 @@ import './';                      // index
 - Requires JSDoc documentation
 - Mandates accessibility standards for React
 
-## Version History & Breaking Changes
+## Version History
 
-### v5.0.0 (2025-10-13) - Major Overhaul
-- **BREAKING:** Fixed React plugin configuration for flat config
-- Added comprehensive plugin suite (security, sonarjs, stylistic, etc.)
-- Enhanced React rules with performance and accessibility
-- Added TypeScript member ordering and accessibility rules
+See [`eslint/CHANGELOG.md`](eslint/CHANGELOG.md) for the full version history and breaking changes. Major milestones:
 
-### v4.0.0 (2025-09-28)
-- Added React performance plugins (hooks, effects optimization)
-
-### v1.0.0 (2024-08-10)
-- Complete rewrite for ESLint 9+ flat config format
+- **v7.0.0** — ESLint 10 upgrade, plugin replacements (`@eslint-react`, `import-x`, `jsx-a11y-x`), TypeScript 6.0
+- **v5.0.0** — Flat config overhaul with comprehensive plugin suite
+- **v1.0.0** — Initial flat config release
 
 ## Usage Patterns
 
@@ -143,7 +137,7 @@ export default [
 ### Test Strategy
 - **Self-Testing:** Package lints itself using its own configuration
 - **Pattern Files:** Test files demonstrate correct coding patterns
-- **CI/CD:** GitHub Actions tests on Node.js 20.x, 22.x, 24.x
+- **CI/CD:** GitHub Actions tests on Node.js 22.x, 24.x, 26.x (all actions pinned by commit SHA for supply chain security)
 
 ### Package Scripts
 ```json
@@ -157,13 +151,13 @@ export default [
 ## Dependencies & Peer Requirements
 
 ### Peer Dependencies
-- `eslint: >=9` (ESLint 9+ required for flat config)
+- `eslint: >=10` (ESLint 10+ required for flat config)
 - `typescript` (optional, for TypeScript support)
 
 ### Key Dependencies
 - `typescript-eslint` - TypeScript integration
 - `@stylistic/eslint-plugin` - Code formatting
-- `eslint-plugin-react` - React support
+- `@eslint-react/eslint-plugin` - React support
 - `eslint-plugin-security` - Security scanning
 - And 8+ other specialized plugins
 
@@ -185,12 +179,13 @@ export default [
 2. **Adding plugin:** Update `index.js` and `package.json`
 3. **New configuration:** Create new folder structure
 4. **Version bump:** Update `package.json`, add CHANGELOG entry
+5. **Plugin renames:** `import/` → `import-x/`, `react/` → `@eslint-react/`, `jsx-a11y/` → `jsx-a11y-x/` — old `eslint-disable` prefixes silently stop working
 
 ## Context for AI Agents
 
 When working on this repository:
 
-1. **ESLint Knowledge Required:** Understand ESLint 9+ flat config format
+1. **ESLint Knowledge Required:** Understand ESLint 10+ flat config format
 2. **Plugin Architecture:** Each config is composable and standalone
 3. **Testing Strategy:** Changes must pass self-linting
 4. **Documentation:** All rule additions should include rationale comments
