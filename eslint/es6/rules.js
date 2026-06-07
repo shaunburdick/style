@@ -31,6 +31,10 @@ export default Object.freeze({
         'undefined',
     ],
 
+    // enforce minimum identifier length to prevent single-letter variable names,
+    // a common pattern in AI-generated code, https://eslint.org/docs/rules/id-length
+    'id-length': ['error', { min: 2, exceptions: ['_', 'e', 'i', 'j', 'k', 'n', 'x', 'y'] }],
+
     // Reports if a resolved path is imported more than once
     // Replaces eslint version with one that allows separate type imports
     // https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-duplicates.md
@@ -84,6 +88,16 @@ export default Object.freeze({
     // enforce a maximum number of classes per file, https://eslint.org/docs/rules/max-classes-per-file
     'max-classes-per-file': ['error', 1],
 
+    // enforce maximum function parameters to prevent parameter bloat,
+    // a common AI pattern where functions accumulate 6+ positional params,
+    // https://eslint.org/docs/rules/max-params
+    'max-params': ['error', 5],
+
+    // enforce maximum nesting depth to prevent pyramid-of-doom control flow,
+    // a hallmark of AI-generated deeply nested conditionals,
+    // https://eslint.org/docs/rules/max-depth
+    'max-depth': ['error', 4],
+
     // enforce a maximum line length, https://eslint.style/rules/default/max-len
     // Ignore links and shorter width for comments
     '@stylistic/max-len': [
@@ -119,6 +133,11 @@ export default Object.freeze({
     // disallow the use of `eval()`, https://eslint.org/docs/rules/no-eval
     'no-eval': ['error'],
 
+    // disallow nested ternary expressions; AI nests ternaries excessively
+    // for "conciseness" at the expense of readability,
+    // https://eslint.org/docs/rules/no-nested-ternary
+    'no-nested-ternary': 'error',
+
     // disallow unnecessary calls to `.bind()`, https://eslint.org/docs/rules/no-extra-bind
     'no-extra-bind': ['error'],
 
@@ -147,6 +166,12 @@ export default Object.freeze({
     // variables declared in the outer scope,
     // https://eslint.org/docs/rules/no-shadow
     'no-shadow': ['error'],
+
+    // disallow redundant assignments that don't change a value;
+    // AI creates unnecessary intermediate variables as a side effect
+    // of over-engineering solutions,
+    // https://eslint.org/docs/rules/no-useless-assignment
+    'no-useless-assignment': 'error',
 
     // disallow template literal placeholder syntax in regular strings,
     // https://eslint.org/docs/rules/no-template-curly-in-string
@@ -272,6 +297,37 @@ export default Object.freeze({
 
     // Prefer String.startsWith() and String.endsWith(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-string-starts-ends-with.md
     'unicorn/prefer-string-starts-ends-with': 'error',
+
+    // Agentic Programming - Unicorn Extensions
+    // These rules target patterns that AI coding agents consistently produce.
+
+    // Require `new` when creating errors; AI frequently throws raw strings/objects,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/throw-new-error.md
+    'unicorn/throw-new-error': 'error',
+
+    // Disallow member access from await expressions like `(await foo).bar`;
+    // prefer destructuring for clarity,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-await-expression-member.md
+    'unicorn/no-await-expression-member': 'error',
+
+    // Disallow unnecessary `undefined` values; AI often adds redundant
+    // `return undefined` or `let x = undefined`,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-useless-undefined.md
+    'unicorn/no-useless-undefined': 'error',
+
+    // Disallow unnecessary spread operators that don't change behavior,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-useless-spread.md
+    'unicorn/no-useless-spread': 'error',
+
+    // Move function definitions to the highest possible scope;
+    // AI nests functions inside other functions unnecessarily,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/consistent-function-scoping.md
+    'unicorn/consistent-function-scoping': 'error',
+
+    // Require TODO/FIXME comments to have expiration dates or issue references,
+    // preventing AI from leaving permanent incomplete code markers,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/expiring-todo-comments.md
+    'unicorn/expiring-todo-comments': ['warn', { terms: ['todo', 'fixme', 'hack', 'xxx'] }],
 
     // Enhanced Import Rules
     // Disallow circular imports, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-cycle.md

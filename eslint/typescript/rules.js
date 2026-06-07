@@ -317,6 +317,42 @@ export default Object.freeze({
     'no-return-await': 'off',
     '@typescript-eslint/return-await': ['error', 'always'],
 
+    // Agentic Programming - Additional Type-Safe Rules
+    // These require type information and catch patterns AI agents commonly miss.
+
+    // Disallow awaiting non-Promise values; AI often awaits non-async calls,
+    // https://typescript-eslint.io/rules/await-thenable
+    '@typescript-eslint/await-thenable': 'error',
+
+    // Ensure catch clause variables use `unknown` instead of `any`,
+    // https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
+
+    // Disallow unnecessary type assertions that don't change the type,
+    // AI frequently adds redundant `as Type` casts,
+    // https://typescript-eslint.io/rules/no-unnecessary-type-assertion
+    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+
+    // Restrict template literal expressions to prevent type coercion bugs,
+    // AI often embeds non-stringifiable values in templates,
+    // https://typescript-eslint.io/rules/restrict-template-expressions
+    '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+            allowAny: false,
+            allowBoolean: false,
+            allowNever: false,
+            allowNullish: true,
+            allowNumber: true,
+            allowRegExp: false,
+        },
+    ],
+
+    // Disallow calling methods without ensuring they're properly bound;
+    // AI often passes method references without binding,
+    // https://typescript-eslint.io/rules/unbound-method
+    '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+
     // Enhanced Import Rules for TypeScript
     // Enforce consistent type import style, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/consistent-type-specifier-style.md
     'import-x/consistent-type-specifier-style': ['error', 'prefer-top-level'],
