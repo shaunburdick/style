@@ -5,12 +5,15 @@ used in my personal Javascript (etc) development.
 
 Package: [eslint-config-shaunburdick](https://www.npmjs.com/package/eslint-config-shaunburdick)
 
+## Requirements
+
+- **Node.js** >=20.19.0
+- **ESLint** >=10
+
 ## Install
 
-Install:
-
 ```sh
-npm install --save-dev eslint@9 eslint-config-shaunburdick
+npm install --save-dev eslint@10 eslint-config-shaunburdick
 ```
 
 Create an `eslint.config.mjs` file:
