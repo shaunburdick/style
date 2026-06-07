@@ -30,4 +30,22 @@ export default Object.freeze({
 
     // Enforce static elements do not have event handlers, https://github.com/jsx-eslint/jsx-a11y-x/blob/main/docs/rules/no-static-element-interactions.md
     'jsx-a11y-x/no-static-element-interactions': 'error',
+
+    // Agentic Programming - React Security & DOM Rules
+    // These rules target XSS and security issues AI coding agents frequently introduce.
+
+    // Require rel="noopener noreferrer" on external links (security & performance),
+    // AI frequently omits this when adding external link targets,
+    // https://www.eslint-react.xyz/docs/rules/dom-no-unsafe-target-blank
+    '@eslint-react/dom-no-unsafe-target-blank': 'error',
+
+    // Require explicit sandbox attribute on iframes (security),
+    // AI adds iframes without sandbox restrictions,
+    // https://www.eslint-react.xyz/docs/rules/dom-no-missing-iframe-sandbox
+    '@eslint-react/dom-no-missing-iframe-sandbox': 'warn',
+
+    // Require explicit type attribute on button elements (accessibility),
+    // AI creates `<button>` without `type="button"`,
+    // https://www.eslint-react.xyz/docs/rules/dom-no-missing-button-type
+    '@eslint-react/dom-no-missing-button-type': 'warn',
 });
