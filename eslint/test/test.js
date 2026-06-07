@@ -68,7 +68,7 @@ export async function fetchData(url) {
         return await response.json();
     } catch (error) {
         // ✅ In real code, use proper logging
-        throw new Error(`Fetch failed: ${error.message}`);
+        throw new Error(`Fetch failed: ${error.message}`, { cause: error });
     }
 }// ============================================================================
 // OBJECT AND ARRAY PATTERNS
@@ -132,7 +132,7 @@ class ApiClient {
             return await response.json();
         } catch (error) {
             // ✅ In real code, use proper error handling
-            throw new Error(`API request failed: ${error.message}`);
+            throw new Error(`API request failed: ${error.message}`, { cause: error });
         }
     }
 }
