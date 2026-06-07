@@ -74,7 +74,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             id-token: write  # Required for OIDC
-            contents: read   # Required to checkout the repo
+            contents: write  # Required to create releases
 
         steps:
             - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0  # v6.0.3
@@ -112,3 +112,10 @@ jobs:
               if: steps.version-check.outputs.exists == 'false'
               run: |
                 echo "Published version ${{ steps.package-version.outputs.version }} to NPM"
+            - name: Create GitHub Release
+              if: steps.version-check.outputs.exists == 'false'
+              uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda  # v3.0.0
+              with:
+                  tag_name: v${{ steps.package-version.outputs.version }}
+                  name: v${{ steps.package-version.outputs.version }}
+                  generate_release_notes: true
