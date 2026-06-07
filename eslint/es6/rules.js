@@ -329,6 +329,42 @@ export default Object.freeze({
     // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/expiring-todo-comments.md
     'unicorn/expiring-todo-comments': ['warn', { terms: ['todo', 'fixme', 'hack', 'xxx'] }],
 
+    // Agentic Programming - llm-core Best Practices
+    // These rules target patterns AI coding agents consistently get wrong,
+    // from the eslint-plugin-llm-core research-backed rule set.
+
+    // Disallow async callbacks passed to array methods (.map, .filter, .forEach)
+    // AI frequently uses `array.map(async ...)` expecting resolved values,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-async-array-callbacks.md
+    'llm-core/no-async-array-callbacks': 'error',
+
+    // Disallow empty catch blocks; AI optimizes for runnable code over correctness,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-empty-catch.md
+    'llm-core/no-empty-catch': 'error',
+
+    // Disallow commented-out code; AI leaves dead code snippets from exploration,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-commented-out-code.md
+    'llm-core/no-commented-out-code': 'error',
+
+    // Disallow common LLM placeholder comments (TODO: implement, etc.)
+    // that indicate skipped or incomplete implementation,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-llm-artifacts.md
+    'llm-core/no-llm-artifacts': 'error',
+
+    // Enforce guard clauses (early returns) instead of wrapping function bodies
+    // in a single if block; AI generates deeply nested conditionals,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/prefer-early-return.md
+    'llm-core/prefer-early-return': 'error',
+
+    // Disallow throwing non-Error values (strings, objects, template literals);
+    // AI frequently throws raw values instead of Error instances,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/throw-error-objects.md
+    'llm-core/throw-error-objects': 'error',
+
+    // Disallow catch blocks that only log and swallow errors without handling them,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-swallowed-errors.md
+    'llm-core/no-swallowed-errors': 'error',
+
     // Enhanced Import Rules
     // Disallow circular imports, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-cycle.md
     'import-x/no-cycle': 'error',

@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable @stylistic/max-len -- Some links are very long*/
 
 /** @type import('typescript-eslint').ConfigWithExtends['rules'] */
 export default Object.freeze({
@@ -275,7 +274,8 @@ export default Object.freeze({
 
     /*
         * Enabling non-null-assertion
-        * Non-null Assertion prevents the code from being polluted with Type assertion: "as SomeType" or "as unknown as SomeType".
+        * Non-null Assertion prevents the code from being polluted with type assertions
+        * like "as SomeType" or "as unknown as SomeType".
         * Use with caution in the following cases:
         *
         * - when dealing with APIs that return Data | undefined but in some cases,
@@ -369,4 +369,3 @@ export default Object.freeze({
     // '@typescript-eslint/indent': ['error'],
     // '@typescript-eslint/consistent-type-assertions': ['error'],
 });
-/* eslint-enable @stylistic/max-len -- turn it back on */

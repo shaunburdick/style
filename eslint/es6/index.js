@@ -7,6 +7,7 @@ import promise from 'eslint-plugin-promise';
 import sonarjs from 'eslint-plugin-sonarjs';
 import unicorn from 'eslint-plugin-unicorn';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
+import llmCore from 'eslint-plugin-llm-core';
 import rules from './rules.js';
 
 export default [
@@ -27,8 +28,21 @@ export default [
             promise,
             sonarjs,
             unicorn,
-            'import-x': importXPlugin
+            'import-x': importXPlugin,
+            'llm-core': llmCore
         },
         rules
+    },
+    ...llmCore.configs.complexity,
+    // Override complexity/hygiene defaults for config files that are inherently larger
+    {
+        name: 'shaunburdick/js-overrides',
+        rules: {
+            'llm-core/max-file-length': ['error', { max: 400 }],
+            'llm-core/no-magic-numbers': ['error', {
+                ignore: [0, 1, 2, 3, 4, 5, 12, 15, 120],
+                ignoreObjectProperties: true,
+            }],
+        }
     }
 ];
