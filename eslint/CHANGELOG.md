@@ -1,5 +1,61 @@
 CHANGELOG
 =========
+## 8.0.0 (2026-06-07)
+
+### Requirements Changes
+* **BREAKING:** New rules will cause lint errors in codebases with AI-generated code patterns
+
+### New Rules — Agentic Programming Guardrails
+
+These rules are designed to catch common patterns in AI-generated code. They were added
+based on research from Columbia DAPLab, arXiv 2605.02741 (machine signature of defects),
+SlopCodeBench, and the eslint-plugin-llm-core research-backed rule set.
+
+#### Built-in ESLint Rules (Phase 1)
+* **NEW:** `max-params: [error, 5]` — Prevent parameter bloat, common in AI-generated functions
+* **NEW:** `max-depth: [error, 4]` — Prevent pyramid-of-doom control flow
+* **NEW:** `no-nested-ternary: error` — AI excessively nests ternaries
+* **NEW:** `id-length: [error, { min: 2 }]` — Prevent single-letter variable names
+* **NEW:** `no-useless-assignment: error` — Catch redundant intermediate variables
+
+#### eslint-plugin-unicorn Rules (Phase 1)
+* **NEW:** `unicorn/throw-new-error: error` — Require `new Error()` over raw throws
+* **NEW:** `unicorn/no-await-expression-member: error` — Prefer destructuring over `(await x).y`
+* **NEW:** `unicorn/no-useless-undefined: error` — Remove redundant `undefined`
+* **NEW:** `unicorn/no-useless-spread: error` — Remove unnecessary spread
+* **NEW:** `unicorn/consistent-function-scoping: error` — Move inner functions to higher scope
+* **NEW:** `unicorn/expiring-todo-comments: warn` — Require deadlines on TODOs
+
+#### TypeScript Type-Checked Rules (Phase 1)
+* **NEW:** `@typescript-eslint/await-thenable: error` — Don't await non-Promise values
+* **NEW:** `@typescript-eslint/use-unknown-in-catch-callback-variable: error` — Prefer `unknown` in catch
+* **NEW:** `@typescript-eslint/no-unnecessary-type-assertion: error` — Remove redundant casts
+* **NEW:** `@typescript-eslint/restrict-template-expressions: error` — Type-safe templates
+* **NEW:** `@typescript-eslint/unbound-method: error` — Prevent unbound method references
+
+#### eslint-plugin-llm-core Integration (Phase 2 — New Dependency)
+* **NEW:** `eslint-plugin-llm-core` added as dependency (v0.18+)
+* **NEW:** Complexity config: max-file-length (400), max-function-length, max-nesting-depth, max-params
+* **NEW:** `llm-core/no-async-array-callbacks: error` — Catch `.map(async ...)` returning Promise[]
+* **NEW:** `llm-core/no-empty-catch: error` — Prevent silent error swallowing
+* **NEW:** `llm-core/no-magic-numbers: error` — Require named constants (with sensible ignore list)
+* **NEW:** `llm-core/prefer-early-return: error` — Enforce guard clauses over deep nesting
+* **NEW:** `llm-core/throw-error-objects: error` — Require Error instances over raw values
+* **NEW:** `llm-core/no-swallowed-errors: error` — Prevent catch-only-log patterns
+* **NEW:** `llm-core/no-commented-out-code: error` — Remove dead code
+* **NEW:** `llm-core/no-llm-artifacts: error` — Remove incomplete markers (TODO: implement)
+
+#### @eslint-react DOM Security Rules (Phase 3)
+* **NEW:** `@eslint-react/dom-no-unsafe-target-blank: error` — Require rel=noopener on external links
+* **NEW:** `@eslint-react/dom-no-missing-iframe-sandbox: warn` — Require sandbox on iframes
+* **NEW:** `@eslint-react/dom-no-missing-button-type: warn` — Require explicit button type
+
+### Refactored Test Files
+* Refactored test pattern files to use named constants and follow the new rules
+
+### Dependency Changes
+* **NEW:** `eslint-plugin-llm-core` added (`^0.18.0`)
+
 ## 7.0.0 (2026-06-07)
 
 ### Requirements Changes
