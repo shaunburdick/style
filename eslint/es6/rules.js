@@ -33,23 +33,23 @@ export default Object.freeze({
 
     // Reports if a resolved path is imported more than once
     // Replaces eslint version with one that allows separate type imports
-    // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-duplicates.md
+    // https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-duplicates.md
     'no-duplicate-imports': 'off',
-    'import/no-duplicates': ['error'],
+    'import-x/no-duplicates': ['error'],
 
     // Forbid the use of extraneous packages,
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
-    'import/no-extraneous-dependencies': ['error'],
+    // https://github.com/import-js/eslint-plugin-import-x/blob/master/docs/rules/no-extraneous-dependencies.md
+    'import-x/no-extraneous-dependencies': ['error'],
 
     // Prevent importing the submodules of other modules,
     // This is here to allowing more specific tree
     // shaking in Angular, add to user client
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-internal-modules.md
-    // 'import/no-internal-modules': 'off',
+    // https://github.com/import-js/eslint-plugin-import-x/blob/master/docs/rules/no-internal-modules.md
+    // 'import-x/no-internal-modules': 'off',
 
     // Enforce a convention in module import order,
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/order.md
-    'import/order': [
+    // https://github.com/import-js/eslint-plugin-import-x/blob/master/docs/rules/order.md
+    'import-x/order': [
         'error',
         {
             groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
@@ -274,14 +274,14 @@ export default Object.freeze({
     'unicorn/prefer-string-starts-ends-with': 'error',
 
     // Enhanced Import Rules
-    // Disallow circular imports, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-cycle.md
-    'import/no-cycle': 'error',
+    // Disallow circular imports, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-cycle.md
+    'import-x/no-cycle': 'error',
 
-    // Disallow self imports, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-self-import.md
-    'import/no-self-import': 'error',
+    // Disallow self imports, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-self-import.md
+    'import-x/no-self-import': 'error',
 
-    // Disallow useless path segments in imports, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-useless-path-segments.md
-    'import/no-useless-path-segments': 'error',
+    // Disallow useless path segments in imports, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-useless-path-segments.md
+    'import-x/no-useless-path-segments': 'error',
 
     // Modern JavaScript Features
     // Require destructuring from arrays and objects, https://eslint.org/docs/rules/prefer-destructuring

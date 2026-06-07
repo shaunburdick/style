@@ -1,8 +1,8 @@
 import js from '@eslint/js';
 import security from 'eslint-plugin-security';
-import jsdoc from 'eslint-plugin-jsdoc';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
 import stylistic from '@stylistic/eslint-plugin';
-import importPlugin from 'eslint-plugin-import';
+import importXPlugin, { flatConfigs as importXFlatConfigs } from 'eslint-plugin-import-x';
 import promise from 'eslint-plugin-promise';
 import sonarjs from 'eslint-plugin-sonarjs';
 import unicorn from 'eslint-plugin-unicorn';
@@ -13,7 +13,7 @@ export default [
     js.configs.recommended,
     comments.recommended,
     security.configs.recommended,
-    importPlugin.flatConfigs.recommended,
+    importXFlatConfigs.recommended,
     {
         name: 'shaunburdick/js',
         languageOptions: {
@@ -22,11 +22,12 @@ export default [
         },
         plugins: {
             security,
-            jsdoc,
+            jsdoc: jsdocPlugin,
             '@stylistic': stylistic,
             promise,
             sonarjs,
-            unicorn
+            unicorn,
+            'import-x': importXPlugin
         },
         rules
     }

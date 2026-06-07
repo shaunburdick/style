@@ -318,8 +318,8 @@ export default Object.freeze({
     '@typescript-eslint/return-await': ['error', 'always'],
 
     // Enhanced Import Rules for TypeScript
-    // Enforce consistent type import style, https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md
-    'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+    // Enforce consistent type import style, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/consistent-type-specifier-style.md
+    'import-x/consistent-type-specifier-style': ['error', 'prefer-top-level'],
 
     // included in @typescript-eslint:recommended
     // "@typescript-eslint/adjacent-overload-signatures": "error",

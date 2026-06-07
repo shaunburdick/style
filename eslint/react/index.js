@@ -1,21 +1,20 @@
-import reactPlugin from 'eslint-plugin-react';
+import eslintReact from '@eslint-react/eslint-plugin';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
+import jsxA11yX from 'eslint-plugin-jsx-a11y-x';
 import globals from 'globals';
 import rules from './rules.js';
 
 export default [
+    eslintReact.configs.recommended,
     {
         files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}'],
         plugins: {
-            react: reactPlugin,
             'react-hooks': reactHooks,
             'react-you-might-not-need-an-effect': reactYouMightNotNeedAnEffect,
-            'jsx-a11y': jsxA11y,
+            'jsx-a11y-x': jsxA11yX,
         },
         languageOptions: {
-            ...reactPlugin.configs.flat.recommended.languageOptions,
             globals: {
                 ...globals.serviceworker,
                 ...globals.browser,
@@ -23,16 +22,14 @@ export default [
         },
         settings: {
             react: {
-                version: 'detect'
-            }
+                version: 'detect',
+            },
         },
         rules: {
-            ...reactPlugin.configs.flat.recommended.rules,
-            ...reactPlugin.configs.flat['jsx-runtime'].rules,
             ...reactHooks.configs['recommended-latest'].rules,
             ...reactYouMightNotNeedAnEffect.configs.recommended.rules,
-            ...jsxA11y.flatConfigs.recommended.rules,
-            ...rules
-        }
-    }
+            ...jsxA11yX.configs.recommended.rules,
+            ...rules,
+        },
+    },
 ];
