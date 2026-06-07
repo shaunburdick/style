@@ -1,10 +1,26 @@
 export default Object.freeze({
-    // React Performance Rules
-    // Disallow usage of Array index in keys, https://@eslint-react/kit/rules/no-array-index-key
-    '@eslint-react/no-array-index-key': 'error',
+    // React Performance & Security Rules
+
+    // Require explicit type attribute on button elements (accessibility),
+    // AI creates `<button>` without `type="button"`,
+    // https://www.eslint-react.xyz/docs/rules/dom-no-missing-button-type
+    '@eslint-react/dom-no-missing-button-type': 'warn',
+
+    // Require explicit sandbox attribute on iframes (security),
+    // AI adds iframes without sandbox restrictions,
+    // https://www.eslint-react.xyz/docs/rules/dom-no-missing-iframe-sandbox
+    '@eslint-react/dom-no-missing-iframe-sandbox': 'warn',
+
+    // Require rel="noopener noreferrer" on external links (security & performance),
+    // AI frequently omits this when adding external link targets,
+    // https://www.eslint-react.xyz/docs/rules/dom-no-unsafe-target-blank
+    '@eslint-react/dom-no-unsafe-target-blank': 'error',
 
     // Disallow unnecessary fragments, https://@eslint-react/kit/rules/jsx-no-useless-fragment
     '@eslint-react/jsx-no-useless-fragment': 'error',
+
+    // Disallow usage of Array index in keys, https://@eslint-react/kit/rules/no-array-index-key
+    '@eslint-react/no-array-index-key': 'error',
 
     // Enforce self-closing components, https://eslint.style/rules/default/jsx-self-closing-comp
     '@stylistic/jsx-self-closing-comp': 'error',

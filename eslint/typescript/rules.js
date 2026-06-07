@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable @stylistic/max-len -- Some links are very long*/
 
 /** @type import('typescript-eslint').ConfigWithExtends['rules'] */
 export default Object.freeze({
@@ -11,6 +10,10 @@ export default Object.freeze({
             default: 'array',
         },
     ],
+
+    // Disallow awaiting non-Promise values; AI often awaits non-async calls,
+    // https://typescript-eslint.io/rules/await-thenable
+    '@typescript-eslint/await-thenable': 'error',
 
     // enforce dot notation whenever possible,
     // https://typescript-eslint.io/rules/dot-notation
@@ -264,6 +267,15 @@ export default Object.freeze({
     // https://typescript-eslint.io/rules/unified-signatures
     '@typescript-eslint/unified-signatures': ['error'],
 
+    // Ensure catch clause variables use `unknown` instead of `any`,
+    // https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
+
+    // Disallow calling methods without ensuring they're properly bound;
+    // AI often passes method references without binding,
+    // https://typescript-eslint.io/rules/unbound-method
+    '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+
     // https://typescript-eslint.io/rules/consistent-type-definitions
     '@typescript-eslint/consistent-type-definitions': [
         'error',
@@ -275,7 +287,8 @@ export default Object.freeze({
 
     /*
         * Enabling non-null-assertion
-        * Non-null Assertion prevents the code from being polluted with Type assertion: "as SomeType" or "as unknown as SomeType".
+        * Non-null Assertion prevents the code from being polluted with type assertions
+        * like "as SomeType" or "as unknown as SomeType".
         * Use with caution in the following cases:
         *
         * - when dealing with APIs that return Data | undefined but in some cases,
@@ -309,8 +322,28 @@ export default Object.freeze({
     // Disallow unnecessary conditionals, https://typescript-eslint.io/rules/no-unnecessary-condition
     '@typescript-eslint/no-unnecessary-condition': 'error',
 
+    // Disallow unnecessary type assertions that don't change the type,
+    // AI frequently adds redundant `as Type` casts,
+    // https://typescript-eslint.io/rules/no-unnecessary-type-assertion
+    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+
     // Prefer readonly arrays and tuples, https://typescript-eslint.io/rules/prefer-readonly
     '@typescript-eslint/prefer-readonly': 'error',
+
+    // Restrict template literal expressions to prevent type coercion bugs,
+    // AI often embeds non-stringifiable values in templates,
+    // https://typescript-eslint.io/rules/restrict-template-expressions
+    '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+            allowAny: false,
+            allowBoolean: false,
+            allowNever: false,
+            allowNullish: true,
+            allowNumber: true,
+            allowRegExp: false,
+        },
+    ],
 
     // Require returning awaited values in async functions, https://typescript-eslint.io/rules/return-await
     // disable base rule in favor of typescript
@@ -333,4 +366,3 @@ export default Object.freeze({
     // '@typescript-eslint/indent': ['error'],
     // '@typescript-eslint/consistent-type-assertions': ['error'],
 });
-/* eslint-enable @stylistic/max-len -- turn it back on */

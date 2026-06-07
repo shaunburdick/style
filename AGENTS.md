@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 7.0.0
+**Current Version:** 8.0.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -55,6 +55,7 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
   - `eslint-plugin-sonarjs` - Code quality and complexity
   - `eslint-plugin-unicorn` - Modern JavaScript patterns
   - `eslint-plugin-jsdoc` - JSDoc documentation standards
+  - `eslint-plugin-llm-core` - Agentic programming anti-pattern detection (file length, magic numbers, early returns, etc.)
 
 ### 2. TypeScript Config (`typescript/`)
 - **Entry Point:** `typescript/index.js`
@@ -110,6 +111,7 @@ import './';                      // index
 
 See [`eslint/CHANGELOG.md`](eslint/CHANGELOG.md) for the full version history and breaking changes. Major milestones:
 
+- **v8.0.0** — Agentic programming guardrails, `eslint-plugin-llm-core` integration, React DOM/web API security rules
 - **v7.0.0** — ESLint 10 upgrade, plugin replacements (`@eslint-react`, `import-x`, `jsx-a11y-x`), TypeScript 6.0
 - **v5.0.0** — Flat config overhaul with comprehensive plugin suite
 - **v1.0.0** — Initial flat config release
@@ -159,7 +161,8 @@ export default [
 - `@stylistic/eslint-plugin` - Code formatting
 - `@eslint-react/eslint-plugin` - React support
 - `eslint-plugin-security` - Security scanning
-- And 8+ other specialized plugins
+- `eslint-plugin-llm-core` - Agentic programming anti-pattern detection
+- And 9+ other specialized plugins
 
 ## Maintenance Notes
 

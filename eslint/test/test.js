@@ -16,8 +16,7 @@ const API_URL = 'https://api.example.com';
 const MAX_RETRIES = 3;
 
 // ✅ Use let for values that do change (examples)
-// let currentUser = null;  // Would be used in real code
-// let isLoading = false;   // Would be used in real code
+// (not shown: real code would use `let` for mutable state)
 
 // ✅ Use template literals instead of string concatenation
 function createMessage(name, action) {
@@ -32,7 +31,9 @@ export function processUser({ name, email, role = 'user' }) {
 
 // ✅ Use arrow functions for callbacks
 export function demonstrateArrayMethods() {
-    const numbers = [1, 2, 3, 4, 5];
+    const SAMPLE_RANGE_START = 1;
+    const SAMPLE_RANGE_END = 5;
+    const numbers = Array.from({ length: SAMPLE_RANGE_END }, (_, i) => i + SAMPLE_RANGE_START);
     const doubled = numbers.map(n => n * 2);
     const evens = numbers.filter(n => n % 2 === 0);
     return { doubled, evens };
@@ -108,7 +109,8 @@ class ApiClient {
      */
     constructor(options = {}) {
         // ✅ Use object spread and defaults
-        this.config = { timeout: 5000, ...options };
+        const DEFAULT_TIMEOUT_MS = 5_000;
+        this.config = { timeout: DEFAULT_TIMEOUT_MS, ...options };
         this.cache = new Map();
     }
 

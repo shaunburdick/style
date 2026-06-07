@@ -31,6 +31,10 @@ export default Object.freeze({
         'undefined',
     ],
 
+    // enforce minimum identifier length to prevent single-letter variable names,
+    // a common pattern in AI-generated code, https://eslint.org/docs/rules/id-length
+    'id-length': ['error', { min: 2, exceptions: ['_', 'e', 'i', 'j', 'k', 'n', 'x', 'y'] }],
+
     // Reports if a resolved path is imported more than once
     // Replaces eslint version with one that allows separate type imports
     // https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-duplicates.md
@@ -84,6 +88,16 @@ export default Object.freeze({
     // enforce a maximum number of classes per file, https://eslint.org/docs/rules/max-classes-per-file
     'max-classes-per-file': ['error', 1],
 
+    // enforce maximum nesting depth to prevent pyramid-of-doom control flow,
+    // a hallmark of AI-generated deeply nested conditionals,
+    // https://eslint.org/docs/rules/max-depth
+    'max-depth': ['error', 4],
+
+    // enforce maximum function parameters to prevent parameter bloat,
+    // a common AI pattern where functions accumulate 6+ positional params,
+    // https://eslint.org/docs/rules/max-params
+    'max-params': ['error', 5],
+
     // enforce a maximum line length, https://eslint.style/rules/default/max-len
     // Ignore links and shorter width for comments
     '@stylistic/max-len': [
@@ -126,6 +140,11 @@ export default Object.freeze({
     // https://eslint.org/docs/rules/no-invalid-this
     'no-invalid-this': ['error'],
 
+    // disallow nested ternary expressions; AI nests ternaries excessively
+    // for "conciseness" at the expense of readability,
+    // https://eslint.org/docs/rules/no-nested-ternary
+    'no-nested-ternary': 'error',
+
     // disallow multiple empty lines, https://eslint.style/rules/default/no-multiple-empty-lines
     '@stylistic/no-multiple-empty-lines': ['error', { max: 2, maxBOF: 0, maxEOF: 1 }],
 
@@ -157,6 +176,12 @@ export default Object.freeze({
 
     // disallow trailing whitespace at the end of lines, https://eslint.style/rules/default/no-trailing-spaces
     '@stylistic/no-trailing-spaces': ['error'],
+
+    // disallow redundant assignments that don't change a value;
+    // AI creates unnecessary intermediate variables as a side effect
+    // of over-engineering solutions,
+    // https://eslint.org/docs/rules/no-useless-assignment
+    'no-useless-assignment': 'error',
 
     // disallow the use of variables before they are defined, https://eslint.org/docs/rules/no-use-before-define
     'no-use-before-define': ['error'],
@@ -254,15 +279,35 @@ export default Object.freeze({
     // Disallow nested then() or catch() statements, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/no-nesting.md
     'promise/no-nesting': 'error',
 
-    // Modern JavaScript Best Practices
-    // Prefer Node.js builtin protocol imports, https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-node-protocol.md
-    'unicorn/prefer-node-protocol': 'error',
+    // Modern JavaScript Best Practices — Agentic Programming Extensions
+    // These rules target patterns that AI coding agents consistently produce.
 
-    // Prefer ES modules over CommonJS, https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-module.md
-    'unicorn/prefer-module': 'error',
+    // Move function definitions to the highest possible scope;
+    // AI nests functions inside other functions unnecessarily,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/consistent-function-scoping.md
+    'unicorn/consistent-function-scoping': 'error',
+
+    // Require TODO/FIXME comments to have expiration dates or issue references,
+    // preventing AI from leaving permanent incomplete code markers,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/expiring-todo-comments.md
+    'unicorn/expiring-todo-comments': ['warn', { terms: ['todo', 'fixme', 'hack', 'xxx'] }],
 
     // Prefer Array.some() over Array.forEach(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-for-each.md
     'unicorn/no-array-for-each': 'error',
+
+    // Disallow member access from await expressions like `(await foo).bar`;
+    // prefer destructuring for clarity,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-await-expression-member.md
+    'unicorn/no-await-expression-member': 'error',
+
+    // Disallow unnecessary spread operators that don't change behavior,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-useless-spread.md
+    'unicorn/no-useless-spread': 'error',
+
+    // Disallow unnecessary `undefined` values; AI often adds redundant
+    // `return undefined` or `let x = undefined`,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-useless-undefined.md
+    'unicorn/no-useless-undefined': 'error',
 
     // Prefer Array.some() over Array.find(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-array-some.md
     'unicorn/prefer-array-some': 'error',
@@ -270,8 +315,54 @@ export default Object.freeze({
     // Prefer Array.includes() over Array.indexOf(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-includes.md
     'unicorn/prefer-includes': 'error',
 
+    // Prefer ES modules over CommonJS, https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-module.md
+    'unicorn/prefer-module': 'error',
+
+    // Prefer Node.js builtin protocol imports, https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-node-protocol.md
+    'unicorn/prefer-node-protocol': 'error',
+
     // Prefer String.startsWith() and String.endsWith(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-string-starts-ends-with.md
     'unicorn/prefer-string-starts-ends-with': 'error',
+
+    // Require `new` when creating errors; AI frequently throws raw strings/objects,
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/throw-new-error.md
+    'unicorn/throw-new-error': 'error',
+
+    // Agentic Programming - llm-core Best Practices
+    // These rules target patterns AI coding agents consistently get wrong,
+    // from the eslint-plugin-llm-core research-backed rule set.
+
+    // Disallow async callbacks passed to array methods (.map, .filter, .forEach)
+    // AI frequently uses `array.map(async ...)` expecting resolved values,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-async-array-callbacks.md
+    'llm-core/no-async-array-callbacks': 'error',
+
+    // Disallow commented-out code; AI leaves dead code snippets from exploration,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-commented-out-code.md
+    'llm-core/no-commented-out-code': 'error',
+
+    // Disallow empty catch blocks; AI optimizes for runnable code over correctness,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-empty-catch.md
+    'llm-core/no-empty-catch': 'error',
+
+    // Disallow common LLM placeholder comments (TODO: implement, etc.)
+    // that indicate skipped or incomplete implementation,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-llm-artifacts.md
+    'llm-core/no-llm-artifacts': 'error',
+
+    // Disallow catch blocks that only log and swallow errors without handling them,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-swallowed-errors.md
+    'llm-core/no-swallowed-errors': 'error',
+
+    // Enforce guard clauses (early returns) instead of wrapping function bodies
+    // in a single if block; AI generates deeply nested conditionals,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/prefer-early-return.md
+    'llm-core/prefer-early-return': 'error',
+
+    // Disallow throwing non-Error values (strings, objects, template literals);
+    // AI frequently throws raw values instead of Error instances,
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/throw-error-objects.md
+    'llm-core/throw-error-objects': 'error',
 
     // Enhanced Import Rules
     // Disallow circular imports, https://github.com/import-js/eslint-plugin-import-x/blob/main/docs/rules/no-cycle.md
