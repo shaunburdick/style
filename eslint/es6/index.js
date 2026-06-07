@@ -38,7 +38,7 @@ export default [
     {
         name: 'shaunburdick/js-overrides',
         rules: {
-            'llm-core/max-file-length': ['error', { max: 400 }],
+            'llm-core/max-file-length': ['error', { max: 500 }],
             'llm-core/no-magic-numbers': ['error', {
                 ignore: [0, 1, 2, 3, 4, 5, 12, 15, 120],
                 ignoreObjectProperties: true,

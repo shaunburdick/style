@@ -35,7 +35,7 @@ SlopCodeBench, and the eslint-plugin-llm-core research-backed rule set.
 
 #### eslint-plugin-llm-core Integration (Phase 2 — New Dependency)
 * **NEW:** `eslint-plugin-llm-core` added as dependency (v0.18+)
-* **NEW:** Complexity config: max-file-length (400), max-function-length, max-nesting-depth, max-params
+* **NEW:** Complexity config: max-file-length (500), max-function-length, max-nesting-depth, max-params
 * **NEW:** `llm-core/no-async-array-callbacks: error` — Catch `.map(async ...)` returning Promise[]
 * **NEW:** `llm-core/no-empty-catch: error` — Prevent silent error swallowing
 * **NEW:** `llm-core/no-magic-numbers: error` — Require named constants (with sensible ignore list)
