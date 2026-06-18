@@ -186,6 +186,11 @@ export function FragmentExample() {
     );
 }
 
+// ✅ parseInt with literal 10 radix is allowed (not a magic number, even in React files)
+export function parseNumericId(id: string): number {
+    return parseInt(id, 10);
+}
+
 // ============================================================================
 // CONDITIONAL RENDERING PATTERNS
 // ============================================================================

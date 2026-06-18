@@ -1,5 +1,10 @@
 CHANGELOG
 =========
+## 8.1.0 (2026-06-18)
+
+### Changes
+* **RELAXED:** Added `10` to `llm-core/no-magic-numbers` ignore list so `parseInt(id, 10)` no longer requires extracting `DECIMAL_RADIX` to a named constant
+
 ## 8.0.0 (2026-06-07)
 
 ### Requirements Changes

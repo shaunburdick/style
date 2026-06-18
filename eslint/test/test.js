@@ -71,7 +71,18 @@ export async function fetchData(url) {
         // ✅ In real code, use proper logging
         throw new Error(`Fetch failed: ${error.message}`, { cause: error });
     }
-}// ============================================================================
+}
+
+// ============================================================================
+// PARSING PATTERNS
+// ============================================================================
+
+// ✅ parseInt with literal 10 radix is allowed (not a magic number)
+export function parseNumericId(id) {
+    return parseInt(id, 10);
+}
+
+// ============================================================================
 // OBJECT AND ARRAY PATTERNS
 // ============================================================================
 
