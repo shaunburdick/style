@@ -60,6 +60,11 @@ async function fetchUser(id: number): Promise<User | null> {
     }
 }
 
+// ✅ parseInt with literal 10 radix is allowed (not a magic number)
+export function parseNumericId(id: string): number {
+    return parseInt(id, 10);
+}
+
 // ============================================================================
 // CLASS PATTERNS
 // ============================================================================

@@ -3,9 +3,8 @@ name: ES Lint
 
 on:
     push:
-        branches: ["**"]  # Run on all branches
-    pull_request:
-        branches: ["**"]  # Run on PRs to any branch
+        branches: [main]  # Run on merge to main only (avoids duplicate runs with pull_request)
+    pull_request:  # Run on all PRs (no branches filter = all branches)
 
 jobs:
     test-eslint:
