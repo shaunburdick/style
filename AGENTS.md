@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 8.0.0
+**Current Version:** 9.0.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -25,14 +25,16 @@ This document provides comprehensive context about the `style` repository to hel
     ├── index.js                     # Main entry point - exports all configs
     ├── es6/                         # JavaScript/ES6 base configuration
     │   ├── index.js                 # ES6 config entry point
-    │   └── rules.js                 # ES6-specific ESLint rules
+    │   ├── rules.js                 # ES6-specific ESLint rules (config + severity)
+    │   ├── custom-rules.js          # Custom ESLint rule definitions
+    │   └── custom-rules.test.js     # Tests for custom rules (co-located with source)
     ├── typescript/                  # TypeScript configuration
     │   ├── index.js                 # TypeScript config entry point
     │   └── rules.js                 # TypeScript-specific ESLint rules
     ├── react/                       # React configuration
     │   ├── index.js                 # React config entry point
     │   └── rules.js                 # React-specific ESLint rules
-    └── test/                        # Test files demonstrating proper patterns
+    └── test/                        # Pattern example files for self-linting
         ├── test.js                  # JavaScript pattern examples
         ├── test.ts                  # TypeScript pattern examples
         ├── test.tsx                 # React/TypeScript pattern examples
@@ -56,6 +58,10 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
   - `eslint-plugin-unicorn` - Modern JavaScript patterns
   - `eslint-plugin-jsdoc` - JSDoc documentation standards
   - `eslint-plugin-llm-core` - Agentic programming anti-pattern detection (file length, magic numbers, early returns, etc.)
+- **Custom Rules:** `eslint-config-shaunburdick` ships a `shaunburdick` plugin namespace with inline-defined rules in `es6/custom-rules.js`:
+  - `shaunburdick/max-inline-disables` — Warns when a file exceeds 2 inline `eslint-disable` comments, enforcing a graduated disable flow (single-line → block-level → config override)
+- **Global Linter Options:**
+  - `reportUnusedDisableDirectives: 'error'` — catches stale `eslint-disable` comments (replaces the deprecated `@eslint-community/eslint-comments/no-unused-disable` rule)
 
 ### 2. TypeScript Config (`typescript/`)
 - **Entry Point:** `typescript/index.js`
@@ -111,6 +117,7 @@ import './';                      // index
 
 See [`eslint/CHANGELOG.md`](eslint/CHANGELOG.md) for the full version history and breaking changes. Major milestones:
 
+- **v9.0.0** — Graduated disable flow, `reportUnusedDisableDirectives`, custom `shaunburdick/max-inline-disables` rule
 - **v8.0.0** — Agentic programming guardrails, `eslint-plugin-llm-core` integration, React DOM/web API security rules
 - **v7.0.0** — ESLint 10 upgrade, plugin replacements (`@eslint-react`, `import-x`, `jsx-a11y-x`), TypeScript 6.0
 - **v5.0.0** — Flat config overhaul with comprehensive plugin suite
@@ -139,6 +146,7 @@ export default [
 ### Test Strategy
 - **Self-Testing:** Package lints itself using its own configuration
 - **Pattern Files:** Test files demonstrate correct coding patterns
+- **Rule Tests:** Custom rules have unit tests using ESLint's `RuleTester` and Node.js `node:test` — tests live alongside their source (e.g., `es6/custom-rules.test.js` → `es6/custom-rules.js`)
 - **CI/CD:** GitHub Actions tests on Node.js 22.x, 24.x, 26.x (all actions pinned by commit SHA for supply chain security)
 
 ### Package Scripts
@@ -146,7 +154,8 @@ export default [
 {
   "lint": "eslint .",
   "lint:fix": "eslint . --fix",
-  "test": "npm run lint"
+  "test": "npm run lint",
+  "test:rules": "node --test es6/*.test.js"
 }
 ```
 
@@ -182,7 +191,8 @@ export default [
 2. **Adding plugin:** Update `index.js` and `package.json`
 3. **New configuration:** Create new folder structure
 4. **Version bump:** Update `package.json`, add CHANGELOG entry
-5. **Plugin renames:** `import/` → `import-x/`, `react/` → `@eslint-react/`, `jsx-a11y/` → `jsx-a11y-x/` — old `eslint-disable` prefixes silently stop working
+5. **Adding custom rule:** Define the rule in `es6/custom-rules.js`, configure it in `es6/rules.js`, wire it in `es6/index.js`, test it in `es6/custom-rules.test.js`
+6. **Plugin renames:** `import/` → `import-x/`, `react/` → `@eslint-react/`, `jsx-a11y/` → `jsx-a11y-x/` — old `eslint-disable` prefixes silently stop working
 
 ## Context for AI Agents
 
@@ -190,11 +200,13 @@ When working on this repository:
 
 1. **ESLint Knowledge Required:** Understand ESLint 10+ flat config format
 2. **Plugin Architecture:** Each config is composable and standalone
-3. **Testing Strategy:** Changes must pass self-linting
+3. **Testing Strategy:** Changes must pass self-linting; custom rules must have `RuleTester` tests alongside their source
 4. **Documentation:** All rule additions should include rationale comments
 5. **Backwards Compatibility:** Major version changes expected for new rules
 6. **Performance Consideration:** Rule additions affect all users' build times
 7. **Accessibility Focus:** React config emphasizes a11y compliance
 8. **Security Priority:** Security rules are non-negotiable requirements
+9. **Graduated Disable Flow:** Inline `eslint-disable` comments follow a graduated flow — 1-2 per file is fine, 3+ should use block-level pairs, and 3+ files with the same need should use a config override. The `shaunburdick/max-inline-disables` rule enforces the first threshold
+10. **Custom Rules:** The `shaunburdick` plugin namespace (`es6/custom-rules.js`) contains rules defined inline for this project. Rule definitions live in `custom-rules.js`, configurations in `rules.js`, wiring in `index.js`, and tests in `custom-rules.test.js`
 
 This is a foundational development tool used across multiple projects, so reliability and consistency are paramount.
