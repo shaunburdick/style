@@ -1,5 +1,15 @@
 CHANGELOG
 =========
+## 9.0.0 (2026-06-20)
+
+### Requirements Changes
+* **BREAKING:** `reportUnusedDisableDirectives: 'error'` — stale `eslint-disable` comments that were previously silently ignored now fail lint. Replace the deprecated `@eslint-community/eslint-comments/no-unused-disable` rule that was never activated
+
+### New Features — Graduated Disable Flow
+* **NEW:** `reportUnusedDisableDirectives: 'error'` — ESLint-native unused disable detection (replaces deprecated plugin rule)
+* **NEW:** `shaunburdick/max-inline-disables: warn` — custom rule enforcing the graduated disable flow: 1-2 inline disables per file is fine, 3+ should use block-level pairs, across 3+ files should use a config override
+* **NEW:** `es6/custom-rules.js` — dedicated file for inline-defined custom rules, tested alongside the source via `es6/custom-rules.test.js`
+
 ## 8.1.0 (2026-06-18)
 
 ### Changes

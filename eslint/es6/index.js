@@ -9,8 +9,17 @@ import unicorn from 'eslint-plugin-unicorn';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import llmCore from 'eslint-plugin-llm-core';
 import rules from './rules.js';
+import customRules from './custom-rules.js';
 
 export default [
+    // Global linter options — applies to all files
+    {
+        linterOptions: {
+            // Report unused eslint-disable comments (replaces deprecated
+            // @eslint-community/eslint-comments/no-unused-disable)
+            reportUnusedDisableDirectives: 'error',
+        },
+    },
     js.configs.recommended,
     comments.recommended,
     security.configs.recommended,
@@ -29,7 +38,10 @@ export default [
             sonarjs,
             unicorn,
             'import-x': importXPlugin,
-            'llm-core': llmCore
+            'llm-core': llmCore,
+            'shaunburdick': {
+                rules: customRules,
+            },
         },
         rules
     },
@@ -43,6 +55,8 @@ export default [
                 ignore: [0, 1, 2, 3, 4, 5, 10, 12, 15, 120],
                 ignoreObjectProperties: true,
             }],
+            // Bypass max-inline-disables for config files which may need exemptions
+            'shaunburdick/max-inline-disables': 'off',
         }
     }
 ];

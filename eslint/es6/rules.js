@@ -226,6 +226,11 @@ export default Object.freeze({
     // https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/require-description.html
     '@eslint-community/eslint-comments/require-description': ['error'],
 
+    // enforce the graduated disable flow: warn when a file exceeds 2 inline
+    // eslint-disable comments, suggesting a block-level pair instead,
+    // defined in ./custom-rules.js
+    'shaunburdick/max-inline-disables': ['warn', { max: 2 }],
+
     // require or disallow semicolons instead of ASI, https://eslint.style/rules/default/semi
     '@stylistic/semi': ['error'],
 
