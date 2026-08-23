@@ -15,7 +15,7 @@ Migrator stats over our 382 configured ESLint rules: **45% fully covered**, 152 
 
 | Mark | Meaning |
 | --- | --- |
-| ✅ | Ported — direct Biome equivalent, enabled in `biome.json` |
+| ✅ | Ported — direct Biome equivalent, enabled in `biome.jsonc` |
 | 🔶 | Inspired-tier mapping (semantics looser than the ESLint original) |
 | 🧪 | Nursery rule — unstable; may graduate/rename in minor releases |
 | 🎨 | Enforced by the Biome **formatter**, not the linter |
@@ -218,7 +218,7 @@ Applied to `**/*.{jsx,tsx,…}` via override with browser/service-worker globals
 
 ## Scorecard
 
-| Layer | Enabled in `biome.json` | Dropped (ESLint-side) |
+| Layer | Enabled in `biome.jsonc` | Dropped (ESLint-side) |
 | --- | --- | --- |
 | Base JS | ~41 rules + formatter + assist | ~24 |
 | TypeScript | ~31 rules | ~9 |
@@ -240,3 +240,30 @@ Applied to `**/*.{jsx,tsx,…}` via override with browser/service-worker globals
 - https://biomejs.dev/docs/ (formatter options, assists, overrides, GritQL plugins)
 - Official migrator run against this repo's flat config (scratch workspace, Biome 2.5.10)
 - `biome explain <rule>` verification of every rule category above
+
+## Addendum: Extends partitioning findings (2026-08-23)
+
+The config ships as a single commented `biome.jsonc` rather than split layer files. That decision
+is based on empirical testing against Biome 2.5.10 in a simulated npm consumer (package symlinked
+into `node_modules`, consumer extends it by bare name):
+
+| Approach | Result |
+| --- | --- |
+| Consumer extends package entry; entry extends `./configs/*.json` (transitive) | **Broken** — `overrides` from later extended files applied, but the `linter.rules` section silently dropped |
+| Same via explicit relative path into `node_modules` | **Broken** — zero diagnostics; second-level relative paths do not resolve against the extending file |
+| Consumer extends each layer file directly by bare package subpath (`pkg/configs/js.json`) | **Unsupported** — Biome does not resolve package subpaths in `extends` |
+| Consumer extends multiple layer files via relative `./node_modules/...` paths | **Works** — deep merge across same-level extends is correct |
+| Single-file config extended by bare package name | **Works** — all layers apply |
+
+Additional constraints discovered:
+
+- `biome lint` tolerates JSONC comments in the config, but `biome check <config>` parses it as
+  strict JSON and rejects comments. The `.jsonc` extension is the sanctioned way to keep section
+  banner comments while remaining check-clean.
+- `vcs.useIgnoreFile: true` hard-fails when no `.gitignore` exists next to the config, so the
+  shipped config leaves VCS integration to consumers.
+
+If a future Biome version fixes transitive extends resolution for published packages, the layers
+can be split into `configs/{javascript,typescript,react}.json` behind a thin entry point; the
+extraction was validated locally (all smoke tests passed) and reverted only for consumer-path
+robustness.

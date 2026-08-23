@@ -43,7 +43,7 @@ This document provides comprehensive context about the `style` repository to hel
 │   ├── package.json                 # Package configuration (biome-config-shaunburdick)
 │   ├── README.md                    # Usage docs + known gaps vs the ESLint config
 │   ├── CHANGELOG.md                 # Version history
-│   ├── biome.json                   # Shareable config: base JS + TS + React overrides
+│   ├── biome.jsonc                  # Shareable config (JSONC): base JS + TS + React layers
 │   └── test/                        # Smoke tests + violation/compliant fixtures
 └── specs/                           # Feature planning artifacts (research, mappings)
     └── 001-biome-config/
@@ -142,7 +142,10 @@ compatible subset of the ESLint rules to Biome 2.5+:
   browser/service-worker globals)
 - **Style:** formatter owns formatting (4-space indent, 120-char lines, single quotes);
   `organizeImports` assist replaces `import-x/order`
-- **Usage:** consumers add `"extends": ["biome-config-shaunburdick"]` to their `biome.json`
+- **Usage:** consumers add `"extends": ["biome-config-shaunburdick"]` to their own `biome.json`
+- **Single-file by design:** Biome 2.5 drops `linter` sections from transitive `extends` inside
+  published packages and does not resolve bare package subpaths in `extends`, so the three layers
+  ship as one commented `biome.jsonc` (see research.md "Extends partitioning findings")
 - **Known gaps:** JSDoc, security plugin, promise discipline (`always-return`,
   `catch-or-return`), llm-core guardrails, and the custom `max-inline-disables` rule have no
   Biome equivalent — see `specs/001-biome-config/research.md` for the full mapping table
@@ -217,7 +220,7 @@ export default [
 2. **Adding plugin:** Update `index.js` and `package.json`
 3. **New configuration:** Create new folder structure
 4. **Version bump:** Update `package.json`, add CHANGELOG entry
-5. **Biome rule change:** Edit `biome/biome.json`, update the mapping table in `specs/001-biome-config/research.md`, bump `biome/package.json` + CHANGELOG, and run `npm test` in `biome/`
+5. **Biome rule change:** Edit `biome/biome.jsonc`, update the mapping table in `specs/001-biome-config/research.md`, bump `biome/package.json` + CHANGELOG, and run `npm test` in `biome/`
 5. **Adding custom rule:** Define the rule in `es6/custom-rules.js`, configure it in `es6/rules.js`, wire it in `es6/index.js`, test it in `es6/custom-rules.test.js`
 6. **Plugin renames:** `import/` → `import-x/`, `react/` → `@eslint-react/`, `jsx-a11y/` → `jsx-a11y-x/` — old `eslint-disable` prefixes silently stop working
 

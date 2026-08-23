@@ -5,16 +5,16 @@
     "license": "UNLICENSED",
     "type": "module",
     "exports": {
-        ".": "./biome.json"
+        ".": "./biome.jsonc"
     },
     "files": [
-        "biome.json",
+        "biome.jsonc",
         "README.md",
         "CHANGELOG.md"
     ],
     "scripts": {
-        "lint": "biome check biome.json",
-        "lint:fix": "biome check --write biome.json",
+        "lint": "biome check biome.jsonc",
+        "lint:fix": "biome check --write biome.jsonc",
         "test": "npm run lint && node --test test/smoke.test.mjs",
         "test:smoke": "node --test test/smoke.test.mjs"
     },

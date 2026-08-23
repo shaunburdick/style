@@ -30,6 +30,11 @@
             "trailingCommas": "all"
         }
     },
+    // -----------------------------------------------------------
+    // LAYER 1 - BASE JS: applies to every file.
+    // Ports es6/rules.js (core, sonarjs, unicorn, promise, import-x)
+    // plus eslint:recommended equivalents emitted by the migration.
+    // -----------------------------------------------------------
     "linter": {
         "enabled": true,
         "rules": {
@@ -166,6 +171,11 @@
         }
     },
     "overrides": [
+        // -----------------------------------------------------------
+        // LAYER 2 - TYPESCRIPT (**/*.{ts,tsx}): ports typescript/rules.js
+        // (typescript-eslint strict) plus native type-aware promise and
+        // switch checks. Biome infers types without tsc.
+        // -----------------------------------------------------------
         {
             "includes": ["**/*.{ts,tsx}"],
             "linter": {
@@ -233,9 +243,15 @@
                 }
             }
         },
+        // -----------------------------------------------------------
+        // LAYER 3 - REACT: ports react/rules.js (@eslint-react, jsx-a11y-x,
+        // react-hooks) with browser + service-worker globals.
+        // -----------------------------------------------------------
         {
             "includes": ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
             "javascript": {
+                // Event handlers and web APIs from the `globals` npm package
+                // (browser + serviceworker environments), mirroring react/index.js.
                 "globals": [
                     "onanimationend",
                     "onabortpayment",
