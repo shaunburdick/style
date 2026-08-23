@@ -1,0 +1,321 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.5.10/schema.json",
+    "files": {
+        "ignoreUnknown": true
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120,
+        "lineEnding": "lf"
+    },
+    "assist": {
+        "enabled": true,
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "arrowParentheses": "always",
+            "bracketSameLine": false,
+            "bracketSpacing": true,
+            "jsxQuoteStyle": "double",
+            "quoteProperties": "asNeeded",
+            "quoteStyle": "single",
+            "semicolons": "always",
+            "trailingCommas": "all"
+        }
+    },
+    // -----------------------------------------------------------
+    // LAYER 1 - BASE JS: applies to every file.
+    // Ports es6/rules.js (core, sonarjs, unicorn, promise, import-x)
+    // plus eslint:recommended equivalents emitted by the migration.
+    // -----------------------------------------------------------
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "preset": "none",
+            "complexity": {
+                "noAdjacentSpacesInRegex": "error",
+                "noArguments": "error",
+                "noCommaOperator": "error",
+                "noExcessiveCognitiveComplexity": {
+                    "level": "error",
+                    "options": {
+                        "maxAllowedComplexity": 15
+                    }
+                },
+                "noExtraBooleanCast": "error",
+                "noForEach": "error",
+                "noStaticOnlyClass": "error",
+                "noUselessCatch": "error",
+                "noUselessConstructor": "error",
+                "noUselessEscapeInRegex": "error",
+                "noUselessThisAlias": "error",
+                "noUselessUndefined": "error",
+                "useLiteralKeys": "error",
+                "useMaxParams": {
+                    "level": "error",
+                    "options": {
+                        "max": 5
+                    }
+                },
+                "useOptionalChain": "error"
+            },
+            "correctness": {
+                "noConstAssign": "error",
+                "noConstantCondition": "error",
+                "noEmptyCharacterClassInRegex": "error",
+                "noEmptyPattern": "error",
+                "noGlobalDirnameFilename": "error",
+                "noGlobalObjectCalls": "error",
+                "noInvalidBuiltinInstantiation": "error",
+                "noInvalidConstructorSuper": "error",
+                "noInvalidUseBeforeDeclaration": "error",
+                "noNonoctalDecimalEscape": "error",
+                "noPrecisionLoss": "error",
+                "noSelfAssign": "error",
+                "noSetterReturn": "error",
+                "noSwitchDeclarations": "error",
+                "noUndeclaredDependencies": "error",
+                "noUndeclaredVariables": "error",
+                "noUnreachable": "error",
+                "noUnreachableSuper": "error",
+                "noUnsafeFinally": "error",
+                "noUnsafeOptionalChaining": "error",
+                "noUnusedLabels": "error",
+                "noUnusedPrivateClassMembers": "error",
+                "noUnusedVariables": "error",
+                "useIsNan": "error",
+                "useParseIntRadix": "error",
+                "useValidForDirection": "error",
+                "useValidTypeof": "error",
+                "useYield": "error"
+            },
+            "nursery": {
+                "noImpliedEval": "error",
+                "useArraySome": "error",
+                "useIncludes": "error",
+                "useStringStartsEndsWith": "error"
+            },
+            "security": {
+                "noGlobalEval": "error"
+            },
+            "style": {
+                "noExcessiveClassesPerFile": {
+                    "level": "error",
+                    "options": {
+                        "maxClasses": 1
+                    }
+                },
+                "noMagicNumbers": "error",
+                "noNestedTernary": "error",
+                "useBlockStatements": "error",
+                "useConsistentBuiltinInstantiation": "error",
+                "useConsistentObjectDefinitions": "error",
+                "useConst": "error",
+                "useDestructuring": "error",
+                "useErrorCause": "error",
+                "useNodejsImportProtocol": "error",
+                "useObjectSpread": "error",
+                "useSingleVarDeclarator": "error",
+                "useSpreadOverApply": "error",
+                "useTemplate": "error",
+                "useThrowNewError": "error",
+                "useThrowOnlyError": "error"
+            },
+            "suspicious": {
+                "noAlert": "error",
+                "noAssignInExpressions": "error",
+                "noAsyncPromiseExecutor": "error",
+                "noBitwiseOperators": "error",
+                "noCatchAssign": "error",
+                "noClassAssign": "error",
+                "noCompareNegZero": "error",
+                "noConstantBinaryExpressions": "error",
+                "noControlCharactersInRegex": "error",
+                "noConsole": "error",
+                "noDoubleEquals": "error",
+                "noDuplicateCase": "error",
+                "noDuplicateClassMembers": "error",
+                "noDuplicateElseIf": "error",
+                "noDuplicateObjectKeys": "error",
+                "noDuplicateParameters": "error",
+                "noEmptyBlockStatements": "error",
+                "noFallthroughSwitchClause": "error",
+                "noFunctionAssign": "error",
+                "noGlobalAssign": "error",
+                "noImportCycles": "error",
+                "noImportAssign": "error",
+                "noIrregularWhitespace": "error",
+                "noMisleadingCharacterClass": "error",
+                "noNestedPromises": "error",
+                "noPrototypeBuiltins": "error",
+                "noRedeclare": "error",
+                "noShadow": "error",
+                "noShadowRestrictedNames": "error",
+                "noSparseArray": "error",
+                "noTemplateCurlyInString": "error",
+                "noUnsafeNegation": "error",
+                "noUnusedExpressions": "off",
+                "noUselessRegexBackrefs": "error",
+                "noVar": "error",
+                "noWith": "error",
+                "useGetterReturn": "error",
+                "useGuardForIn": "error"
+            }
+        }
+    },
+    "overrides": [
+        // -----------------------------------------------------------
+        // LAYER 2 - TYPESCRIPT (**/*.{ts,tsx}): ports typescript/rules.js
+        // (typescript-eslint strict) plus native type-aware promise and
+        // switch checks. Biome infers types without tsc.
+        // -----------------------------------------------------------
+        {
+            "includes": ["**/*.{ts,tsx}"],
+            "linter": {
+                "rules": {
+                    "complexity": {
+                        "noBannedTypes": "error",
+                        "noUselessTypeConstraint": "error"
+                    },
+                    "correctness": {
+                        "noUndeclaredVariables": "off"
+                    },
+                    "nursery": {
+                        "noFloatingPromises": "error",
+                        "noMisusedPromises": "error",
+                        "useAwaitThenable": "error",
+                        "useExhaustiveSwitchCases": "error",
+                        "useNullishCoalescing": "error"
+                    },
+                    "style": {
+                        "noCommonJs": "error",
+                        "noInferrableTypes": "error",
+                        "noNamespace": "error",
+                        "noNonNullAssertion": "error",
+                        "useArrayLiterals": "error",
+                        "useAsConstAssertion": "error",
+                        "useConsistentArrayType": {
+                            "level": "error",
+                            "options": {
+                                "syntax": "shorthand"
+                            }
+                        },
+                        "useConsistentMemberAccessibility": {
+                            "level": "error",
+                            "options": {
+                                "accessibility": "explicit"
+                            }
+                        },
+                        "useConsistentTypeDefinitions": {
+                            "level": "error",
+                            "options": {
+                                "style": "interface"
+                            }
+                        },
+                        "useForOf": "error",
+                        "useImportType": "error",
+                        "useLiteralEnumMembers": "error",
+                        "useNamingConvention": "error",
+                        "useReadonlyClassProperties": "error",
+                        "useShorthandFunctionType": "error",
+                        "useUnifiedTypeSignatures": "error"
+                    },
+                    "suspicious": {
+                        "noConfusingVoidType": "error",
+                        "noDuplicateEnumValues": "error",
+                        "noEmptyBlockStatements": "warn",
+                        "noExplicitAny": "error",
+                        "noExtraNonNullAssertion": "error",
+                        "noMisleadingInstantiator": "error",
+                        "noNonNullAssertedOptionalChain": "error",
+                        "noTsIgnore": "error",
+                        "noUnnecessaryConditions": "error",
+                        "noUnsafeDeclarationMerging": "error",
+                        "useAdjacentOverloadSignatures": "error"
+                    }
+                }
+            }
+        },
+        // -----------------------------------------------------------
+        // LAYER 3 - REACT: ports react/rules.js (@eslint-react, jsx-a11y-x,
+        // react-hooks) with browser + service-worker globals.
+        // -----------------------------------------------------------
+        {
+            "includes": ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
+            "javascript": {
+                // Event handlers and web APIs from the `globals` npm package
+                // (browser + serviceworker environments), mirroring react/index.js.
+                // Only service-worker and cutting-edge handlers Biome does not know natively
+                // (verified empirically against 2.5.10; all standard browser globals are built in).
+                "globals": [
+                    "onabortpayment",
+                    "onactivate",
+                    "onbackgroundfetchabort",
+                    "onbackgroundfetchclick",
+                    "onbackgroundfetchfail",
+                    "onbackgroundfetchsuccess",
+                    "oncanmakepayment",
+                    "oncommand",
+                    "oncookiechange",
+                    "onpagereveal",
+                    "onpageswap",
+                    "onpaymentrequest",
+                    "onperiodicsync",
+                    "onscrollsnapchange",
+                    "onscrollsnapchanging"
+                ]
+            },
+            "linter": {
+                "rules": {
+                    "a11y": {
+                        "noAutofocus": "error",
+                        "noLabelWithoutControl": "error",
+                        "noStaticElementInteractions": "error",
+                        "useAltText": "error",
+                        "useAnchorContent": "error",
+                        "useButtonType": "warn",
+                        "useKeyWithClickEvents": "error",
+                        "useValidAriaRole": "error"
+                    },
+                    "complexity": {
+                        "noUselessFragments": "error"
+                    },
+                    "correctness": {
+                        "noChildrenProp": "warn",
+                        "noNestedComponentDefinitions": "error",
+                        "noVoidElementsWithChildren": "error",
+                        "useExhaustiveDependencies": "warn",
+                        "useHookAtTopLevel": "error",
+                        "useJsxKeyInIterable": "error"
+                    },
+                    "nursery": {
+                        "noJsxLeakedDollar": "warn",
+                        "noJsxNamespace": "error",
+                        "useIframeSandbox": "warn",
+                        "useReactAsyncServerFunction": "error"
+                    },
+                    "security": {
+                        "noBlankTarget": "error",
+                        "noDangerouslySetInnerHtml": "warn",
+                        "noDangerouslySetInnerHtmlWithChildren": "error",
+                        "noScriptUrl": "warn"
+                    },
+                    "style": {
+                        "useSelfClosingElements": "error"
+                    },
+                    "suspicious": {
+                        "noArrayIndexKey": "error",
+                        "noReactForwardRef": "warn"
+                    }
+                }
+            }
+        }
+    ]
+}
