@@ -1,0 +1,30 @@
+{
+    "name": "biome-config-shaunburdick",
+    "version": "1.0.0",
+    "description": "Shaun Burdick's Biome configuration - companion to eslint-config-shaunburdick",
+    "license": "UNLICENSED",
+    "type": "module",
+    "exports": {
+        ".": "./biome.json"
+    },
+    "files": [
+        "biome.json",
+        "README.md",
+        "CHANGELOG.md"
+    ],
+    "scripts": {
+        "lint": "biome check biome.json",
+        "lint:fix": "biome check --write biome.json",
+        "test": "npm run lint && node --test test/smoke.test.mjs",
+        "test:smoke": "node --test test/smoke.test.mjs"
+    },
+    "peerDependencies": {
+        "@biomejs/biome": ">=2.5.0 <3"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.5.10"
+    },
+    "engines": {
+        "node": ">=22"
+    }
+}

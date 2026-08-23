@@ -10,6 +10,12 @@ Install by copying `.editorconfig` to the root of your source directory
 
 Shaun's JS/TS [ESLint](https://eslint.org/) Rules can be found in the [eslint](./eslint) directory
 
+## Biome
+
+A [Biome](https://biomejs.dev/) companion configuration (linting + formatting + import
+organization) can be found in the [biome](./biome) directory. It ports the compatible subset of
+the ESLint rules; see its [README](./biome/README.md) for usage and known gaps.
+
 ## Versioning Policy
 
 -   Major (new linting errors)
