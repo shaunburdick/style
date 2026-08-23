@@ -48,7 +48,7 @@ jobs:
             - name: Perform CodeQL Analysis
               uses: github/codeql-action/analyze@1a818fd5f97ed0ee9a823421bd5b171add01227f  # v4.36.2
 
-    dependency-check:
+    dependency-check-eslint:
         name: ES Lint Dependency Audit
         runs-on: ubuntu-latest
 
@@ -68,7 +68,7 @@ jobs:
 
     publish-eslint:
         name: Publish ES Lint Config
-        needs: [test-eslint, security-scan, dependency-check]
+        needs: [test-eslint, security-scan, dependency-check-eslint]
         if: github.event_name == 'push' && github.ref_name == 'main'  # This condition limits the job to pushes to the main branch
         runs-on: ubuntu-latest
         permissions:
