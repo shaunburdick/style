@@ -5,10 +5,10 @@ on:
     push:
         branches: [main]  # Always scan merges to main (unfiltered) so code-scanning alert state stays current
     pull_request:
-        # Docs-only changes carry no executable surface; skip CodeQL for them.
-        # The unfiltered push-to-main trigger above guarantees full coverage regardless.
-        paths-ignore:
-            - "**/*.md"
+        # Deliberately unfiltered: "Security Scan" is a required status check for main,
+        # and trigger-level path filters suppress the check entirely on docs-only PRs,
+        # leaving it stuck at "Expected" and blocking merge forever. The ~60s scan runs
+        # on every PR so the required check always reports a real conclusion.
 
 # Workflow-wide least privilege: read-only unless a job explicitly elevates.
 permissions:

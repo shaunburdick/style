@@ -53,6 +53,25 @@ jobs:
               run: npm audit --audit-level=high
               working-directory: ./eslint
 
+    # Facade job for branch protection: one stable required-check name that
+    # survives matrix/node-version churn. `if: always()` is mandatory — with the
+    # default condition a failed upstream would SKIP this job, and GitHub treats
+    # skipped checks as satisfying requirements (red CI, mergeable PR).
+    ci-eslint:
+        name: ES Lint CI
+        needs: [test-eslint, dependency-check-eslint]
+        if: always()
+        runs-on: ubuntu-latest
+        steps:
+            - name: Verify upstream jobs succeeded
+              run: |
+                  for result in ${{ join(needs.*.result, ' ') }}; do
+                      if [ "$result" != "success" ]; then
+                          echo "::error::Upstream job finished with '$result'"
+                          exit 1
+                      fi
+                  done
+
     publish-eslint:
         name: Publish ES Lint Config
         needs: [test-eslint, dependency-check-eslint]  # Repo-wide CodeQL lives in security.yml (cross-workflow needs: is not possible)

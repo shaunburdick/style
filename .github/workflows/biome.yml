@@ -53,6 +53,25 @@ jobs:
               run: npm audit --audit-level=high
               working-directory: ./biome
 
+    # Facade job for branch protection: one stable required-check name that
+    # survives matrix/node-version churn. `if: always()` is mandatory — with the
+    # default condition a failed upstream would SKIP this job, and GitHub treats
+    # skipped checks as satisfying requirements (red CI, mergeable PR).
+    ci-biome:
+        name: Biome CI
+        needs: [test-biome, dependency-check-biome]
+        if: always()
+        runs-on: ubuntu-latest
+        steps:
+            - name: Verify upstream jobs succeeded
+              run: |
+                  for result in ${{ join(needs.*.result, ' ') }}; do
+                      if [ "$result" != "success" ]; then
+                          echo "::error::Upstream job finished with '$result'"
+                          exit 1
+                      fi
+                  done
+
     publish-biome:
         name: Publish Biome Config
         needs: [test-biome, dependency-check-biome]
