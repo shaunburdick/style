@@ -48,7 +48,7 @@ rule-by-rule analysis.
 | --- | --- | --- |
 | Base JS | all files | eqeqeq, no-var, prefer-const, complexity budgets (max 5 params, cognitive 15), no magic numbers, no console/alert/eval, import cycle detection |
 | TypeScript | `**/*.{ts,tsx}` | strict TS rules ported from typescript-eslint strict: no-floating-promises, no-misused-promises, no-unnecessary-conditions, exhaustive switches, explicit member accessibility, interface definitions |
-| React | `**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}` | full a11y suite, hooks deps (warn), button types, iframe sandbox, array index keys, plus browser/service-worker globals |
+| React | `**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}` | full a11y suite, hooks deps (warn), button types, iframe sandbox, array index keys, plus the 15 service-worker globals Biome lacks natively |
 
 Formatting is delegated to Biome's formatter (`indentStyle: space`, `indentWidth: 4`,
 `lineWidth: 120`, single quotes); import ordering runs via the `organizeImports` assist action.

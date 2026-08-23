@@ -263,6 +263,14 @@ Additional constraints discovered:
 - `vcs.useIgnoreFile: true` hard-fails when no `.gitignore` exists next to the config, so the
   shipped config leaves VCS integration to consumers.
 
+## Addendum: Globals audit (2026-08-23)
+
+The React override originally carried all 142 browser+serviceworker globals from `react/index.js`.
+Probing each identifier bare against a minimal config showed Biome 2.5.10 natively recognizes 127
+of them; only 15 service-worker/new-platform handlers are unknown and kept:
+`onabortpayment, onactivate, onbackgroundfetch*, oncanmakepayment, oncommand, oncookiechange,
+onpagereveal, onpageswap, onpaymentrequest, onperiodicsync, onscrollsnapchange, onscrollsnapchanging`.
+
 If a future Biome version fixes transitive extends resolution for published packages, the layers
 can be split into `configs/{javascript,typescript,react}.json` behind a thin entry point; the
 extraction was validated locally (all smoke tests passed) and reverted only for consumer-path

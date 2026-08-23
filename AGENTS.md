@@ -139,7 +139,7 @@ compatible subset of the ESLint rules to Biome 2.5+:
 
 - **Layers:** base JS rules, `**/*.{ts,tsx}` override (typescript-eslint strict ports incl.
   native type-aware `noFloatingPromises`/`noMisusedPromises`), React override (full a11y suite +
-  browser/service-worker globals)
+  service-worker globals Biome lacks natively)
 - **Style:** formatter owns formatting (4-space indent, 120-char lines, single quotes);
   `organizeImports` assist replaces `import-x/order`
 - **Usage:** consumers add `"extends": ["biome-config-shaunburdick"]` to their own `biome.json`
