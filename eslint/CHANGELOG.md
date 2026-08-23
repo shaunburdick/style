@@ -1,5 +1,10 @@
 CHANGELOG
 =========
+## 9.0.1 (2026-08-23)
+
+### Changes
+* **SECURITY:** Refreshed `package-lock.json` via `npm audit fix` — clears newly published advisories (incl. `brace-expansion` high severity GHSA-3jxr-9vmj-r5cp, deduplicated to 5.0.9; `@babel/core` low). No rule changes; lockfile-only release so the patched dependency tree ships to npm
+
 ## 9.0.0 (2026-06-20)
 
 ### Requirements Changes
