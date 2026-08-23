@@ -1,0 +1,29 @@
+---
+name: Security
+
+on:
+    push:
+        branches: [main]  # Always scan merges to main (unfiltered) so code-scanning alert state stays current
+    pull_request:
+        # Docs-only changes carry no executable surface; skip CodeQL for them.
+        # The unfiltered push-to-main trigger above guarantees full coverage regardless.
+        paths-ignore:
+            - "**/*.md"
+
+jobs:
+    security-scan:
+        name: Security Scan
+        runs-on: ubuntu-latest
+        permissions:
+            security-events: write
+            contents: read
+            actions: read
+
+        steps:
+            - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0  # v6.0.3
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@1a818fd5f97ed0ee9a823421bd5b171add01227f  # v4.36.2
+              with:
+                  languages: javascript-typescript
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@1a818fd5f97ed0ee9a823421bd5b171add01227f  # v4.36.2

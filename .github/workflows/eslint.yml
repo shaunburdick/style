@@ -31,23 +31,6 @@ jobs:
             - run: npm test
               working-directory: ./eslint
 
-    security-scan:
-        name: Security Scan
-        runs-on: ubuntu-latest
-        permissions:
-            security-events: write
-            contents: read
-            actions: read
-
-        steps:
-            - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0  # v6.0.3
-            - name: Initialize CodeQL
-              uses: github/codeql-action/init@1a818fd5f97ed0ee9a823421bd5b171add01227f  # v4.36.2
-              with:
-                  languages: javascript-typescript
-            - name: Perform CodeQL Analysis
-              uses: github/codeql-action/analyze@1a818fd5f97ed0ee9a823421bd5b171add01227f  # v4.36.2
-
     dependency-check-eslint:
         name: ES Lint Dependency Audit
         runs-on: ubuntu-latest
@@ -68,7 +51,7 @@ jobs:
 
     publish-eslint:
         name: Publish ES Lint Config
-        needs: [test-eslint, security-scan, dependency-check-eslint]
+        needs: [test-eslint, dependency-check-eslint]  # Repo-wide CodeQL lives in security.yml (cross-workflow needs: is not possible)
         if: github.event_name == 'push' && github.ref_name == 'main'  # This condition limits the job to pushes to the main branch
         runs-on: ubuntu-latest
         permissions:
