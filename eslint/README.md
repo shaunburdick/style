@@ -75,6 +75,12 @@ Then you can add `npm run lint` to your `test` script command to run it before a
 
 ## Publish steps
 
+Publishing is automated: once a version bump lands on `main`, CI compares `package.json` against
+npm and publishes with provenance if the version is new, then creates a `vX.Y.Z` GitHub
+release.
+
 -   Checkout main (`git checkout main`)
--   Pull master (`git pull`)
+-   Pull main (`git pull`)
 -   Examine `CHANGELOG.md` to determine next version (X.Y.Z)
+-   Bump `version` in `package.json` and merge to `main`
+-   CI publishes the new version and cuts the release

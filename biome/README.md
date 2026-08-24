@@ -6,6 +6,8 @@ Shaun Burdick's [Biome](https://biomejs.dev) configuration — the fast, Rust-ba
 One `biome.json` provides linting, formatting, and import organization tuned to the same house
 style: 4-space indent, 120-char lines, single quotes, semicolons.
 
+Package: [biome-config-shaunburdick](https://www.npmjs.com/package/biome-config-shaunburdick)
+
 ## Requirements
 
 - Node.js >= 22
@@ -33,6 +35,17 @@ Then run:
 npx biome check .        # lint + format + organize imports
 npx biome check --write . # autofix everything fixable
 ```
+
+## Package Setup
+
+To setup linting automatically, we recommend adding these script entries to your `package.json`:
+
+```
+"lint": "biome check .",
+"lint:fix": "npm run lint -- --write",
+```
+
+Then you can add `npm run lint` to your `test` script command to run it before any tests
 
 ### Recommended pairing
 
@@ -77,7 +90,33 @@ npm test          # validates biome.json + runs smoke tests against fixtures
 Smoke tests live in [`test/`](test/) and assert that representative violations actually fire the
 expected Biome rules, while a compliant fixture passes clean.
 
-## Versioning
+## Versioning Policy
 
-Follows the repo policy: major = stricter enforcement or new rules, minor = relaxed/removed rules,
-patch = docs and tooling fixes. See [CHANGELOG.md](CHANGELOG.md).
+-   Major (new linting errors)
+    -   A new rule is added
+    -   An existing rule is made more strict
+    -   A new plugin is added to an existing config
+    -   A existing plugin is updated to be more strict
+-   Minor (same or fewer linting errors)
+    -   A rule is removed
+    -   An existing rules is made less strict
+    -   Adding a new configuration
+    -   A existing plugin is updated to be less strict
+-   Patch (non-user-facing changes)
+    -   Changes to documentation
+    -   Fixes for build or publication
+    -   Modifying tests
+
+See [CHANGELOG.md](CHANGELOG.md) for the version history.
+
+## Publish steps
+
+Publishing is automated: once a version bump lands on `main`, CI compares `package.json` against
+npm and publishes with provenance if the version is new, then creates a `biome-vX.Y.Z` GitHub
+release.
+
+-   Checkout main (`git checkout main`)
+-   Pull main (`git pull`)
+-   Examine `CHANGELOG.md` to determine next version (X.Y.Z)
+-   Bump `version` in `package.json` and merge to `main`
+-   CI publishes the new version and cuts the release
