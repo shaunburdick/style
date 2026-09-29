@@ -16,6 +16,13 @@ A [Biome](https://biomejs.dev/) companion configuration (linting + formatting + 
 organization) can be found in the [biome](./biome) directory. It ports the compatible subset of
 the ESLint rules; see its [README](./biome/README.md) for usage and known gaps.
 
+## Agent Skill
+
+An [agent skill](./.agents/skills/eslint-config-shaunburdick/SKILL.md) documents how to install
+and set up both configs, and maps every rule group to what it protects against — so an agent
+hitting an unfamiliar lint error can tell what went wrong instead of reaching for a suppression.
+Rule-group details are in its [references](./.agents/skills/eslint-config-shaunburdick/references/).
+
 ## Versioning Policy
 
 -   Major (new linting errors)
