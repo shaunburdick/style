@@ -63,7 +63,7 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
 ### 1. Base JavaScript/ES6 Config (`es6/`)
 - **Entry Point:** `es6/index.js`
 - **File Pattern:** All JavaScript files
-- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules)** + **llm-core recommended (45 rules)**
+- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 310 active)** + **llm-core recommended (44 rules, 42-43 active per extension)**
 - **Layer order matters:** upstream recommended configs are spread *before* the `shaunburdick/js` rules block, so explicit rules in `rules.js` win any conflict
 - **Deliberate `off` entries:** 5 unicorn rules and 2 llm-core rules are disabled because they contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`). Each carries a rationale comment — see the skill's `references/rule-groups.md`
 - **Key Plugins:**
@@ -76,7 +76,8 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
   - `eslint-plugin-jsdoc` - JSDoc documentation standards
   - `eslint-plugin-llm-core` - Agentic programming anti-pattern detection (file length, magic numbers, early returns, etc.)
 - **Custom Rules:** `eslint-config-shaunburdick` ships a `shaunburdick` plugin namespace with inline-defined rules in `es6/custom-rules.js`:
-  - `shaunburdick/max-inline-disables` — Warns when a file exceeds 2 inline `eslint-disable` comments, enforcing a graduated disable flow (single-line → block-level → config override)
+  - `shaunburdick/max-inline-disables` — Warns when a file exceeds 2 inline `eslint-disable` comments, enforcing a graduated disable flow (single-line → block-level → config override). Enabled with `skipTestFiles: true`, and bypassed for `**/*.config.*` files by a separately scoped override block — a rule left in an unscoped override block silently dies
+- **Widened llm-core globs:** upstream scopes `llm-core.configs.recommended` to `.js`/`.mjs`/`.cjs`/`.ts`/`.tsx` only, which would strand `.jsx`/`.mjsx`/`.cjsx`/`.mts`/`.cts` despite the React layer linting them. `es6/index.js` re-maps each block's `files` (detecting which is the general set by the presence of a `.js` glob) so every extension the config ships for gets the guardrails
 - **Global Linter Options:**
   - `reportUnusedDisableDirectives: 'error'` — catches stale `eslint-disable` comments (replaces the deprecated `@eslint-community/eslint-comments/no-unused-disable` rule)
 

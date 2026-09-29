@@ -229,7 +229,7 @@ export default Object.freeze({
     // enforce the graduated disable flow: warn when a file exceeds 2 inline
     // eslint-disable comments, suggesting a block-level pair instead,
     // defined in ./custom-rules.js
-    'shaunburdick/max-inline-disables': ['warn', { max: 2 }],
+    'shaunburdick/max-inline-disables': ['warn', { max: 2, skipTestFiles: true }],
 
     // require or disallow semicolons instead of ASI, https://eslint.style/rules/default/semi
     '@stylistic/semi': ['error'],

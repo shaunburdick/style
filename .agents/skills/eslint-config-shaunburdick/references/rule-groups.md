@@ -4,15 +4,18 @@ Every rule ID in ESLint output is namespaced. The prefix identifies the group,
 which determines both what the rule protects against and how you should respond
 to a violation.
 
-Roughly 700 rules are active on a TypeScript file. The groups below are ordered
-by how often they fire in practice.
+Roughly 650–680 rules are active, depending on which layers you spread and
+which file extension is being linted. The groups below are ordered by how often
+they fire in practice.
 
 ---
 
 ## `unicorn/` — Modern JavaScript idioms
 
-The largest group (361 rules, from `unicorn.configs.recommended`). These
-enforce current JS conventions and reject deprecated or error-prone patterns.
+The largest group — **310 active rules**. `unicorn.configs.recommended` contains
+361; 46 are off upstream and 5 more are turned off by `es6/rules.js` (see
+"Disabled from recommended, on purpose" below). They enforce current JS
+conventions and reject deprecated or error-prone patterns.
 **Most have autofixes** — run `npx eslint . --fix` and review the diff.
 
 ### High-frequency findings
@@ -55,6 +58,12 @@ produce consistently: over-engineering, swallowed errors, unsafe types, and
 type assertions that hide real problems. Backed by research on machine
 signatures of defects (Columbia DAPLab, arXiv 2605.02741, SlopCodeBench).
 
+42 rules are active on `.js`/`.jsx` files, 43 on `.ts`/`.tsx` (the extra one is
+`explicit-export-types`). Upstream scopes these rules to `.js`, `.mjs`, `.cjs`,
+`.ts`, and `.tsx` only — this config widens the globs to also cover `.jsx`,
+`.mjsx`, `.cjsx`, `.mts`, and `.cts`, which would otherwise receive 9 of the 44
+instead of 42.
+
 ### Error handling
 
 | Rule | What it wants |
@@ -93,11 +102,23 @@ signatures of defects (Columbia DAPLab, arXiv 2605.02741, SlopCodeBench).
 
 ### Complexity limits
 
-From `llm-core.configs.recommended`: `max-complexity`, `max-function-length`,
-`max-nesting-depth`, `max-params` (5), and `max-file-length`. Our config
-overrides `max-file-length` to 500 for config files, and
-`no-magic-numbers` ignores `[0, 1, 2, 3, 4, 5, 10, 12, 15, 120]` so common
-values like a `parseInt` radix do not need named constants.
+Shipped by `llm-core.configs.recommended`, with two values overridden by
+`es6/index.js`. These are the *resolved* settings, not the upstream defaults:
+
+| Rule | Value |
+| --- | --- |
+| `llm-core/max-params` | `max: 2`, `maxConstructor: 5` |
+| `llm-core/max-complexity` | `max: 10`, `skipTestFiles: true` |
+| `llm-core/max-function-length` | `max: 50`, `skipBlankLines: true`, `skipTestFiles: true` |
+| `llm-core/max-nesting-depth` | `max: 3` |
+| `llm-core/max-file-length` | **`max: 500`** (overridden), `skipBlankLines: true`, `skipTestFiles: true` |
+| `llm-core/no-magic-numbers` | **ignores** `[0, 1, 2, 3, 4, 5, 10, 12, 15, 120]` and object properties (overridden) |
+
+`max-params` is the strictest of these and the one most likely to surprise you —
+**two positional parameters, five for a constructor.** The `max-file-length` and
+`no-magic-numbers` overrides apply to **every** file, not just config files; the
+magic-number list is there so values like a `parseInt` radix do not each need a
+named constant.
 
 ### Disabled, on purpose
 
@@ -221,9 +242,11 @@ should not be nested.
 
 Two rules are active: `check-alignment` (asterisk alignment) and `tag-lines`
 (`'any'`, `startLines: 1` — a blank line before the tag block).
-`check-indentation` is off. The remaining 75 rules in the plugin are not
-enabled, including the type-aware additions shipped in v65
+`check-indentation` is off. The plugin ships 78 rules; the other 76 are not
+enabled, including the type-aware additions that arrived in v65
 (`no-unnecessary-type-assertion`, `normalize-see-links`, `ts-ban-ts-comment`).
+They are *available* upstream but not switched on here — do not assume a jsdoc
+rule you have heard of is active.
 
 ---
 
@@ -236,6 +259,7 @@ is what makes suppressions reviewable.
 
 ## `shaunburdick/` — This config's own rules
 
-`shaunburdick/max-inline-disables` (`warn`, `max: 2`) — see the graduated
-disable flow in SKILL.md. Defined in `es6/custom-rules.js`, tested alongside its
-source in `es6/custom-rules.test.js`.
+`max-inline-disables` (`warn`, `{ max: 2, skipTestFiles: true }`) — see the
+graduated disable flow in SKILL.md. It is off for `**/*.config.*` files, which
+are inherently exemption-heavy. Defined in `es6/custom-rules.js`, tested
+alongside its source in `es6/custom-rules.test.js`.

@@ -9,9 +9,10 @@ A strict ESLint flat config for JavaScript, TypeScript, and React, plus a
 [Biome](https://biomejs.dev/) companion that ports the compatible subset.
 
 The config is opinionated and deliberately hostile to common AI-generated code
-patterns. Roughly 700 rules are active on a TypeScript file. When lint fails,
-the cause is almost always one of a few recurring groups — read
-`references/rule-groups.md` before deciding how to respond.
+patterns. Roughly 650–680 rules are active depending on which layers you spread
+and which file extension is being linted. When lint fails, the cause is almost
+always one of a few recurring groups — read `references/rule-groups.md` before
+deciding how to respond.
 
 ## Install
 
@@ -37,8 +38,8 @@ npm install --save-dev @biomejs/biome@^2.5.0 biome-config-shaunburdick
 
 ## Set up
 
-Create `eslint.config.mjs` and spread only the layers you need. Order does not
-matter — the layers are self-contained and each declares its own `files` scope.
+Create `eslint.config.mjs` and spread only the layers you need. **Spread them in
+`js` → `ts` → `react` order** — later layers win, and the order is load-bearing:
 
 ```js
 import shaunburdick from 'eslint-config-shaunburdick';
@@ -49,6 +50,13 @@ export default [
     ...shaunburdick.config.react,   // React + a11y
 ];
 ```
+
+**Why the order matters:** the `ts` layer turns off the core `no-shadow`,
+`no-use-before-define`, and `no-return-await` because their TypeScript-aware
+equivalents cover the same ground more accurately. Spreading `js` after `ts`
+re-enables all three alongside the TS versions, so a single shadowed identifier
+gets reported twice. `js` first, always. `react` is order-independent relative
+to the other two — it owns its own file scope and enables no core rules.
 
 JavaScript-only project:
 
@@ -68,12 +76,12 @@ Then wire up the scripts so lint runs as part of your test cycle:
 }
 ```
 
-**Known gap:** the `ts` layer targets `**/*.ts` only, so `.tsx` files receive
-neither the type-aware `@typescript-eslint` rules nor project service type
-information. `llm-core`'s type-aware rules still work on `.tsx`; the
-`@typescript-eslint` ones (including `no-floating-promises` and
-`no-misused-promises`) silently do not. Add `...shaunburdick.config.ts` after
-narrowing its `files` yourself if you need that coverage.
+**Known gap:** the `ts` layer targets `**/*.ts` only, so `.tsx`, `.mts`, and
+`.cts` files receive neither the type-aware `@typescript-eslint` rules nor
+project service type information. `llm-core`'s type-aware rules still work on
+those extensions; the `@typescript-eslint` ones (including `no-floating-promises`
+and `no-misused-promises`) silently do not. Add `...shaunburdick.config.ts`
+after narrowing its `files` yourself if you need that coverage.
 
 ## When lint fails
 
@@ -116,7 +124,7 @@ style, and the fix is the autofix.
 `reportUnusedDisableDirectives: 'error'` means a stale `eslint-disable` is
 itself a lint error, so suppressions cannot silently rot.
 
-The `shaunburdick/max-inline-disables` rule (default `max: 2`) enforces an
+The `shaunburdick/max-inline-disables` rule (`warn`, `max: 2`) enforces an
 escalation ladder:
 
 1. **One or two inline disables in a file** — fine. Use
@@ -134,6 +142,26 @@ escalation ladder:
    approach that scales.
 
 A blanket `eslint-disable` at the top of a file is never the answer.
+
+**Two exemptions are built in**, both deliberate:
+
+- `**/*.config.{js,mjs,cjs,ts,mts,cts}` — build-tool and ESLint config files
+  are inherently exemption-heavy (one disable per rule they relax), so the cap
+  does not apply to them.
+- Test files (`*.test.*`, `*.spec.*`, `__tests__/`, `test/`, `tests/`, `spec/`)
+  are skipped via the rule's `skipTestFiles` option, because they exist to
+  construct invalid code.
+
+To turn the cap off entirely — or change the threshold — override it in your own
+`eslint.config.mjs`:
+
+```js
+{
+    rules: {
+        'shaunburdick/max-inline-disables': ['warn', { max: 5, skipTestFiles: true }],
+    },
+}
+```
 
 ## Upgrading across a major version
 
