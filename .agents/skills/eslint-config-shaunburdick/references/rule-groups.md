@@ -12,8 +12,8 @@ they fire in practice.
 
 ## `unicorn/` — Modern JavaScript idioms
 
-The largest group — **310 active rules**. `unicorn.configs.recommended` contains
-361; 46 are off upstream and 5 more are turned off by this config (see
+The largest group — **309 active rules**. `unicorn.configs.recommended` contains
+361; 46 are off upstream and 6 more are turned off by this config (see
 "Disabled from recommended, on purpose" below). They enforce current JS
 conventions and reject deprecated or error-prone patterns.
 **Most have autofixes** — run `npx eslint . --fix` and review the diff.
@@ -48,6 +48,16 @@ help. Each one has a stated reason, below.
   the 120-char limit.
 - `prefer-number-coercion` — rewrites `parseInt(value, 10)` to
   `Math.trunc(Number(value))`, which is a semantic change, not style.
+- `no-instanceof-builtins` — its autofix rewrites `x instanceof Function` to
+  `typeof x === 'function'`, which narrows a naked type parameter to
+  `T & Function` (a type with no call signatures) and turns compiling
+  TypeScript into TS2349 while `eslint --fix && eslint .` still exits 0. A
+  fixer that can break compilation is worse than the style it enforces.
+
+Also *configured* rather than left at its default: `no-non-function-verb-prefix`
+ships `ignore: ['.*(?:Spy|Mock)$']`, so jest spies — `const addEventListenerSpy
+= jest.spyOn(...)`, whose `MockInstance` type has no call signature — are not
+flagged for starting with a verb.
 
 ---
 
@@ -87,6 +97,23 @@ instead of 42.
 | `llm-core/no-unsafe-array-access` | Guard or destructure before `arr[0]` |
 | `llm-core/explicit-export-types` | Exported symbols carry explicit types |
 
+**`JSX.Element` forms on `.tsx` (React 19):** a bare `JSX.Element` annotation
+does not resolve — `@types/react` 19 nests `namespace JSX` inside `declare
+namespace React` and declares no global `JSX`. Verified against 19.3.0, the
+forms that compile:
+
+```tsx
+import type { JSX } from 'react';
+export function View(): JSX.Element { /* cleanest; not discoverable */ }
+
+export function View(): React.JSX.Element { /* works with NO import — UMD global */ }
+
+import type React from 'react';
+export function View(): React.JSX.Element { /* explicit type-only import */ }
+```
+
+Prefer the `import type { JSX } from 'react'` form.
+
 ### Code quality
 
 | Rule | What it wants |
@@ -120,6 +147,18 @@ this config. These are the *resolved* settings, not the upstream defaults:
 magic-number list is there so values like a `parseInt` radix do not each need a
 named constant.
 
+**Mandated callback signatures** (webpack's `generate: (seed, files,
+entrypoints) => ...`, plugin hooks with a fixed arity) trip `max-params` — and
+moving to rest parameters then trips `no-unsafe-array-access`, which distrusts
+the resulting array. The form both accept is rest parameters plus
+destructuring defaults, which satisfy the guard without arity checks the caller
+does not allow:
+
+```js
+generate: (...args) => {
+    const [seed = {}, files = [], entrypoints = { main: [] }] = args;
+```
+
 ### Disabled, on purpose
 
 - `no-inline-disable` — redundant with the graduated disable flow, which
@@ -133,8 +172,11 @@ named constant.
 
 ## `@typescript-eslint/` — Type-aware correctness
 
-Only active on `**/*.ts` (see the `.tsx` gap in SKILL.md). These need real type
-information, so they catch what syntax alone cannot.
+Active on `**/*.{ts,tsx}`. These need real type information, so they catch
+what syntax alone cannot. `.tsx` gets two React-idiom relaxations — PascalCase
+component names/imports and nullable strings/numbers in JSX conditionals —
+while nullable booleans and objects stay strict. `.mts`/`.cts` remain outside
+the scope (see SKILL.md).
 
 | Rule | What it wants |
 | --- | --- |
@@ -142,14 +184,14 @@ information, so they catch what syntax alone cannot.
 | `no-misused-promises` | Do not pass an async function where a void one is expected |
 | `await-thenable` | Do not `await` a non-Promise |
 | `no-unnecessary-condition` | Remove always-true/false checks the types make redundant |
-| `strict-boolean-expressions` | No truthy checks on strings or numbers — be explicit |
+| `strict-boolean-expressions` | No truthy checks on strings or numbers — be explicit (`.tsx`: nullable strings/numbers allowed for JSX conditionals) |
 | `restrict-template-expressions` | Template literals take only safe types |
 | `no-non-null-assertion` | `!` is banned; handle the null case |
 | `unbound-method` | Bind methods before passing them as references (`ignoreStatic`) |
 | `switch-exhaustiveness-check` | Handle every enum member or add a default |
 | `member-ordering` | Fields, then constructors, then getters/setters, then methods |
 | `explicit-member-accessibility` | Every class member declares `public`/`private` |
-| `naming-convention` | camelCase values, PascalCase types and enum members |
+| `naming-convention` | camelCase values, PascalCase types and enum members (`.tsx`: PascalCase components and `import React` too) |
 | `consistent-type-definitions` | `interface` over `type` for object shapes |
 | `prefer-readonly` | Mark never-reassigned properties `readonly` |
 
@@ -188,6 +230,29 @@ Also active: all of `react-hooks` `recommended-latest` and
 `react-you-might-not-need-an-effect` `recommended`. The latter flags `useEffect`
 used for derived state or event handling that belongs in render or a handler.
 
+**Joining an array of JSX cells with spaces** is banned by three rules at once —
+`unicorn/no-array-reduce` (no `reduce`), `@eslint-react/no-array-index-key` (no
+`.map` with the index), and `@eslint-react/jsx-no-useless-fragment` (no
+`<>{cell}</>` seed). The one implementation that satisfies all three
+accumulates into a single element with a loop:
+
+```tsx
+let joined: React.ReactNode = null;
+for (const cell of cells) {
+    joined = joined === null
+        ? cell                                // bare — avoids useless-fragment
+        : <>{joined}{' '}{cell}</>;           // three children — also fine
+}
+return joined;
+```
+
+**Disabled:** `web-api-no-leaked-event-listener` — its pairing logic only
+matches member-expression callees, so a bare `addEventListener(...)` in
+`useEffect` can never pair with its cleanup and correct code reports
+unconditionally; the bare form is exactly what
+`unicorn/no-unnecessary-global-this` demands, making the two mutually
+unsatisfiable.
+
 ---
 
 ## `sonarjs/` — Complexity and duplication
@@ -195,12 +260,15 @@ used for derived state or event handling that belongs in render or a handler.
 | Rule | Threshold |
 | --- | --- |
 | `sonarjs/cognitive-complexity` | 15 |
-| `sonarjs/no-duplicate-string` | no repeated string literals |
+| `sonarjs/no-duplicate-string` | no repeated string literals (off in test files) |
 | `sonarjs/no-duplicated-branches` | no identical branches in an if/else chain |
 | `sonarjs/no-identical-functions` | no copy-pasted function bodies |
 
 The duplicate-string rule is stricter than it sounds — extract a named constant
-rather than repeating a literal.
+rather than repeating a literal. It is **off in test files** (`*.test.*`,
+`*.spec.*`, `__tests__/`, `test/`, `tests/`, `spec/`, mirroring the custom
+rules' `TEST_FILE_PATTERNS`): specs legitimately repeat a selector at each
+assertion site, where extraction only adds indirection.
 
 ---
 

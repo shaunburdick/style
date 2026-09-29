@@ -124,5 +124,27 @@ export default [
         rules: {
             'shaunburdick/max-inline-disables': 'off',
         }
+    },
+    // sonarjs/no-duplicate-string counts every literal occurrence, but test
+    // files legitimately repeat a selector or query at each assertion site —
+    // extracting it adds indirection with no behavior to keep in sync. The
+    // upstream rule offers only `threshold`/`ignoreStrings` (no `ignoreTests`),
+    // so the exemption is scoped here. Globs mirror TEST_FILE_PATTERNS in
+    // custom-rules.js so both families agree on what counts as a test.
+    // See issue #13.
+    {
+        name: 'shaunburdick/js-test-files',
+        files: [
+            '**/__tests__/**',
+            '**/test/**',
+            '**/tests/**',
+            '**/spec/**',
+            '**/specs/**',
+            '**/*.test.{js,mjs,cjs,jsx,mjsx,cjsx,ts,tsx,mts,cts}',
+            '**/*.spec.{js,mjs,cjs,jsx,mjsx,cjsx,ts,tsx,mts,cts}',
+        ],
+        rules: {
+            'sonarjs/no-duplicate-string': 'off',
+        }
     }
 ];

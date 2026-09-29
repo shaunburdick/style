@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 10.0.0
+**Current Version:** 11.0.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -66,9 +66,9 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
 ### 1. Base JavaScript/ES6 Config (`es6/`)
 - **Entry Point:** `es6/index.js`
 - **File Pattern:** All JavaScript files
-- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 310 active)** + **llm-core recommended (44 rules, 42-43 active per extension)**
+- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 309 active)** + **llm-core recommended (44 rules, 42-43 active per extension)**
 - **Layer order matters:** upstream recommended configs are spread *before* the `shaunburdick/js` rules block, so explicit rules in `rules.js` win any conflict
-- **Deliberate `off` entries:** 5 unicorn rules and 2 llm-core rules are disabled because they contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`). Each carries a rationale comment — see the skill's `references/rule-groups.md`
+- **Deliberate `off` entries:** 6 unicorn rules and 2 llm-core rules are disabled because they contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`, TypeScript-breaking autofixes). Each carries a rationale comment — see the skill's `references/rule-groups.md`
 - **Key Plugins:**
   - `@stylistic/eslint-plugin` - Code formatting and style
   - `eslint-plugin-security` - Security vulnerability detection
@@ -86,7 +86,7 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
 
 ### 2. TypeScript Config (`typescript/`)
 - **Entry Point:** `typescript/index.js`
-- **File Pattern:** `**/*.ts`
+- **File Pattern:** `**/*.{ts,tsx}` (`.tsx` receives React-idiom relaxations — PascalCase component names/imports, strings and numbers in JSX conditionals; `.mts`/`.cts` are not in scope)
 - **Base Config:** `typescript-eslint` strict + stylistic
 - **Key Features:**
   - Strict type checking
@@ -138,6 +138,7 @@ import './';                      // index
 
 See [`eslint/CHANGELOG.md`](eslint/CHANGELOG.md) for the full version history and breaking changes. Major milestones:
 
+- **v11.0.0** — TS layer covers `.tsx` (React-idiom relaxations included); dropped `unicorn/no-instanceof-builtins` and `@eslint-react/web-api-no-leaked-event-listener`; test-file and spy exemptions; lint-script + `tsc` pairing docs
 - **v10.0.0** — Adopted `unicorn` and `llm-core` recommended configs (~360 new rules); dependency refresh across majors
 - **v9.0.0** — Graduated disable flow, `reportUnusedDisableDirectives`, custom `shaunburdick/max-inline-disables` rule
 - **v8.0.0** — Agentic programming guardrails, `eslint-plugin-llm-core` integration, React DOM/web API security rules
@@ -255,7 +256,7 @@ When working on this repository:
 8. **Security Priority:** Security rules are non-negotiable requirements
 9. **Graduated Disable Flow:** Inline `eslint-disable` comments follow a graduated flow — 1-2 per file is fine, 3+ should use block-level pairs, and 3+ files with the same need should use a config override. The `shaunburdick/max-inline-disables` rule enforces the first threshold
 10. **Custom Rules:** The `shaunburdick` plugin namespace (`es6/custom-rules.js`) contains rules defined inline for this project. Rule definitions live in `custom-rules.js`, configurations in `rules.js`, wiring in `index.js`, and tests in `custom-rules.test.js`
-11. **Agent Skills:** `.agents/skills/eslint-config-shaunburdick/` documents install, setup, and rule-group triage for AI agents; `.agents/skills/biome-config-shaunburdick/` covers the Biome package's own setup, the nursery-rule stability risk, and `biome migrate` pinning. They are separate skills deliberately — skill selection keys off the frontmatter `name`, so a skill named `eslint-config-shaunburdick` will not fire for someone in a Biome-only project. Each opens with a "when to use which" table pointing at the other. Update them when rules are added, removed, or disabled; a new rule group or a change to the graduated disable flow makes the ESLint skill's guidance wrong
+11. **Agent Skills:** `.agents/skills/eslint-config-shaunburdick/` documents install, setup, and rule-group triage for AI agents; `.agents/skills/biome-config-shaunburdick/` covers the Biome package's own setup, the nursery-rule stability risk, and `biome migrate` pinning. They are separate skills deliberately — skill selection keys off the frontmatter `name`, so a skill named `eslint-config-shaunburdick` will not fire for someone in a Biome-only project. Each opens with a "when to use which" table pointing at the other. Update them when rules are added, removed, or disabled; a new rule group or a change to the graduated disable flow makes the ESLint skill's guidance wrong. Both SKILL.md files carry a `metadata.version` in frontmatter that tracks the package version they document — bump it whenever the skill changes
 12. **Shared versioning policy:** the policy in AGENTS.md is the single source of truth. `README.md`, `eslint/README.md`, and `biome/README.md` each restate it in expanded form — the three blocks are intentionally byte-identical, so a change to one must be made to all three
 13. **TypeScript is pinned at 6.x on purpose:** TypeScript 7.0 ships no programmatic API, and `typescript-eslint` requires one for `projectService`-based type-aware linting. Do not bump to 7.x until `typescript-eslint` supports it
 

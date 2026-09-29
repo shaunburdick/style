@@ -104,5 +104,14 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+  // `test.tsx` must be listed explicitly: TypeScript's include-pattern
+  // resolution drops a `.tsx` file when a `.ts` file with the same basename
+  // sits next to it (`test.ts` + `test.tsx` -> only `test.ts` is picked up).
+  // The `ts` layer lints `.tsx` files (see typescript/index.js), and the
+  // project service refuses to lint a file that is not in any project.
+  // `include` stays explicit too: naming `files` alone switches the compiler
+  // to files-only mode and drops everything matched by the default pattern.
+  "include": ["**/*"],
+  "files": ["./test/test.tsx"]
 }

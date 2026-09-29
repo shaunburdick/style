@@ -1,6 +1,9 @@
 ---
 name: eslint-config-shaunburdick
-description: Install, set up, and debug the eslint-config-shaunburdick ESLint config (v10). Use when linting fails with a rule you don't recognize, when adding this config to a project, when deciding whether to fix or suppress a violation, or when upgrading across a major version. Covers the three config layers (js/ts/react), rule groups and what they mean, the graduated disable flow, and when to use the Biome alternative instead.
+description: Install, set up, and debug the eslint-config-shaunburdick ESLint config (v11). Use when linting fails with a rule you don't recognize, when adding this config to a project, when deciding whether to fix or suppress a violation, or when upgrading across a major version. Covers the three config layers (js/ts/react), rule groups and what they mean, the graduated disable flow, and when to use the Biome alternative instead.
+metadata:
+  author: shaunburdick
+  version: "11.0.0"
 ---
 
 # eslint-config-shaunburdick
@@ -47,7 +50,7 @@ import shaunburdick from 'eslint-config-shaunburdick';
 
 export default [
     ...shaunburdick.config.js,     // base JS — always required
-    ...shaunburdick.config.ts,      // TypeScript rules (**/*.ts)
+    ...shaunburdick.config.ts,      // TypeScript rules (**/*.{ts,tsx})
     ...shaunburdick.config.react,   // React + a11y
 ];
 ```
@@ -77,12 +80,19 @@ Then wire up the scripts so lint runs as part of your test cycle:
 }
 ```
 
-**Known gap:** the `ts` layer targets `**/*.ts` only, so `.tsx`, `.mts`, and
-`.cts` files receive neither the type-aware `@typescript-eslint` rules nor
-project service type information. `llm-core`'s type-aware rules still work on
-those extensions; the `@typescript-eslint` ones (including `no-floating-promises`
-and `no-misused-promises`) silently do not. Add `...shaunburdick.config.ts`
-after narrowing its `files` yourself if you need that coverage.
+TypeScript projects should pair the linter with the compiler —
+`"lint": "eslint . && tsc --noEmit"`. ESLint does not validate autofix output:
+a fix that changes an expression's *type* (rather than its style) can pass a
+green `eslint . --fix && eslint .` and still fail `tsc`.
+
+**Scope:** the `ts` layer targets `**/*.{ts,tsx}` — `.tsx` receives full
+type-aware coverage (including `no-misused-promises` on async handlers), with
+two React-idiom relaxations: PascalCase component names/imports and nullable
+strings/numbers in JSX conditionals. `.mts` and `.cts` remain outside the
+scope: they get neither the type-aware `@typescript-eslint` rules nor project
+service type information. `llm-core`'s type-aware rules still work on those
+extensions. Add `...shaunburdick.config.ts` after widening its `files` yourself
+if you need that coverage.
 
 ## When lint fails
 
@@ -168,9 +178,10 @@ To turn the cap off entirely — or change the threshold — override it in your
 
 Major versions of this config only ship for breaking rule changes. Read the
 `CHANGELOG.md` entry for the version you are crossing before upgrading — each
-one names the rules added, relaxed, or disabled and why. v10.0.0, for example,
-adopted the full `unicorn` and `llm-core` recommended sets (~360 new rules) and
-disabled five `unicorn` rules that conflicted with the config's own policies.
+one names the rules added, relaxed, or disabled and why. v11.0.0, for example,
+widened the `ts` layer to `.tsx`, dropped two rules that either broke correct
+code on autofix or could never be satisfied alongside another rule, and
+exempted test files and jest spies.
 
 Expect new errors on upgrade. That is the point of a major bump, not a
 regression. Do not suppress your way through it — fix, or override in config
