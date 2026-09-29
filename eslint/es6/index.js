@@ -24,6 +24,9 @@ export default [
     comments.recommended,
     security.configs.recommended,
     importXFlatConfigs.recommended,
+    // eslint-plugin-unicorn's recommended set. Must precede the
+    // `shaunburdick/js` block so our explicit rules below win any conflict.
+    unicorn.configs.recommended,
     {
         name: 'shaunburdick/js',
         languageOptions: {
@@ -45,7 +48,10 @@ export default [
         },
         rules
     },
-    ...llmCore.configs.complexity,
+    // eslint-plugin-llm-core's recommended set (complexity + typescript +
+    // best-practices + style + hygiene). Type-aware members are re-applied to
+    // .ts files by typescript/index.js, since this block has no type info.
+    ...llmCore.configs.recommended,
     // Override complexity/hygiene defaults for config files that are inherently larger
     {
         name: 'shaunburdick/js-overrides',
@@ -55,6 +61,16 @@ export default [
                 ignore: [0, 1, 2, 3, 4, 5, 10, 12, 15, 120],
                 ignoreObjectProperties: true,
             }],
+            // Our graduated disable flow permits 1-2 inline disables per file and
+            // escalates beyond that, so llm-core's blanket ban is redundant.
+            'llm-core/no-inline-disable': 'off',
+
+            // Syntactic `||` -> `??` suggestion that false-positives on boolean
+            // operands (`foo.includes(x) || foo.includes(y)`), where `??` is not
+            // a valid substitute. TypeScript projects get the type-aware, correct
+            // `@typescript-eslint/prefer-nullish-coalescing` from the ts config.
+            'llm-core/prefer-nullish-coalescing': 'off',
+
             // Bypass max-inline-disables for config files which may need exemptions
             'shaunburdick/max-inline-disables': 'off',
         }

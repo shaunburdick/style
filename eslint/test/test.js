@@ -120,7 +120,7 @@ class ApiClient {
      */
     constructor(options = {}) {
         // ✅ Use object spread and defaults
-        const DEFAULT_TIMEOUT_MS = 5_000;
+        const DEFAULT_TIMEOUT_MS = 5000;
         this.config = { timeout: DEFAULT_TIMEOUT_MS, ...options };
         this.cache = new Map();
     }

@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 adheres to the repository versioning policy (major = stricter enforcement, minor = relaxed rules,
 patch = docs/tooling).
 
+## [1.0.1] - 2026-09-29
+
+### Changed
+
+- Bumped `@biomejs/biome` devDependency 2.5.10 → 2.5.14 and migrated the `$schema` URL in
+  `biome.jsonc` to match via `biome migrate`. No rule or formatter changes; the only schema
+  difference is the version-pinned URL.
+
 ## [1.0.0] - 2026-08-23
 
 ### Added
