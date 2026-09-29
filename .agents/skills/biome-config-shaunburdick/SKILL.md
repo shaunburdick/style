@@ -11,9 +11,9 @@ formatting, and import organization in the same house style as the ESLint config
 
 **Biome is an alternative to ESLint, not a companion to it.** Pick one. If you need
 the `llm-core` agentic guardrails, JSDoc rules, the `security` plugin, promise
-discipline, the naming denylist, or `max-inline-disables`, use
-[`eslint-config-shaunburdick`](../eslint-config-shaunburdick/SKILL.md) instead — none
-of those have a Biome equivalent. See [When to use which](#when-to-use-which).
+discipline, the naming denylist, or `max-inline-disables`, use the
+`eslint-config-shaunburdick` skill instead — none of those have a Biome equivalent.
+See [When to use which](#when-to-use-which) for the full list.
 
 ## Install
 

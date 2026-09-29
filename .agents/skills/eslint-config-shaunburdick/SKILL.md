@@ -6,13 +6,13 @@ description: Install, set up, and debug the eslint-config-shaunburdick ESLint co
 # eslint-config-shaunburdick
 
 A strict ESLint flat config for JavaScript, TypeScript, and React, plus a
-[Biome](https://biomejs.dev/) alternative that ports the compatible subset
-(see the [`biome-config-shaunburdick` skill](../biome-config-shaunburdick/SKILL.md)).
+[Biome](https://biomejs.dev/) alternative that ports the compatible subset —
+see the `biome-config-shaunburdick` skill.
 
 The config is opinionated and deliberately hostile to common AI-generated code
 patterns. Roughly 650–680 rules are active depending on which layers you spread
 and which file extension is being linted. When lint fails, the cause is almost
-always one of a few recurring groups — read `references/rule-groups.md` before
+always one of a few recurring groups — read [`references/rule-groups.md`](references/rule-groups.md) before
 deciding how to respond.
 
 ## Install
@@ -100,7 +100,7 @@ tells you which group you are in:
 | `import-x/` | Import hygiene and ordering |
 | `shaunburdick/` | This config's own custom rules |
 
-`references/rule-groups.md` maps each group to what it is actually protecting
+[`references/rule-groups.md`](references/rule-groups.md) maps each group to what it is actually protecting
 against, with the most common violations and their fixes.
 
 ## Responding to a violation
@@ -195,15 +195,14 @@ naming denylist and `id-length`, the `max-file-length` / `max-function-length` /
 rule. If you rely on any of those, use this config.
 
 If you are working in a Biome project rather than an ESLint one, read the
-[`biome-config-shaunburdick` skill](../biome-config-shaunburdick/SKILL.md)
-instead — it covers the nursery-rule stability risk and `biome migrate` pinning
-that do not apply here.
+`biome-config-shaunburdick` skill instead — it covers the nursery-rule
+stability risk and `biome migrate` pinning that do not apply here.
 
 ## Reference files
 
-- `references/rule-groups.md` — every rule group, what it protects against,
-  and how to fix the most common findings
-- [`biome-config-shaunburdick`](../biome-config-shaunburdick/SKILL.md) — the
-  Biome alternative's skill, whose
-  [mapping reference](../biome-config-shaunburdick/references/biome-mapping.md)
-  covers every ESLint rule that has a Biome equivalent (and those that don't)
+- [`references/rule-groups.md`](references/rule-groups.md) — every rule group,
+  what it protects against, and how to fix the most common findings
+
+Beyond this skill, the `biome-config-shaunburdick` skill carries
+`references/biome-mapping.md`, the ESLint-to-Biome rule mapping. It names every
+ESLint rule here that has a Biome equivalent — and those that don't.
