@@ -54,8 +54,9 @@ This config enables **164 unique rules**, ~91 of which correspond to a rule in `
 ESLint counterpart). The rules that do have ESLint counterparts but are **not** ported
 (JSDoc, security plugin, promise discipline, llm-core guardrails, the custom
 `shaunburdick/max-inline-disables` rule) have **no Biome equivalent** and require keeping ESLint
-alongside. See the [full mapping table](../specs/001-biome-config/research.md) for the
-rule-by-rule analysis.
+alongside. The
+[agent skill](<../.agents/skills/biome-config-shaunburdick/SKILL.md>) carries a layer-by-layer
+breakdown of the port with each rule's resolved threshold.
 
 ## What's inside
 

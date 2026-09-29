@@ -1,11 +1,12 @@
 # ESLint → Biome Mapping
 
-Reference for the `biome-config-shaunburdick` alternative package. The full
-rule-by-rule analysis with methodology and sources lives in
-`specs/001-biome-config/research.md` at the repository root. If you are working
+Reference for the `biome-config-shaunburdick` alternative package. If you are working
 in a Biome project, read the
 [`biome-config-shaunburdick` skill](../../biome-config-shaunburdick/SKILL.md)
 first — this file is the cross-package mapping.
+
+Every figure here is measured from `biome.jsonc` and `eslint --print-config`; the
+rule counts are not estimates. This file is the source of truth for the mapping.
 
 ## When to use which
 

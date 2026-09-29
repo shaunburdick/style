@@ -44,8 +44,8 @@ patch = docs/tooling).
     - React layer: full a11y suite, hooks dependency checking, React security rules, and
       browser/service-worker globals
 - Smoke test suite proving enabled rules fire on violation fixtures
-- Full rule-by-rule ESLint→Biome mapping analysis in
-  [`specs/001-biome-config/research.md`](../specs/001-biome-config/research.md)
+- Full rule-by-layer mapping with resolved thresholds lives in the
+  [`biome-config-shaunburdick` agent skill](<../.agents/skills/biome-config-shaunburdick/SKILL.md>)
 
 ### Known gaps (ESLint-side only)
 

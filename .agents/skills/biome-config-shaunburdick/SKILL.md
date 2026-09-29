@@ -65,8 +65,9 @@ subpaths in `extends`, so the layers cannot be split across files.
 
 **164 unique rules** are active. Of those, ~91 correspond to a rule in the ESLint
 config; the rest are Biome-native checks (`correctness`, `security`) with no ESLint
-counterpart. Full rule-by-rule analysis with methodology is in
-[`specs/001-biome-config/research.md`](../../../specs/001-biome-config/research.md).
+counterpart. A layer-by-layer breakdown of the port, with the resolved thresholds for
+each rule, is in
+[`../eslint-config-shaunburdick/references/biome-mapping.md`](../eslint-config-shaunburdick/references/biome-mapping.md).
 
 Formatting is delegated to Biome's formatter (`indentStyle: space`, `indentWidth: 4`,
 `lineWidth: 120`, single quotes); import ordering runs via the `organizeImports` assist
@@ -171,6 +172,4 @@ fire the expected rules while a compliant fixture passes clean.
 ## Reference files
 
 - [`../eslint-config-shaunburdick/references/biome-mapping.md`](../eslint-config-shaunburdick/references/biome-mapping.md)
-  — ESLint-to-Biome rule mapping and known gaps
-- [`specs/001-biome-config/research.md`](../../../specs/001-biome-config/research.md)
-  — full rule-by-rule analysis with methodology and sources
+  — ESLint-to-Biome rule mapping with resolved thresholds, and the full known-gaps list
