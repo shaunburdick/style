@@ -218,6 +218,12 @@ Applied to `**/*.{jsx,tsx,…}` via override with browser/service-worker globals
 
 ## Scorecard
 
+Counted against `biome.jsonc`. Note the two columns measure different things: "Enabled" counts
+Biome rules that have an ESLint counterpart, while "Dropped" counts ESLint rules with no Biome
+equivalent. The config enables **164 unique rules** in total — the remainder are Biome-native
+`correctness`/`security` checks (duplicate switch cases, control characters in regexes, irregular
+whitespace, and similar) that ESLint has no rule for at all.
+
 | Layer | Enabled in `biome.jsonc` | Dropped (ESLint-side) |
 | --- | --- | --- |
 | Base JS | ~41 rules + formatter + assist | ~24 |

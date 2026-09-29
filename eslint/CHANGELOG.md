@@ -16,6 +16,10 @@ CHANGELOG
 * **NEW:** `llm-core.configs.recommended` replaces the narrower `llm-core.configs.complexity`, adding the typescript, best-practices, style, and hygiene groups. Notable additions include `no-unknown-parameters`, `no-unknown-returns`, `no-unsafe-array-access`, `no-dynamic-code-execution`, `explicit-export-types`, `no-redundant-comments`, and `no-debug-scaffolding`
 * **NEW:** `llm-core` guardrails now reach `.jsx`, `.mjsx`, `.cjsx`, `.mts`, and `.cts` — previously excluded by upstream's `files` globs, despite the React layer linting those extensions
 
+### Documentation
+* **NEW:** The `eslint-config-shaunburdick` agent skill (`.agents/skills/`) documents install, setup, rule groups, and the graduated disable flow
+* **NEW:** A companion `biome-config-shaunburdick` agent skill at `.agents/skills/biome-config-shaunburdick/`, split out so it fires for Biome-only projects. Skill selection keys off the package name, so a skill named `eslint-config-shaunburdick` cannot match a Biome context
+
 ### Rules Relaxed
 * **RELAXED:** `llm-core/no-inline-disable` turned off — the graduated disable flow (`shaunburdick/max-inline-disables`) already permits 1-2 inline disables per file and escalates beyond that, so a blanket ban was redundant. This only became load-bearing once the `max-inline-disables` bypass was properly scoped (see Bugs Fixed)
 * **RELAXED:** `llm-core/prefer-nullish-coalescing` turned off in the base config — the syntactic check false-positives on boolean operands where `??` is not a valid substitute. TypeScript projects still get the type-aware `@typescript-eslint/prefer-nullish-coalescing` from the `ts` config

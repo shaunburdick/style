@@ -14,6 +14,23 @@ patch = docs/tooling).
   `biome.jsonc` to match via `biome migrate`. No rule or formatter changes; the only schema
   difference is the version-pinned URL.
 
+### Fixed
+
+- Corrected the known-divergences list: 13 rules come from Biome's `nursery` group, not ~14.
+  `noImportCycles` was listed as one of them but is a stable `suspicious` rule. Because nursery
+  rules can change in a **minor** release, an over-stated list meant pinning guidance that didn't
+  match the config.
+- Replaced the "~91 of the ~124 enforceable rules" figure with the measured 164 unique rules, and
+  noted that ~91 is the count of rules with an ESLint counterpart rather than the rule total. The
+  `~124` denominator predates `eslint-config-shaunburdick` v10's adoption of the full `unicorn`
+  and `llm-core` recommended sets, which took the ESLint side to ~675 active rules.
+
+### Added
+
+- New `biome-config-shaunburdick` agent skill at `.agents/skills/biome-config-shaunburdick/`,
+  covering install, setup, the three layers, the nursery-rule stability risk, and the
+  `biome migrate` pinning step. Split from the ESLint skill so it fires for Biome-only projects.
+
 ## [1.0.0] - 2026-08-23
 
 ### Added

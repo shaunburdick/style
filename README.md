@@ -16,12 +16,19 @@ A [Biome](https://biomejs.dev/) companion configuration (linting + formatting + 
 organization) can be found in the [biome](./biome) directory. It ports the compatible subset of
 the ESLint rules; see its [README](./biome/README.md) for usage and known gaps.
 
-## Agent Skill
+## Agent Skills
 
-An [agent skill](./.agents/skills/eslint-config-shaunburdick/SKILL.md) documents how to install
-and set up both configs, and maps every rule group to what it protects against — so an agent
-hitting an unfamiliar lint error can tell what went wrong instead of reaching for a suppression.
-Rule-group details are in its [references](./.agents/skills/eslint-config-shaunburdick/references/).
+Two skills, one per package:
+
+- [`eslint-config-shaunburdick`](./.agents/skills/eslint-config-shaunburdick/SKILL.md) — how to
+  install and set up the ESLint config, and a map of every rule group to what it protects against,
+  so an agent hitting an unfamiliar lint error can tell what went wrong instead of reaching for a
+  suppression. Details in its [references](./.agents/skills/eslint-config-shaunburdick/references/).
+- [`biome-config-shaunburdick`](./.agents/skills/biome-config-shaunburdick/SKILL.md) — the Biome
+  equivalent, including the nursery-rule stability risk and the `biome migrate` pinning step.
+
+They are separate because skill selection keys off the package name. Each opens with a
+"when to use which" table pointing at the other.
 
 ## Versioning Policy
 

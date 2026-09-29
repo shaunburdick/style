@@ -1,12 +1,13 @@
 ---
 name: eslint-config-shaunburdick
-description: Install, set up, and debug the eslint-config-shaunburdick ESLint config (v10) and the biome-config-shaunburdick Biome companion. Use when linting fails with a rule you don't recognize, when adding this config to a project, when deciding whether to fix or suppress a violation, or when upgrading across a major version. Covers the three config layers (js/ts/react), rule groups and what they mean, the graduated disable flow, and the known gaps versus Biome.
+description: Install, set up, and debug the eslint-config-shaunburdick ESLint config (v10). Use when linting fails with a rule you don't recognize, when adding this config to a project, when deciding whether to fix or suppress a violation, or when upgrading across a major version. Covers the three config layers (js/ts/react), rule groups and what they mean, the graduated disable flow, and when to use the Biome alternative instead.
 ---
 
 # eslint-config-shaunburdick
 
 A strict ESLint flat config for JavaScript, TypeScript, and React, plus a
-[Biome](https://biomejs.dev/) companion that ports the compatible subset.
+[Biome](https://biomejs.dev/) alternative that ports the compatible subset
+(see the [`biome-config-shaunburdick` skill](../biome-config-shaunburdick/SKILL.md)).
 
 The config is opinionated and deliberately hostile to common AI-generated code
 patterns. Roughly 650–680 rules are active depending on which layers you spread
@@ -175,10 +176,11 @@ Expect new errors on upgrade. That is the point of a major bump, not a
 regression. Do not suppress your way through it — fix, or override in config
 with a stated reason.
 
-## Biome companion
+## Biome alternative
 
-`biome-config-shaunburdick` ports the subset of rules Biome 2.5 supports. Use
-it as an alternative to the ESLint config, not alongside it:
+`biome-config-shaunburdick` ports the subset of rules Biome 2.5 supports — 164
+unique rules, ~91 of them corresponding to an ESLint rule here. Use it as an
+**alternative** to this config, not alongside it:
 
 ```json
 {
@@ -186,14 +188,16 @@ it as an alternative to the ESLint config, not alongside it:
 }
 ```
 
-It ships as a single `biome.jsonc` by design: Biome 2.5 drops `linter` sections
-from transitive `extends` inside published packages, so the three layers cannot
-be split across files.
-
 **No Biome equivalent** for: JSDoc rules, the `security` plugin, promise
 discipline (`always-return`, `catch-or-return`), all `llm-core` guardrails, the
-naming denylist and `id-length`, and the custom `max-inline-disables` rule. If
-you rely on those, use the ESLint config.
+naming denylist and `id-length`, the `max-file-length` / `max-function-length` /
+`max-nesting-depth` complexity budgets, and the custom `max-inline-disables`
+rule. If you rely on any of those, use this config.
+
+If you are working in a Biome project rather than an ESLint one, read the
+[`biome-config-shaunburdick` skill](../biome-config-shaunburdick/SKILL.md)
+instead — it covers the nursery-rule stability risk and `biome migrate` pinning
+that do not apply here.
 
 ## Reference files
 

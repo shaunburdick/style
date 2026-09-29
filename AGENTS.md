@@ -39,12 +39,14 @@ This document provides comprehensive context about the `style` repository to hel
         ├── test.ts                  # TypeScript pattern examples
         ├── test.tsx                 # React/TypeScript pattern examples
         └── test-utils.ts            # TypeScript utility examples
-├── .agents/skills/                 # Agent Skill consumed by AI coding agents
-│   └── eslint-config-shaunburdick/
-│       ├── SKILL.md                # Install, setup, and triage guidance
-│       └── references/
-│           ├── rule-groups.md      # Every rule group + how to respond
-│           └── biome-mapping.md    # ESLint→Biome mapping + known gaps
+├── .agents/skills/                 # Agent Skills consumed by AI coding agents
+│   ├── eslint-config-shaunburdick/
+│   │   ├── SKILL.md                # Install, setup, and triage guidance
+│   │   └── references/
+│   │       ├── rule-groups.md      # Every rule group + how to respond
+│   │       └── biome-mapping.md    # ESLint→Biome mapping + known gaps
+│   └── biome-config-shaunburdick/
+│       └── SKILL.md                # Biome install, setup, nursery/pinning risk
 ├── biome/                           # Biome companion configuration package
 │   ├── package.json                 # Package configuration (biome-config-shaunburdick)
 │   ├── README.md                    # Usage docs + known gaps vs the ESLint config
@@ -250,7 +252,8 @@ When working on this repository:
 8. **Security Priority:** Security rules are non-negotiable requirements
 9. **Graduated Disable Flow:** Inline `eslint-disable` comments follow a graduated flow — 1-2 per file is fine, 3+ should use block-level pairs, and 3+ files with the same need should use a config override. The `shaunburdick/max-inline-disables` rule enforces the first threshold
 10. **Custom Rules:** The `shaunburdick` plugin namespace (`es6/custom-rules.js`) contains rules defined inline for this project. Rule definitions live in `custom-rules.js`, configurations in `rules.js`, wiring in `index.js`, and tests in `custom-rules.test.js`
-11. **Agent Skill:** `.agents/skills/eslint-config-shaunburdick/` documents install, setup, and rule-group triage for AI agents. Update it when rules are added, removed, or disabled — a new rule group or a change to the graduated disable flow makes the skill's guidance wrong
-12. **TypeScript is pinned at 6.x on purpose:** TypeScript 7.0 ships no programmatic API, and `typescript-eslint` requires one for `projectService`-based type-aware linting. Do not bump to 7.x until `typescript-eslint` supports it
+11. **Agent Skills:** `.agents/skills/eslint-config-shaunburdick/` documents install, setup, and rule-group triage for AI agents; `.agents/skills/biome-config-shaunburdick/` covers the Biome package's own setup, the nursery-rule stability risk, and `biome migrate` pinning. They are separate skills deliberately — skill selection keys off the frontmatter `name`, so a skill named `eslint-config-shaunburdick` will not fire for someone in a Biome-only project. Each opens with a "when to use which" table pointing at the other. Update them when rules are added, removed, or disabled; a new rule group or a change to the graduated disable flow makes the ESLint skill's guidance wrong
+12. **Shared versioning policy:** the policy in AGENTS.md is the single source of truth. `eslint/README.md` and `biome/README.md` each restate it in expanded form for npm readers — they are intentionally identical, so a change to one must be made to the other
+13. **TypeScript is pinned at 6.x on purpose:** TypeScript 7.0 ships no programmatic API, and `typescript-eslint` requires one for `projectService`-based type-aware linting. Do not bump to 7.x until `typescript-eslint` supports it
 
 This is a foundational development tool used across multiple projects, so reliability and consistency are paramount.

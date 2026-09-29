@@ -84,3 +84,12 @@ release.
 -   Examine `CHANGELOG.md` to determine next version (X.Y.Z)
 -   Bump `version` in `package.json` and merge to `main`
 -   CI publishes the new version and cuts the release
+
+## Agent Skill
+
+[`eslint-config-shaunburdick`](<../.agents/skills/eslint-config-shaunburdick/SKILL.md>) is an
+agent skill documenting install, setup, every rule group, and the graduated disable flow — so an
+agent hitting an unfamiliar lint error knows what it protects against instead of reaching for a
+suppression. It opens with a "when to use which" table pointing at the
+[Biome skill](<../.agents/skills/biome-config-shaunburdick/SKILL.md>), since the two configs are
+alternatives rather than companions.

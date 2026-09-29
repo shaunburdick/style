@@ -1,8 +1,11 @@
 # ESLint → Biome Mapping
 
-Reference for the `biome-config-shaunburdick` companion package. The full
+Reference for the `biome-config-shaunburdick` alternative package. The full
 rule-by-rule analysis with methodology and sources lives in
-`specs/001-biome-config/research.md` at the repository root.
+`specs/001-biome-config/research.md` at the repository root. If you are working
+in a Biome project, read the
+[`biome-config-shaunburdick` skill](../../biome-config-shaunburdick/SKILL.md)
+first — this file is the cross-package mapping.
 
 ## When to use which
 
@@ -11,8 +14,10 @@ companion to run alongside it. Pick one.
 
 | | ESLint config | Biome config |
 | --- | --- | --- |
-| Rules | ~700 on a `.ts` file | ~180 ported |
+| Rules | ~675 active on a `.ts` file | 164 unique, ~91 with an ESLint counterpart |
 | Rule coverage | Full, including all agentic guardrails | Compatible subset only |
+| Node | >= 20.19 | >= 22 |
+| Type info | `projectService: true`, needs `tsconfig.json` | Native inference, no `tsc` needed |
 | Speed | Slower (JS-based) | Faster (Rust-based) |
 | Install | `eslint` + this package | `@biomejs/biome` + this package |
 
@@ -48,7 +53,7 @@ files.
 | `import-x/order` | `assist.actions.source.organizeImports: "on"` |
 | `max-classes-per-file` (1) | `style/noExcessiveClassesPerFile` |
 | `sonarjs/cognitive-complexity` (15) | `complexity/noExcessiveCognitiveComplexity` |
-| `max-params` (5) | `complexity/useMaxParams` |
+| `llm-core/max-params` (2, constructor 5) | `complexity/useMaxParams` (5) |
 | `unicorn/no-for-each` | `complexity/noForEach` |
 | `unicorn/no-useless-undefined` | `complexity/noUselessUndefined` |
 | `unicorn/prefer-node-protocol` | `style/useNodejsImportProtocol` |
