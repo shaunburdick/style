@@ -46,4 +46,17 @@ export default Object.freeze({
 
     // Enforce static elements do not have event handlers, https://github.com/jsx-eslint/jsx-a11y-x/blob/main/docs/rules/no-static-element-interactions.md
     'jsx-a11y-x/no-static-element-interactions': 'error',
+
+    // Disabled deliberately
+
+    // Dropped: its pairing logic only matches `MemberExpression` callees, so a
+    // bare `addEventListener(...)` in `useEffect` can never be paired with its
+    // `removeEventListener(...)` cleanup — a correct cleanup still reports.
+    // The bare form is exactly what `unicorn/no-unnecessary-global-this`
+    // demands (and its fixer suggests), making the two rules mutually
+    // unsatisfiable: satisfying one always trips the other, and the only
+    // escape is aliasing `globalThis` purely to appease a linter. Verified in
+    // `eslint-plugin-react-web-api` 5.23 (`isSameObject` defaults to `false`
+    // for non-member expressions). See issue #12.
+    '@eslint-react/web-api-no-leaked-event-listener': 'off',
 });

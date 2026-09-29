@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 10.0.0
+**Current Version:** 11.0.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -66,9 +66,9 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
 ### 1. Base JavaScript/ES6 Config (`es6/`)
 - **Entry Point:** `es6/index.js`
 - **File Pattern:** All JavaScript files
-- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 310 active)** + **llm-core recommended (44 rules, 42-43 active per extension)**
+- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 309 active)** + **llm-core recommended (44 rules, 42-43 active per extension)**
 - **Layer order matters:** upstream recommended configs are spread *before* the `shaunburdick/js` rules block, so explicit rules in `rules.js` win any conflict
-- **Deliberate `off` entries:** 5 unicorn rules and 2 llm-core rules are disabled because they contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`). Each carries a rationale comment — see the skill's `references/rule-groups.md`
+- **Deliberate `off` entries:** 6 unicorn rules and 2 llm-core rules are disabled because they contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`, TypeScript-breaking autofixes). Each carries a rationale comment — see the skill's `references/rule-groups.md`
 - **Key Plugins:**
   - `@stylistic/eslint-plugin` - Code formatting and style
   - `eslint-plugin-security` - Security vulnerability detection
@@ -86,7 +86,7 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
 
 ### 2. TypeScript Config (`typescript/`)
 - **Entry Point:** `typescript/index.js`
-- **File Pattern:** `**/*.ts`
+- **File Pattern:** `**/*.{ts,tsx}` (`.tsx` receives React-idiom relaxations — PascalCase component names/imports, strings and numbers in JSX conditionals; `.mts`/`.cts` are not in scope)
 - **Base Config:** `typescript-eslint` strict + stylistic
 - **Key Features:**
   - Strict type checking
@@ -138,6 +138,7 @@ import './';                      // index
 
 See [`eslint/CHANGELOG.md`](eslint/CHANGELOG.md) for the full version history and breaking changes. Major milestones:
 
+- **v11.0.0** — TS layer covers `.tsx` (React-idiom relaxations included); dropped `unicorn/no-instanceof-builtins` and `@eslint-react/web-api-no-leaked-event-listener`; test-file and spy exemptions; lint-script + `tsc` pairing docs
 - **v10.0.0** — Adopted `unicorn` and `llm-core` recommended configs (~360 new rules); dependency refresh across majors
 - **v9.0.0** — Graduated disable flow, `reportUnusedDisableDirectives`, custom `shaunburdick/max-inline-disables` rule
 - **v8.0.0** — Agentic programming guardrails, `eslint-plugin-llm-core` integration, React DOM/web API security rules

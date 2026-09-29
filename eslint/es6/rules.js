@@ -318,6 +318,24 @@ export default Object.freeze({
     // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-number-coercion.md
     'unicorn/prefer-number-coercion': 'off',
 
+    // Dropped: its autofix rewrites `x instanceof Function` to
+    // `typeof x === 'function'`, which narrows a *naked type parameter* to
+    // `T & Function` — a type with no call signatures — turning
+    // previously-compiling TypeScript into TS2349 (`eslint . --fix` exits 0;
+    // only `tsc` notices). Reproduced against tsc 6.x strict. A fixer that can
+    // break compilation is worse than the style it enforces, and the rule has
+    // no option to demote the fix. See issue #9.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-instanceof-builtins.md
+    'unicorn/no-instanceof-builtins': 'off',
+
+    // Jest spies are objects with no call signature (`SpyInstance` exposes
+    // `mockReturnValue` et al., not a call signature), so the rule reported
+    // `addEventListenerSpy` for starting with `add` while `dispatchEventSpy`
+    // passed — verb luck, not meaning. `ignore` takes regexes matched against
+    // the binding name; exempt the standard `*Spy`/`*Mock` suffixes. See
+    // issue #18.
+    'unicorn/no-non-function-verb-prefix': ['error', { ignore: ['.*(?:Spy|Mock)$'] }],
+
     // Modern JavaScript Best Practices — Agentic Programming Extensions
     // These rules target patterns that AI coding agents consistently produce.
 

@@ -1,5 +1,22 @@
 CHANGELOG
 =========
+## 11.0.0 (2026-09-29)
+
+### Bugs Fixed
+* **BREAKING:** The `ts` layer now targets `**/*.{ts,tsx}` instead of `**/*.ts`. Previously **zero** `@typescript-eslint` rules — type-aware or otherwise — applied to `.tsx` files, so the canonical React promise bug (`<button onClick={asyncHandler} />`) went unguarded alongside `no-unsafe-arguments`, `no-unnecessary-condition`, `await-thenable`, and the rest of the type-aware set. Two React-idiom relaxations ship with the widening (options are restated in full in `typescript/index.js`, since a later block *replaces* rule options): PascalCase component names/imports/variables, and nullable strings/numbers in JSX conditionals (`{title && <h1>}`); nullable booleans and objects stay strict. See issue #14
+
+### Rules Relaxed
+* **RELAXED:** `sonarjs/no-duplicate-string` is off in test files (globs mirror `TEST_FILE_PATTERNS` in `custom-rules.js`: `*.test.*`, `*.spec.*`, `__tests__/`, `test/`, `tests/`, `spec/`). Specs legitimately repeat a selector at each assertion site; upstream offers only `threshold`/`ignoreStrings`, no `ignoreTests`. See issue #13
+* **RELAXED:** `unicorn/no-non-function-verb-prefix` now ships `ignore: ['.*(?:Spy|Mock)$']`. Jest spies (`MockInstance` types have no call signature) were reported for starting with a verb — `addEventListenerSpy` failed while `dispatchEventSpy` passed, pure verb luck. See issue #18
+
+### Rules Disabled
+* **DISABLED:** `unicorn/no-instanceof-builtins` — its autofix rewrites `x instanceof Function` to `typeof x === 'function'`, which narrows a naked type parameter to `T & Function` (no call signatures) and turns compiling TypeScript into TS2349 while `eslint . --fix && eslint .` exits 0. Reproduced against tsc 6.x strict. See issue #9
+* **DISABLED:** `@eslint-react/web-api-no-leaked-event-listener` — its pairing logic (`isSameObject` in `eslint-plugin-react-web-api` 5.23) only matches `MemberExpression` callees, so a bare `addEventListener(...)` in `useEffect` can never pair with its `removeEventListener(...)` cleanup: correct code reports unconditionally. The bare form is exactly what `unicorn/no-unnecessary-global-this` demands, making the two mutually unsatisfiable — the only escape was aliasing `globalThis` to appease a linter. See issue #12
+
+### Documentation
+* **NEW:** README pairs the suggested lint scripts with `tsc --noEmit` and notes that autofixes changing an expression's *type* are invisible to ESLint. See issue #19
+* **NEW:** rule-groups reference gains the three supported `JSX.Element` forms for `explicit-export-types` on `.tsx` (issue #17), the three-rules-one-answer pattern for joining JSX cell arrays with spaces (issue #16), and the rest-params + destructuring-defaults form for mandated third-party callback signatures under `max-params`/`no-unsafe-array-access` (issue #10), plus notes for both disabled rules
+
 ## 10.0.0 (2026-09-29)
 
 ### Bugs Fixed

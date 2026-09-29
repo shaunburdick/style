@@ -47,7 +47,7 @@ import shaunburdick from 'eslint-config-shaunburdick';
 
 export default [
     ...shaunburdick.config.js,     // base JS — always required
-    ...shaunburdick.config.ts,      // TypeScript rules (**/*.ts)
+    ...shaunburdick.config.ts,      // TypeScript rules (**/*.{ts,tsx})
     ...shaunburdick.config.react,   // React + a11y
 ];
 ```
@@ -77,12 +77,19 @@ Then wire up the scripts so lint runs as part of your test cycle:
 }
 ```
 
-**Known gap:** the `ts` layer targets `**/*.ts` only, so `.tsx`, `.mts`, and
-`.cts` files receive neither the type-aware `@typescript-eslint` rules nor
-project service type information. `llm-core`'s type-aware rules still work on
-those extensions; the `@typescript-eslint` ones (including `no-floating-promises`
-and `no-misused-promises`) silently do not. Add `...shaunburdick.config.ts`
-after narrowing its `files` yourself if you need that coverage.
+TypeScript projects should pair the linter with the compiler —
+`"lint": "eslint . && tsc --noEmit"`. ESLint does not validate autofix output:
+a fix that changes an expression's *type* (rather than its style) can pass a
+green `eslint . --fix && eslint .` and still fail `tsc`.
+
+**Scope:** the `ts` layer targets `**/*.{ts,tsx}` — `.tsx` receives full
+type-aware coverage (including `no-misused-promises` on async handlers), with
+two React-idiom relaxations: PascalCase component names/imports and nullable
+strings/numbers in JSX conditionals. `.mts` and `.cts` remain outside the
+scope: they get neither the type-aware `@typescript-eslint` rules nor project
+service type information. `llm-core`'s type-aware rules still work on those
+extensions. Add `...shaunburdick.config.ts` after widening its `files` yourself
+if you need that coverage.
 
 ## When lint fails
 

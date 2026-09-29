@@ -56,6 +56,17 @@ To setup linting automatically, we recommend adding these script entries to your
 
 Then you can add `npm run lint` to your `test` script command to run it before any tests
 
+TypeScript projects should pair the linter with the compiler:
+
+```
+"lint": "eslint . && tsc --noEmit",
+"lint:fix": "eslint . --fix && tsc --noEmit"
+```
+
+ESLint does not validate autofix output. A fix that changes an expression's
+*type* rather than its style can pass `eslint . --fix && eslint .` and still
+fail `tsc` — only the compiler sees the difference.
+
 ## Versioning Policy
 
 -   Major (new linting errors)
