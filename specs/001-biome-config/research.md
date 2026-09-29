@@ -8,7 +8,7 @@ Target: Biome **2.5.10** (latest stable at time of writing)
 > (382 configured ESLint rules). The live config has since moved on: `@biomejs/biome` is at 2.5.14
 > and the ESLint config adopted the full `unicorn` and `llm-core` recommended sets in v10, taking
 > it to ~675 active rules. The **current** mapping and counts live in
-> `.agents/skills/eslint-config-shaunburdick/references/biome-mapping.md`, which is measured from
+> `.agents/skills/biome-config-shaunburdick/references/biome-mapping.md`, which is measured from
 > the config rather than derived from this analysis. What remains authoritative here is the
 > methodology, the status legend, the per-rule reasoning, and the divergences that still hold.
 

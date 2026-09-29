@@ -43,10 +43,11 @@ This document provides comprehensive context about the `style` repository to hel
 │   ├── eslint-config-shaunburdick/
 │   │   ├── SKILL.md                # Install, setup, and triage guidance
 │   │   └── references/
-│   │       ├── rule-groups.md      # Every rule group + how to respond
-│   │       └── biome-mapping.md    # ESLint→Biome mapping + known gaps
+│   │       └── rule-groups.md      # Every rule group + how to respond
 │   └── biome-config-shaunburdick/
-│       └── SKILL.md                # Biome install, setup, nursery/pinning risk
+│       ├── SKILL.md                # Biome install, setup, nursery/pinning risk
+│       └── references/
+│           └── biome-mapping.md    # ESLint→Biome mapping + known gaps
 ├── biome/                           # Biome companion configuration package
 │   ├── package.json                 # Package configuration (biome-config-shaunburdick)
 │   ├── README.md                    # Usage docs + known gaps vs the ESLint config
@@ -160,7 +161,7 @@ compatible subset of the ESLint rules to Biome 2.5+:
   ship as one commented `biome.jsonc` (see research.md "Extends partitioning findings")
 - **Known gaps:** JSDoc, security plugin, promise discipline (`always-return`,
   `catch-or-return`), llm-core guardrails, and the custom `max-inline-disables` rule have no
-  Biome equivalent — see `.agents/skills/eslint-config-shaunburdick/references/biome-mapping.md`
+  Biome equivalent — see `.agents/skills/biome-config-shaunburdick/references/biome-mapping.md`
   for the living mapping table (`specs/001-biome-config/research.md` holds the original
   methodology and per-rule reasoning, but is dated and no longer authoritative for counts)
 - **Testing:** `npm test` in `biome/` validates the config and runs smoke fixtures proving
@@ -234,7 +235,7 @@ export default [
 2. **Adding plugin:** Update `index.js` and `package.json`
 3. **New configuration:** Create new folder structure
 4. **Version bump:** Update `package.json`, add CHANGELOG entry
-5. **Biome rule change:** Edit `biome/biome.jsonc`, update the mapping in `.agents/skills/eslint-config-shaunburdick/references/biome-mapping.md` (the living reference — `specs/001-biome-config/research.md` is a dated point-in-time analysis), bump `biome/package.json` + CHANGELOG, and run `npm test` in `biome/`
+5. **Biome rule change:** Edit `biome/biome.jsonc`, update the mapping in `.agents/skills/biome-config-shaunburdick/references/biome-mapping.md` (the living reference — `specs/001-biome-config/research.md` is a dated point-in-time analysis), bump `biome/package.json` + CHANGELOG, and run `npm test` in `biome/`
 6. **Adding custom rule:** Define the rule in `es6/custom-rules.js`, configure it in `es6/rules.js`, wire it in `es6/index.js`, test it in `es6/custom-rules.test.js`
 7. **Plugin renames:** `import/` → `import-x/`, `react/` → `@eslint-react/`, `jsx-a11y/` → `jsx-a11y-x/` — old `eslint-disable` prefixes silently stop working
 8. **Dependency update:** Bump the dep, run `npm test` in that package, fix any new violations in `test/` fixtures, and record a rule rename if one occurred. A dep bump that adds or tightens rules is a **major** version per the policy above

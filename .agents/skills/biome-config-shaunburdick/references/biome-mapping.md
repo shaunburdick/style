@@ -1,9 +1,8 @@
 # ESLint → Biome Mapping
 
-Reference for the `biome-config-shaunburdick` alternative package. If you are working
-in a Biome project, read the
-[`biome-config-shaunburdick` skill](../../biome-config-shaunburdick/SKILL.md)
-first — this file is the cross-package mapping.
+Reference for the `biome-config-shaunburdick` alternative package. Read the
+[`biome-config-shaunburdick` skill](../SKILL.md) first if you have not — this file
+is the cross-package mapping it points at.
 
 Every figure here is measured from `biome.jsonc` and `eslint --print-config`; the
 rule counts are not estimates. This file is the source of truth for the mapping.

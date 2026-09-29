@@ -203,4 +203,7 @@ that do not apply here.
 
 - `references/rule-groups.md` — every rule group, what it protects against,
   and how to fix the most common findings
-- `references/biome-mapping.md` — ESLint-to-Biome rule mapping and known gaps
+- [`biome-config-shaunburdick`](../biome-config-shaunburdick/SKILL.md) — the
+  Biome alternative's skill, whose
+  [mapping reference](../biome-config-shaunburdick/references/biome-mapping.md)
+  covers every ESLint rule that has a Biome equivalent (and those that don't)

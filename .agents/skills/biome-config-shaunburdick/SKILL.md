@@ -67,7 +67,7 @@ subpaths in `extends`, so the layers cannot be split across files.
 config; the rest are Biome-native checks (`correctness`, `security`) with no ESLint
 counterpart. A layer-by-layer breakdown of the port, with the resolved thresholds for
 each rule, is in
-[`../eslint-config-shaunburdick/references/biome-mapping.md`](../eslint-config-shaunburdick/references/biome-mapping.md).
+[`references/biome-mapping.md`](references/biome-mapping.md).
 
 Formatting is delegated to Biome's formatter (`indentStyle: space`, `indentWidth: 4`,
 `lineWidth: 120`, single quotes); import ordering runs via the `organizeImports` assist
@@ -161,15 +161,11 @@ a file that differs from what the next contributor will generate.
 
 ## Development
 
-```sh
-npm install
-npm test    # validates biome.jsonc + runs smoke tests against violation fixtures
-```
-
-Smoke tests live in `biome/test/` and assert that representative violations actually
-fire the expected rules while a compliant fixture passes clean.
+Smoke tests assert that representative violations actually fire the expected rules while a
+compliant fixture passes clean. Run them with `npm test` from the `biome/` directory of the
+repository.
 
 ## Reference files
 
-- [`../eslint-config-shaunburdick/references/biome-mapping.md`](../eslint-config-shaunburdick/references/biome-mapping.md)
+- [`references/biome-mapping.md`](references/biome-mapping.md)
   — ESLint-to-Biome rule mapping with resolved thresholds, and the full known-gaps list

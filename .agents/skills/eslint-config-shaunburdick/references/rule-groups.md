@@ -13,7 +13,7 @@ they fire in practice.
 ## `unicorn/` — Modern JavaScript idioms
 
 The largest group — **310 active rules**. `unicorn.configs.recommended` contains
-361; 46 are off upstream and 5 more are turned off by `es6/rules.js` (see
+361; 46 are off upstream and 5 more are turned off by this config (see
 "Disabled from recommended, on purpose" below). They enforce current JS
 conventions and reject deprecated or error-prone patterns.
 **Most have autofixes** — run `npx eslint . --fix` and review the diff.
@@ -36,7 +36,7 @@ conventions and reject deprecated or error-prone patterns.
 ### Disabled from recommended, on purpose
 
 Do not "fix" these — they are off by design and re-enabling them will not
-help. Rationale is in `es6/rules.js`.
+help. Each one has a stated reason, below.
 
 - `name-replacements` — would rewrite `ButtonProps` → `ButtonProperties` and
   `e` → `error`. Abbreviated `Props` is the React community convention.
@@ -103,7 +103,7 @@ instead of 42.
 ### Complexity limits
 
 Shipped by `llm-core.configs.recommended`, with two values overridden by
-`es6/index.js`. These are the *resolved* settings, not the upstream defaults:
+this config. These are the *resolved* settings, not the upstream defaults:
 
 | Rule | Value |
 | --- | --- |
@@ -261,5 +261,5 @@ is what makes suppressions reviewable.
 
 `max-inline-disables` (`warn`, `{ max: 2, skipTestFiles: true }`) — see the
 graduated disable flow in SKILL.md. It is off for `**/*.config.*` files, which
-are inherently exemption-heavy. Defined in `es6/custom-rules.js`, tested
-alongside its source in `es6/custom-rules.test.js`.
+are inherently exemption-heavy. This is a custom rule shipped by the config,
+not a third-party plugin.
