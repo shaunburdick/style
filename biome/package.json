@@ -1,6 +1,6 @@
 {
     "name": "biome-config-shaunburdick",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Shaun Burdick's Biome configuration - companion to eslint-config-shaunburdick",
     "license": "UNLICENSED",
     "type": "module",
@@ -22,7 +22,7 @@
         "@biomejs/biome": ">=2.5.0 <3"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.5.10"
+        "@biomejs/biome": "^2.5.14"
     },
     "engines": {
         "node": ">=22"

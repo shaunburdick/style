@@ -49,7 +49,7 @@ function Button({ children, onClick, disabled = false, variant = 'primary' }: Bu
 }
 
 // ✅ Component with proper event handling (no .bind in JSX)
-export function UserCard({ user, onEdit }: UserCardProps) {
+export function UserCard({ user, onEdit }: UserCardProps): React.JSX.Element {
     const handleEdit = useCallback(() => {
         onEdit(user.id);
     }, [onEdit, user.id]);
@@ -82,7 +82,7 @@ interface ProductListProps {
 }
 
 // ✅ Proper key usage (not array index)
-export function ProductList({ products }: ProductListProps) {
+export function ProductList({ products }: ProductListProps): React.JSX.Element {
     return (
         <ul>
             {products.map(product => (
@@ -156,7 +156,7 @@ interface ExpensiveComponentProps {
 }
 
 // ✅ Use useMemo for expensive calculations
-export function ExpensiveComponent({ data, multiplier }: ExpensiveComponentProps) {
+export function ExpensiveComponent({ data, multiplier }: ExpensiveComponentProps): React.JSX.Element {
     const processedData = useMemo(() => {
         return data.map(value => value * multiplier);
     }, [data, multiplier]);
@@ -177,7 +177,7 @@ export function ExpensiveComponent({ data, multiplier }: ExpensiveComponentProps
 // ============================================================================
 
 // ✅ Use React fragments instead of unnecessary divs
-export function FragmentExample() {
+export function FragmentExample(): React.JSX.Element {
     return (
         <>
             <h1>Title</h1>
@@ -202,7 +202,7 @@ interface ConditionalProps {
 }
 
 // ✅ Clean conditional rendering
-export function ConditionalComponent({ isLoading, error, data }: ConditionalProps) {
+export function ConditionalComponent({ isLoading, error, data }: ConditionalProps): React.JSX.Element {
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -229,7 +229,7 @@ export function ConditionalComponent({ isLoading, error, data }: ConditionalProp
 // ============================================================================
 
 // ✅ Use self-closing tags when there are no children
-export function SelfClosingExample() {
+export function SelfClosingExample(): React.JSX.Element {
     return (
         <div>
             <img src="/logo.png" alt="Company logo" />

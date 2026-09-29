@@ -9,6 +9,18 @@
  * plugins structure their exports.
  */
 
+/**
+ * Path shapes that mark a file as a test file.
+ *
+ * Mirrors the `skipTestFiles` option that llm-core's own complexity rules use,
+ * so the two families agree on what counts as a test. Test files legitimately
+ * need many inline disables — they exist to construct invalid code.
+ */
+const TEST_FILE_PATTERNS = [
+    /(^|\/)(__tests__|tests?|specs?)\//u,
+    /\.(?:test|spec)\.[cm]?[jt]sx?$/u,
+];
+
 const maxInlineDisables = {
     meta: {
         type: 'suggestion',
@@ -22,6 +34,9 @@ const maxInlineDisables = {
                     max: {
                         type: 'integer',
                         minimum: 0,
+                    },
+                    skipTestFiles: {
+                        type: 'boolean',
                     },
                 },
                 additionalProperties: false,
@@ -39,7 +54,11 @@ const maxInlineDisables = {
         },
     },
     create(context) {
-        const max = context.options[0]?.max ?? 2;
+        const { max = 2, skipTestFiles = false } = context.options[0] ?? {};
+
+        if (skipTestFiles && TEST_FILE_PATTERNS.some(pattern => pattern.test(context.filename))) {
+            return {};
+        }
 
         return {
             Program() {

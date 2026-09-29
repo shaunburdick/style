@@ -62,11 +62,11 @@ export function logMessage(message: string, level: LogLevel = 'info'): void {
  *
  * @template T
  * @param items - Array to process
- * @param predicate - Filter function
+ * @param isValid - Filter function
  * @returns Filtered array
  */
-export function filterItems<T>(items: T[], predicate: (item: T) => boolean): T[] {
-    return items.filter(predicate);
+export function filterItems<T>(items: T[], isValid: (item: T) => boolean): T[] {
+    return items.filter(item => isValid(item));
 }
 
 export default STYLE_GUIDE;

@@ -6,6 +6,7 @@
  * - Files with 3+ inline disables trigger a warning
  * - Block-level disable/enable pairs don't count toward the limit
  * - Custom max option overrides the default threshold
+ * - Test files are exempted when `skipTestFiles` is enabled
  */
 
 import { describe, it } from 'node:test';
@@ -151,6 +152,54 @@ describe('shaunburdick/max-inline-disables', () => {
                 {
                     code: threeDisables,
                     options: [{ max: 2 }],
+                    errors: [
+                        {
+                            messageId: 'tooManyInline',
+                            data: { count: '3', max: '2' },
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    it('should skip test files when skipTestFiles is enabled', () => {
+        const threeDisables = [
+            DISABLE_CONSOLE,
+            LOG_A,
+            DISABLE_ALERT,
+            ALERT_B,
+            DISABLE_DEBUG,
+            'debugger;',
+        ].join('\n');
+
+        ruleTester.run(RULE_NAME, rule, {
+            valid: [
+                // Test files legitimately need many disables to construct invalid code
+                { code: threeDisables, options: [{ skipTestFiles: true }], filename: 'src/a.test.js' },
+                { code: threeDisables, options: [{ skipTestFiles: true }], filename: 'src/a.spec.tsx' },
+                { code: threeDisables, options: [{ skipTestFiles: true }], filename: 'src/__tests__/a.js' },
+                { code: threeDisables, options: [{ skipTestFiles: true }], filename: 'test/helpers/a.js' },
+                { code: threeDisables, options: [{ skipTestFiles: true }], filename: 'tests/a.js' },
+                { code: threeDisables, options: [{ skipTestFiles: true }], filename: 'spec/a.js' },
+            ],
+            invalid: [
+                // skipTestFiles does not exempt regular source files
+                {
+                    code: threeDisables,
+                    options: [{ skipTestFiles: true }],
+                    filename: 'src/a.js',
+                    errors: [
+                        {
+                            messageId: 'tooManyInline',
+                            data: { count: '3', max: '2' },
+                        },
+                    ],
+                },
+                // ...nor test files when the option is off (the default)
+                {
+                    code: threeDisables,
+                    filename: 'src/a.test.js',
                     errors: [
                         {
                             messageId: 'tooManyInline',

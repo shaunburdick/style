@@ -1,5 +1,42 @@
 CHANGELOG
 =========
+## 10.0.0 (2026-09-29)
+
+### Bugs Fixed
+* **FIXED:** `shaunburdick/max-inline-disables` now actually runs. The `shaunburdick/js-overrides` block that disabled it had no `files` key, so it turned the rule off for *every* file rather than for config files as its comment intended. A consumer file with 3+ inline disables reported nothing. The bypass is now scoped to `**/*.config.{js,mjs,cjs,ts,mts,cts}`
+* **FIXED:** The rule gained a `skipTestFiles` option (enabled in `es6/rules.js`), matching the convention `llm-core`'s own complexity rules use. Test files exist to construct invalid code and legitimately need many inline disables
+* **FIXED:** `llm-core`'s recommended set applies to `.jsx`, `.mjsx`, `.cjsx`, `.mts`, and `.cts`. Upstream scopes it to `.js`/`.mjs`/`.cjs`/`.ts`/`.tsx` only, so those extensions received 9 of 44 guardrails while `.js`/`.tsx` received 42/43. **BREAKING for `.jsx`/`.mts`/`.cts` users:** expect up to 33 new errors per file
+
+### Requirements Changes
+* **BREAKING:** Adopting `unicorn.configs.recommended` and `llm-core.configs.recommended` enables roughly 360 additional rules. Expect substantial new lint errors on upgrade — see the `eslint-config-shaunburdick` agent skill for a rule-group map and remediation guidance
+* **BREAKING:** `unicorn/no-array-for-each` was renamed to `unicorn/no-for-each` upstream (same semantics, no action needed if you had not overridden it)
+
+### New Rules — Recommended Config Adoption
+* **NEW:** `unicorn.configs.recommended` — the full upstream recommended set (361 rules, of which 310 end up active) is now wired into the base `js` config. Our explicit rules in `es6/rules.js` are applied after it and win any conflict
+* **NEW:** `llm-core.configs.recommended` replaces the narrower `llm-core.configs.complexity`, adding the typescript, best-practices, style, and hygiene groups. Notable additions include `no-unknown-parameters`, `no-unknown-returns`, `no-unsafe-array-access`, `no-dynamic-code-execution`, `explicit-export-types`, `no-redundant-comments`, and `no-debug-scaffolding`
+* **NEW:** `llm-core` guardrails now reach `.jsx`, `.mjsx`, `.cjsx`, `.mts`, and `.cts` — previously excluded by upstream's `files` globs, despite the React layer linting those extensions
+
+### Documentation
+* **NEW:** The `eslint-config-shaunburdick` agent skill (`.agents/skills/`) documents install, setup, rule groups, and the graduated disable flow
+* **NEW:** A companion `biome-config-shaunburdick` agent skill at `.agents/skills/biome-config-shaunburdick/`, split out so it fires for Biome-only projects. Skill selection keys off the package name, so a skill named `eslint-config-shaunburdick` cannot match a Biome context
+
+### Rules Relaxed
+* **RELAXED:** `llm-core/no-inline-disable` turned off — the graduated disable flow (`shaunburdick/max-inline-disables`) already permits 1-2 inline disables per file and escalates beyond that, so a blanket ban was redundant. This only became load-bearing once the `max-inline-disables` bypass was properly scoped (see Bugs Fixed)
+* **RELAXED:** `llm-core/prefer-nullish-coalescing` turned off in the base config — the syntactic check false-positives on boolean operands where `??` is not a valid substitute. TypeScript projects still get the type-aware `@typescript-eslint/prefer-nullish-coalescing` from the `ts` config
+
+### Rules Disabled from unicorn recommended
+Each is off deliberately, with rationale in `es6/rules.js`:
+* `unicorn/name-replacements` — forces `ButtonProps` → `ButtonProperties` and `e` → `error`; abbreviated `Props` is the React community convention
+* `unicorn/no-null` — distinguishing a present-but-empty value from an absent one is an API design decision
+* `unicorn/prefer-ternary` — contradicts `llm-core/prefer-early-return` and the guard-clause style this config is built around
+* `unicorn/single-line-block-comment-style` — fights compact single-line JSDoc under `@stylistic/max-len: 120`
+* `unicorn/prefer-number-coercion` — rewrites `parseInt(value, 10)` to `Math.trunc(Number(value))`, a semantic change rather than a style preference
+
+### Dependency Updates
+* **UPDATED:** `eslint` 10.4.1 → 10.11.0, `typescript-eslint` 8.60.1 → 8.71.0, `globals` 17.6.0 → 17.12.0, `eslint-plugin-import-x` 4.16.2 → 4.17.1, `eslint-plugin-jsdoc` 63.0.2 → 65.0.0, `eslint-plugin-unicorn` 64.0.0 → 76.0.0, `eslint-plugin-llm-core` 0.26.0 → 0.37.0, `eslint-plugin-sonarjs` 4.0.3 → 4.2.2, `@eslint-react/eslint-plugin` 5.8.13 → 5.23.0, `eslint-plugin-security` 4.0.0 → 4.1.0, `@biomejs/biome` 2.5.10 → 2.5.14, and others
+* **HELD:** `typescript` stays at 6.0.3. TypeScript 7.0 ships no programmatic API, and `typescript-eslint@8.71` declares `peerDependencies.typescript: ">=4.8.4 <6.1.0"`. The `ts` config uses `projectService: true` and needs the compiler API, so TS 7 would break type-aware linting. Revisit once `typescript-eslint` supports 7.x (expected with TS 7.1's new API)
+* **SECURITY:** `npm audit fix` cleared the `@humanfs/node`, `baseline-browser-mapping`, and `browserslist` advisories. Lockfile-only
+
 ## 9.0.1 (2026-08-23)
 
 ### Changes

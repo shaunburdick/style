@@ -113,8 +113,9 @@ export function handleStatus(status: Status): string {
             const message = 'Request was rejected';
             return message;
         }
-        default:
+        default: {
             return 'Unknown status';
+        }
     }
 }
 

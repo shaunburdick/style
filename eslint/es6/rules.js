@@ -229,7 +229,7 @@ export default Object.freeze({
     // enforce the graduated disable flow: warn when a file exceeds 2 inline
     // eslint-disable comments, suggesting a block-level pair instead,
     // defined in ./custom-rules.js
-    'shaunburdick/max-inline-disables': ['warn', { max: 2 }],
+    'shaunburdick/max-inline-disables': ['warn', { max: 2, skipTestFiles: true }],
 
     // require or disallow semicolons instead of ASI, https://eslint.style/rules/default/semi
     '@stylistic/semi': ['error'],
@@ -284,6 +284,40 @@ export default Object.freeze({
     // Disallow nested then() or catch() statements, https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/no-nesting.md
     'promise/no-nesting': 'error',
 
+    // eslint-plugin-unicorn overrides on top of `unicorn.configs.recommended`.
+    // Each of these is off deliberately; see the rationale on each.
+
+    // Forces long-form expansions that fight common React and JS idioms:
+    // `ButtonProps` -> `ButtonProperties`, `e` -> `error`, `test-utils.ts`
+    // -> `test-utilities.ts`. Abbreviated `Props` is the React community
+    // convention, and single-letter catch bindings are deliberate.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/name-replacements.md
+    'unicorn/name-replacements': 'off',
+
+    // Distinguishing a present-but-empty value from an absent one is a
+    // deliberate API design decision, not a linting concern. Expressing it
+    // in return types is the caller's decision.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-null.md
+    'unicorn/no-null': 'off',
+
+    // Collapses `if (cond) { return a; } return b;` into a ternary, which
+    // directly contradicts `llm-core/prefer-early-return` (see above) and
+    // the guard-clause style this config is built around.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-ternary.md
+    'unicorn/prefer-ternary': 'off',
+
+    // Demands multi-line block comments, which fights the compact single-line
+    // JSDoc used throughout this config under `@stylistic/max-len` (120).
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/single-line-block-comment-style.md
+    'unicorn/single-line-block-comment-style': 'off',
+
+    // Rewrites `parseInt(value, 10)` to `Math.trunc(Number(value))`. That is a
+    // semantic change (different NaN/precision behavior on partially-numeric
+    // input), not a style preference, and it defeats the `parseInt(id, 10)`
+    // idiom the test fixtures exist to exercise.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-number-coercion.md
+    'unicorn/prefer-number-coercion': 'off',
+
     // Modern JavaScript Best Practices — Agentic Programming Extensions
     // These rules target patterns that AI coding agents consistently produce.
 
@@ -297,8 +331,10 @@ export default Object.freeze({
     // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/expiring-todo-comments.md
     'unicorn/expiring-todo-comments': ['warn', { terms: ['todo', 'fixme', 'hack', 'xxx'] }],
 
-    // Prefer Array.some() over Array.forEach(), https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-for-each.md
-    'unicorn/no-array-for-each': 'error',
+    // Prefer `for...of` over the `forEach` method,
+    // renamed from `no-array-for-each` in eslint-plugin-unicorn v74
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-for-each.md
+    'unicorn/no-for-each': 'error',
 
     // Disallow member access from await expressions like `(await foo).bar`;
     // prefer destructuring for clarity,

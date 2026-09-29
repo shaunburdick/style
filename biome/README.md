@@ -49,11 +49,14 @@ Then you can add `npm run lint` to your `test` script command to run it before a
 
 ### Recommended pairing
 
-This config ports ~91 of the ~124 enforceable rules from `eslint-config-shaunburdick`. The rest
+This config enables **164 unique rules**, ~91 of which correspond to a rule in `eslint-config-shaunburdick`
+(measured against `biome.jsonc`; the rest are Biome-native `correctness`/`security` checks with no
+ESLint counterpart). The rules that do have ESLint counterparts but are **not** ported
 (JSDoc, security plugin, promise discipline, llm-core guardrails, the custom
 `shaunburdick/max-inline-disables` rule) have **no Biome equivalent** and require keeping ESLint
-alongside. See the [full mapping table](../specs/001-biome-config/research.md) for the
-rule-by-rule analysis.
+alongside. The
+[agent skill](<../.agents/skills/biome-config-shaunburdick/SKILL.md>) carries a layer-by-layer
+breakdown of the port with each rule's resolved threshold.
 
 ## What's inside
 
@@ -74,11 +77,11 @@ Formatting is delegated to Biome's formatter (`indentStyle: space`, `indentWidth
    `catch-or-return`, and `param-names` stay ESLint-only.
 3. **No JSDoc, security-plugin, or llm-core coverage** — keep ESLint for those.
 4. **`max-inline-disables` is impossible in Biome** — its GritQL plugin system cannot see comments.
-5. **~14 rules come from Biome's nursery** (unstable API): `noFloatingPromises`, `noMisusedPromises`,
-   `useAwaitThenable`, `useExhaustiveSwitchCases`, `useNullishCoalescing`, `noImpliedEval`,
-   `useArraySome`, `useIncludes`, `useStringStartsEndsWith`, `useIframeSandbox`, `noJsxLeakedDollar`,
-   `noJsxNamespace`, `useReactAsyncServerFunction`, `noImportCycles` may move or change options in
-   minor releases. Pin `@biomejs/biome` accordingly.
+5. **13 rules come from Biome's nursery** (unstable API): `noImpliedEval`, `useArraySome`, `useIncludes`,
+   `useStringStartsEndsWith`, `noFloatingPromises`, `noMisusedPromises`, `useAwaitThenable`,
+   `useExhaustiveSwitchCases`, `useNullishCoalescing`, `noJsxLeakedDollar`, `noJsxNamespace`,
+   `useIframeSandbox`, and `useReactAsyncServerFunction` may move or change options in **minor**
+   releases. Pin `@biomejs/biome` accordingly — the `>=2.5.0 <3` peer range will not protect you.
 
 ## Development
 
@@ -96,18 +99,27 @@ expected Biome rules, while a compliant fixture passes clean.
     -   A new rule is added
     -   An existing rule is made more strict
     -   A new plugin is added to an existing config
-    -   A existing plugin is updated to be more strict
+    -   An existing plugin is updated to be more strict
 -   Minor (same or fewer linting errors)
     -   A rule is removed
-    -   An existing rules is made less strict
+    -   An existing rule is made less strict
     -   Adding a new configuration
-    -   A existing plugin is updated to be less strict
+    -   An existing plugin is updated to be less strict
 -   Patch (non-user-facing changes)
     -   Changes to documentation
     -   Fixes for build or publication
     -   Modifying tests
 
 See [CHANGELOG.md](CHANGELOG.md) for the version history.
+
+## Agent Skill
+
+[`biome-config-shaunburdick`](<../.agents/skills/biome-config-shaunburdick/SKILL.md>) is an
+agent skill covering install, setup, the three layers, the nursery-rule stability risk, and the
+`biome migrate` pinning step — so an agent hitting an unfamiliar Biome diagnostic knows what it
+protects against. It opens with a "when to use which" table pointing at the
+[ESLint skill](<../.agents/skills/eslint-config-shaunburdick/SKILL.md>), since the two configs are
+alternatives rather than companions.
 
 ## Publish steps
 
