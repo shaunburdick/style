@@ -36,12 +36,12 @@ They are separate because skill selection keys off the package name. Each opens 
     -   A new rule is added
     -   An existing rule is made more strict
     -   A new plugin is added to an existing config
-    -   A existing plugin is updated to be more strict
+    -   An existing plugin is updated to be more strict
 -   Minor (same or fewer linting errors)
     -   A rule is removed
-    -   An existing rules is made less strict
+    -   An existing rule is made less strict
     -   Adding a new configuration
-    -   A existing plugin is updated to be less strict
+    -   An existing plugin is updated to be less strict
 -   Patch (non-user-facing changes)
     -   Changes to documentation
     -   Fixes for build or publication
