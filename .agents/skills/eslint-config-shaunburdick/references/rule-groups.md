@@ -126,6 +126,17 @@ Prefer the `import type { JSX } from 'react'` form.
 | `llm-core/no-dynamic-code-execution` | Ban `eval` and `new Function` |
 | `llm-core/filename-match-export` | A file's single export should match its filename |
 | `llm-core/no-async-array-callbacks` | `array.map(async ...)` does not do what it looks like |
+| `llm-core/no-redundant-logic` | No `x === true`-style comparisons, `cond ? true : false`, or `else` after a block that always exits |
+
+**Optional booleans** — these two rules used to be mutually unsatisfiable on a
+`boolean | undefined` field: `strict-boolean-expressions` rejected `if (flag)`,
+and `no-redundant-logic` reads syntax only, so it reported `flag === true`
+without being able to see that the operand was nullable. `flag ?? false` was
+the only spelling both accepted. Since v11.1.0 `if (flag)` is legal instead —
+for `boolean | undefined` it maps `undefined` to `false` exactly as
+`flag === true` and `flag ?? false` do, so the strictness bought no safety,
+only a spelling. `flag === true` is still reported as redundant, and nullable
+strings, numbers and objects keep their guardrails. See issue #21.
 
 ### Complexity limits
 
@@ -175,8 +186,10 @@ generate: (...args) => {
 Active on `**/*.{ts,tsx}`. These need real type information, so they catch
 what syntax alone cannot. `.tsx` gets two React-idiom relaxations — PascalCase
 component names/imports and nullable strings/numbers in JSX conditionals —
-while nullable booleans and objects stay strict. `.mts`/`.cts` remain outside
-the scope (see SKILL.md).
+and nullable *booleans* may be read truthily in either layer, which is what
+keeps them compatible with `llm-core/no-redundant-logic` (see that rule's note
+below). Nullable objects stay strict. `.mts`/`.cts` remain outside the scope
+(see SKILL.md).
 
 | Rule | What it wants |
 | --- | --- |
@@ -184,7 +197,7 @@ the scope (see SKILL.md).
 | `no-misused-promises` | Do not pass an async function where a void one is expected |
 | `await-thenable` | Do not `await` a non-Promise |
 | `no-unnecessary-condition` | Remove always-true/false checks the types make redundant |
-| `strict-boolean-expressions` | No truthy checks on strings or numbers — be explicit (`.tsx`: nullable strings/numbers allowed for JSX conditionals) |
+| `strict-boolean-expressions` | No truthy checks on strings or numbers — be explicit (nullable booleans allowed; `.tsx`: nullable strings/numbers allowed for JSX conditionals too) |
 | `restrict-template-expressions` | Template literals take only safe types |
 | `no-non-null-assertion` | `!` is banned; handle the null case |
 | `unbound-method` | Bind methods before passing them as references (`ignoreStatic`) |

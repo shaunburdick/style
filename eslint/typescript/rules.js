@@ -307,11 +307,22 @@ export default Object.freeze({
     '@typescript-eslint/prefer-optional-chain': 'error',
 
     // Enforce strict boolean expressions in conditionals, https://typescript-eslint.io/rules/strict-boolean-expressions
+    //
+    // `allowNullableBoolean: true` overrides the upstream default of `false`.
+    // For a `boolean | undefined` field, `if (x)`, `if (x === true)` and
+    // `if (x ?? false)` all map `undefined` to `false` — they are the same
+    // program, so refusing the truthy form buys no safety, only a spelling.
+    // Worse, the two workarounds it forced are each punished by another rule
+    // this config enables: `x === true` trips `llm-core/no-redundant-logic`
+    // (which reads syntax only, so it cannot see the operand is nullable),
+    // leaving `x ?? false` as the sole survivor of the pair. Nullable strings,
+    // numbers and objects keep their nullish guardrails. See issue #21.
     '@typescript-eslint/strict-boolean-expressions': [
         'error',
         {
             allowString: false,
             allowNumber: false,
+            allowNullableBoolean: true,
             allowNullableObject: false,
         },
     ],
