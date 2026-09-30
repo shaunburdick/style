@@ -76,8 +76,9 @@ export default tseslint.config(
             ],
             // `{title && <h1>{title}</h1>}` is idiomatic JSX; strings and
             // numbers (nullable or not) are expected in those conditionals.
-            // Nullable *booleans* and objects stay strict — those still
-            // signal a missing explicit check.
+            // Nullable booleans are allowed here for the same reason they are
+            // allowed in `.ts` — see the rationale in rules.js (issue #21).
+            // Nullable objects still signal a missing explicit check.
             '@typescript-eslint/strict-boolean-expressions': [
                 'error',
                 {
@@ -85,6 +86,7 @@ export default tseslint.config(
                     allowNumber: true,
                     allowNullableString: true,
                     allowNullableNumber: true,
+                    allowNullableBoolean: true,
                     allowNullableObject: false,
                 },
             ],

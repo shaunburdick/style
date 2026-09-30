@@ -1,5 +1,13 @@
 CHANGELOG
 =========
+## 11.1.0 (2026-09-29)
+
+### Rules Relaxed
+* **RELAXED:** `@typescript-eslint/strict-boolean-expressions` gains `allowNullableBoolean: true`, in `typescript/rules.js` **and** in the `.tsx` override in `typescript/index.js` — flat-config options are *replaced*, not merged, by a later block, so a change to one never reaches the other and the contradiction survived in components while `.ts` looked fixed. For a `boolean | undefined` field, `if (x)`, `if (x === true)` and `if (x ?? false)` all map `undefined` to `false`: the same program in three spellings, so refusing the truthy form bought no safety, only a spelling — and the two spellings it forced were each punished by another rule this config enables. `if (x)` is banned by this rule; `if (x === true)` is reported by `llm-core/no-redundant-logic`, which reads syntax only and cannot see that the operand is nullable; `x ?? false` was left as the sole survivor, discoverable only by iterating on two contradictory errors. Nullable strings, numbers and objects keep their guardrails (`allowNullableObject` stays `false`), and `x === true` is still reported as redundant. See issue #21
+
+### Documentation
+* **NEW:** rule-groups reference records the `llm-core/no-redundant-logic` × `@typescript-eslint/strict-boolean-expressions` interaction from issue #21 (previously undocumented — the rule appeared in no reference file), adds the missing `no-redundant-logic` row, and updates the `strict-boolean-expressions` row and the `@typescript-eslint/` section for the relaxed nullable-boolean option
+
 ## 11.0.0 (2026-09-29)
 
 ### Bugs Fixed
