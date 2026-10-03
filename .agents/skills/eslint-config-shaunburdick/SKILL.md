@@ -3,7 +3,7 @@ name: eslint-config-shaunburdick
 description: Install, set up, and debug the eslint-config-shaunburdick ESLint config (v11). Use when linting fails with a rule you don't recognize, when adding this config to a project, when deciding whether to fix or suppress a violation, or when upgrading across a major version. Covers the three config layers (js/ts/react), rule groups and what they mean, the graduated disable flow, and when to use the Biome alternative instead.
 metadata:
   author: shaunburdick
-  version: "11.1.0"
+  version: "11.2.0"
 ---
 
 # eslint-config-shaunburdick

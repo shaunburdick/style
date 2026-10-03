@@ -3,7 +3,7 @@ name: biome-config-shaunburdick
 description: Install, set up, and debug the biome-config-shaunburdick Biome config (v1) — the Rust-based alternative to eslint-config-shaunburdick. Use when `biome check` fails with a rule you don't recognize, when adding Biome to a project, when deciding between Biome and the ESLint config, when upgrading @biomejs/biome and getting new errors, or when a nursery rule changes. Covers the three layers, the nursery-rule stability risk, version pinning via biome migrate, and what has no Biome equivalent.
 metadata:
   author: shaunburdick
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # biome-config-shaunburdick
@@ -138,7 +138,7 @@ the `max-file-length` / `max-function-length` / `max-nesting-depth` complexity b
    read comments, so a rule that counts `eslint-disable` comments has no equivalent.
 5. **Complexity budgets are looser.** Biome sets `useMaxParams: 5` and
    `noExcessiveCognitiveComplexity: 15`. The ESLint config is stricter on both —
-   `llm-core/max-params` allows **2** positional parameters (5 for constructors) and
+   `llm-core/max-params` allows **4** positional parameters (5 for constructors) and
    `llm-core/max-complexity` caps at **10** (it also enforces `sonarjs/cognitive-complexity`
    at 15). Biome has no file-length, function-length, or nesting-depth budget.
 6. **13 rules are nursery** — see [Version pinning](#version-pinning--read-this-before-upgrading-biome).

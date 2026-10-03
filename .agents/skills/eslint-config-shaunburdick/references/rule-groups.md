@@ -140,30 +140,40 @@ strings, numbers and objects keep their guardrails. See issue #21.
 
 ### Complexity limits
 
-Shipped by `llm-core.configs.recommended`, with two values overridden by
+Shipped by `llm-core.configs.recommended`, with three values overridden by
 this config. These are the *resolved* settings, not the upstream defaults:
 
 | Rule | Value |
 | --- | --- |
-| `llm-core/max-params` | `max: 2`, `maxConstructor: 5` |
+| `llm-core/max-params` | **`max: 4`** (overridden), `maxConstructor: 5` |
 | `llm-core/max-complexity` | `max: 10`, `skipTestFiles: true` |
-| `llm-core/max-function-length` | `max: 50`, `skipBlankLines: true`, `skipTestFiles: true` |
+| `llm-core/max-function-length` | **`max: 100`** (overridden), `skipBlankLines: true`, `skipTestFiles: true` |
 | `llm-core/max-nesting-depth` | `max: 3` |
-| `llm-core/max-file-length` | **`max: 500`** (overridden), `skipBlankLines: true`, `skipTestFiles: true` |
+| `llm-core/max-file-length` | **`max: 1000`** (overridden), `skipBlankLines: true`, `skipTestFiles: true` |
 | `llm-core/no-magic-numbers` | **ignores** `[0, 1, 2, 3, 4, 5, 10, 12, 15, 120]` and object properties (overridden) |
 
-`max-params` is the strictest of these and the one most likely to surprise you —
-**two positional parameters, five for a constructor.** The `max-file-length` and
-`no-magic-numbers` overrides apply to **every** file, not just config files; the
-magic-number list is there so values like a `parseInt` radix do not each need a
-named constant.
+The `max-file-length`, `max-function-length`, and `no-magic-numbers` overrides
+apply to **every** file, not just config files; the magic-number list is there so
+values like a `parseInt` radix do not each need a named constant.
 
-**Mandated callback signatures** (webpack's `generate: (seed, files,
-entrypoints) => ...`, plugin hooks with a fixed arity) trip `max-params` — and
-moving to rest parameters then trips `no-unsafe-array-access`, which distrusts
-the resulting array. The form both accept is rest parameters plus
-destructuring defaults, which satisfy the guard without arity checks the caller
-does not allow:
+**None of these rules can skip comments.** `max-file-length` and
+`max-function-length` accept only `max`, `skipBlankLines`, and `skipTestFiles`,
+and both count every non-blank line — a heavily documented file gets no
+headroom. Their schemas are `additionalProperties: false`, so passing a
+`skipComments` fails config validation rather than being ignored. If you need
+comment-insensitive counting, ESLint core's `max-lines` and
+`max-lines-per-function` support `skipComments`; they are not currently enabled.
+
+`max-params` allows **four positional parameters, five for a constructor**
+(upstream defaults to 2). Constructors are the surprising case, since a class
+with four injected collaborators plus an optional config legitimately exceeds
+two.
+
+**Mandated callback signatures** (plugin hooks with a fixed arity, framework
+entrypoints) trip `max-params` once they exceed four parameters — and moving to
+rest parameters then trips `no-unsafe-array-access`, which distrusts the
+resulting array. The form both accept is rest parameters plus destructuring
+defaults, which satisfy the guard without arity checks the caller does not allow:
 
 ```js
 generate: (...args) => {
@@ -328,6 +338,12 @@ enabled, including the type-aware additions that arrived in v65
 (`no-unnecessary-type-assertion`, `normalize-see-links`, `ts-ban-ts-comment`).
 They are *available* upstream but not switched on here — do not assume a jsdoc
 rule you have heard of is active.
+
+In particular **nothing requires you to write a JSDoc block**: `require-jsdoc`
+is not enabled, and ESLint core's `require-jsdoc` no longer exists. All three
+active rules are formatters — they have nothing to say about a function with no
+comment. Add JSDoc where it earns its place; a block on every function is
+padding that `llm-core/no-redundant-comments` may also question.
 
 ---
 
