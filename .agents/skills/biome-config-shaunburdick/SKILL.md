@@ -138,7 +138,7 @@ the `max-file-length` / `max-function-length` / `max-nesting-depth` complexity b
    read comments, so a rule that counts `eslint-disable` comments has no equivalent.
 5. **Complexity budgets are looser.** Biome sets `useMaxParams: 5` and
    `noExcessiveCognitiveComplexity: 15`. The ESLint config is stricter on both —
-   `llm-core/max-params` allows **2** positional parameters (5 for constructors) and
+   `llm-core/max-params` allows **4** positional parameters (5 for constructors) and
    `llm-core/max-complexity` caps at **10** (it also enforces `sonarjs/cognitive-complexity`
    at 15). Biome has no file-length, function-length, or nesting-depth budget.
 6. **13 rules are nursery** — see [Version pinning](#version-pinning--read-this-before-upgrading-biome).

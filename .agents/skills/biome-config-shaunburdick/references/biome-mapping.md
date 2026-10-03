@@ -53,7 +53,7 @@ files.
 | `import-x/order` | `assist.actions.source.organizeImports: "on"` |
 | `max-classes-per-file` (1) | `style/noExcessiveClassesPerFile` |
 | `sonarjs/cognitive-complexity` (15) | `complexity/noExcessiveCognitiveComplexity` |
-| `llm-core/max-params` (2, constructor 5) | `complexity/useMaxParams` (5) |
+| `llm-core/max-params` (4, constructor 5) | `complexity/useMaxParams` (5) |
 | `unicorn/no-for-each` | `complexity/noForEach` |
 | `unicorn/no-useless-undefined` | `complexity/noUselessUndefined` |
 | `unicorn/prefer-node-protocol` | `style/useNodejsImportProtocol` |

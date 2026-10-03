@@ -97,7 +97,19 @@ export default [
     {
         name: 'shaunburdick/js-overrides',
         rules: {
-            'llm-core/max-file-length': ['error', { max: 500 }],
+            // The length caps drive decomposition pressure that surfaces in
+            // consuming projects as file and helper count rather than as
+            // shorter functions. Neither rule can skip comments — both count
+            // every non-blank line and expose only max/skipBlankLines/
+            // skipTestFiles — so a documented file cannot buy headroom.
+            'llm-core/max-file-length': ['error', { max: 1000 }],
+            'llm-core/max-function-length': ['error', { max: 100 }],
+            // Upstream's 2 positional parameters forced bundling wrappers, or a
+            // rest-parameter plus destructuring workaround that then tripped
+            // no-unsafe-array-access. 4 stays under the core max-params: 5 in
+            // rules.js, which remains the backstop. maxConstructor (5) and
+            // maxInternal fall back via `??`, so naming `max` alone suffices.
+            'llm-core/max-params': ['error', { max: 4 }],
             'llm-core/no-magic-numbers': ['error', {
                 ignore: [0, 1, 2, 3, 4, 5, 10, 12, 15, 120],
                 ignoreObjectProperties: true,

@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 11.0.0
+**Current Version:** 11.2.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -131,7 +131,9 @@ import './';                      // index
 ### Security & Quality Rules
 - Prevents use of dangerous patterns
 - Enforces modern JavaScript practices
-- Requires JSDoc documentation
+- No rule requires a JSDoc block on a function — `jsdoc/` only checks the
+  formatting of blocks you write. Documenting every function is a convention,
+  not a lint requirement
 - Mandates accessibility standards for React
 
 ## Version History
