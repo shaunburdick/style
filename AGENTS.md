@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 11.2.0
+**Current Version:** 11.3.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure
@@ -66,9 +66,9 @@ The package uses **ESLint Flat Config** (ESLint 10+) format and provides three m
 ### 1. Base JavaScript/ES6 Config (`es6/`)
 - **Entry Point:** `es6/index.js`
 - **File Pattern:** All JavaScript files
-- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 309 active)** + **llm-core recommended (44 rules, 42-43 active per extension)**
-- **Layer order matters:** upstream recommended configs are spread *before* the `shaunburdick/js` rules block, so explicit rules in `rules.js` win any conflict
-- **Deliberate `off` entries:** 6 unicorn rules and 2 llm-core rules are disabled because they contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`, TypeScript-breaking autofixes). Each carries a rationale comment — see the skill's `references/rule-groups.md`
+- **Base Config:** `@eslint/js` recommended + security + import-x + **unicorn recommended (361 rules, 309 active)** + **llm-core recommended (44 rules, 39-40 active per extension)**
+- **Deliberate `off` entries:** 6 unicorn rules and 5 llm-core rules are disabled. The unicorn six contradict this config's policies (React `Props` abbreviations, guard-clause style, graduated disable flow, boolean `||` false positives, `parseInt(id, 10)`, TypeScript-breaking autofixes). The llm-core five — `no-unknown-parameters`, `no-unsafe-dictionary-type`, `no-redundant-logic`, `no-inline-disable`, `prefer-nullish-coalescing` — are either architectural assumptions stated as per-node syntax errors, or superseded by a rule this config already enables. Each carries a rationale comment — see the skill's `references/rule-groups.md` for how to re-enable any of them
+- **Layer order matters:** `unicorn.configs.recommended` and `llm-core.configs.recommended` are both spread *before* the `shaunburdick/js` block, so `rules.js` is the single place any of their rules are configured — flat config resolves last-one-wins, so a recommended set spread after that block would silently overwrite whatever `rules.js` says about its own rules. Keep it that way: any new plugin whose recommended set gets adopted must go above `shaunburdick/js`, not below. The failure mode is invisible — the entry looks right and lints clean. `es6/llm-core-disabled.test.js` guards it by reading severity back from `calculateConfigForFile` rather than inferring it from findings. Blocks *after* `shaunburdick/js` are only for `files`-scoped exceptions (`js-config-files`, `js-test-files`)
 - **Key Plugins:**
   - `@stylistic/eslint-plugin` - Code formatting and style
   - `eslint-plugin-security` - Security vulnerability detection

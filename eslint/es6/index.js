@@ -55,6 +55,23 @@ export default [
     // eslint-plugin-unicorn's recommended set. Must precede the
     // `shaunburdick/js` block so our explicit rules below win any conflict.
     unicorn.configs.recommended,
+    // eslint-plugin-llm-core's recommended set (complexity + typescript +
+    // best-practices + style + hygiene). Spread BEFORE the `shaunburdick/js`
+    // block, like unicorn's above, so `rules.js` stays the single place any
+    // llm-core rule is configured — flat config resolves last-one-wins, so a
+    // recommended set spread after that block silently overwrites whatever
+    // `rules.js` says about its own rules. Type-aware members are re-applied to
+    // .ts files by typescript/index.js, since this block has no type info.
+    //
+    // Upstream's globs are widened (see LLM_CORE_JS_FILES) so `.jsx`/`.mts`/`.cts`
+    // are not excluded from the guardrails the rest of this config applies to them.
+    ...llmCore.configs.recommended.map((config, index) => ({
+        ...config,
+        name: `shaunburdick/llm-core:${index}`,
+        files: config.files?.some(pattern => pattern.endsWith('.js'))
+            ? LLM_CORE_JS_FILES
+            : LLM_CORE_TS_FILES,
+    })),
     {
         name: 'shaunburdick/js',
         languageOptions: {
@@ -76,55 +93,6 @@ export default [
         },
         rules
     },
-    // eslint-plugin-llm-core's recommended set (complexity + typescript +
-    // best-practices + style + hygiene). Type-aware members are re-applied to
-    // .ts files by typescript/index.js, since this block has no type info.
-    //
-    // Upstream's globs are widened (see LLM_CORE_JS_FILES) so `.jsx`/`.mts`/`.cts`
-    // are not excluded from the guardrails the rest of this config applies to them.
-    ...llmCore.configs.recommended.map((config, index) => ({
-        ...config,
-        name: `shaunburdick/llm-core:${index}`,
-        files: config.files?.some(pattern => pattern.endsWith('.js'))
-            ? LLM_CORE_JS_FILES
-            : LLM_CORE_TS_FILES,
-    })),
-    // Relaxations applied on top of the recommended sets. NOTE: this block has
-    // no `files` key, so every override here applies to *every* file, not just
-    // config files. That is deliberate — adding a `files` key to scope one of
-    // them would narrow the other three too, and this block used to disable
-    // shaunburdick/max-inline-disables for every consumer file as a side effect.
-    {
-        name: 'shaunburdick/js-overrides',
-        rules: {
-            // The length caps drive decomposition pressure that surfaces in
-            // consuming projects as file and helper count rather than as
-            // shorter functions. Neither rule can skip comments — both count
-            // every non-blank line and expose only max/skipBlankLines/
-            // skipTestFiles — so a documented file cannot buy headroom.
-            'llm-core/max-file-length': ['error', { max: 1000 }],
-            'llm-core/max-function-length': ['error', { max: 100 }],
-            // Upstream's 2 positional parameters forced bundling wrappers, or a
-            // rest-parameter plus destructuring workaround that then tripped
-            // no-unsafe-array-access. 4 stays under the core max-params: 5 in
-            // rules.js, which remains the backstop. maxConstructor (5) and
-            // maxInternal fall back via `??`, so naming `max` alone suffices.
-            'llm-core/max-params': ['error', { max: 4 }],
-            'llm-core/no-magic-numbers': ['error', {
-                ignore: [0, 1, 2, 3, 4, 5, 10, 12, 15, 120],
-                ignoreObjectProperties: true,
-            }],
-            // Our graduated disable flow permits 1-2 inline disables per file and
-            // escalates beyond that, so llm-core's blanket ban is redundant.
-            'llm-core/no-inline-disable': 'off',
-
-            // Syntactic `||` -> `??` suggestion that false-positives on boolean
-            // operands (`foo.includes(x) || foo.includes(y)`), where `??` is not
-            // a valid substitute. TypeScript projects get the type-aware, correct
-            // `@typescript-eslint/prefer-nullish-coalescing` from the ts config.
-            'llm-core/prefer-nullish-coalescing': 'off',
-        }
-    },
     // Bypass max-inline-disables for config files, which are inherently
     // exemption-heavy: an ESLint flat config legitimately needs one disable per
     // rule it relaxes. Scoped to `*.config.*` so the graduated disable flow
@@ -144,6 +112,11 @@ export default [
     // so the exemption is scoped here. Globs mirror TEST_FILE_PATTERNS in
     // custom-rules.js so both families agree on what counts as a test.
     // See issue #13.
+    //
+    // unicorn/no-top-level-assignment-in-function is the same shape: a suite
+    // built on fixtures declares them at module scope and assigns them in a
+    // `beforeEach` hook, which is the only way to get per-test isolation. The
+    // rule has no option to exempt tests. See issue #24.
     {
         name: 'shaunburdick/js-test-files',
         files: [
@@ -157,6 +130,7 @@ export default [
         ],
         rules: {
             'sonarjs/no-duplicate-string': 'off',
+            'unicorn/no-top-level-assignment-in-function': 'off',
         }
     }
 ];

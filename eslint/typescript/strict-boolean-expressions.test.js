@@ -7,9 +7,9 @@
  * one never reaches the other. Both blocks ship `allowNullableBoolean: true`
  * (issue #21): for `boolean | undefined`, `if (x)` maps `undefined` to `false`
  * exactly as `if (x === true)` and `if (x ?? false)` do, so refusing the
- * truthy form bought no safety — it only forced a spelling that
- * `llm-core/no-redundant-logic` reports as redundant, leaving one survivable
- * spelling for a two-rule deadlock.
+ * truthy form bought no safety — it only narrowed the choice to a spelling the
+ * other enabled rule reported as redundant. `llm-core/no-redundant-logic` is now
+ * off by default (11.3.0), so all three spellings are legal.
  *
  * Each fixture holds exactly one construct under test and is linted by the
  * published config (`../index.js`) inside a throwaway directory, so the
@@ -210,10 +210,14 @@ describe('@typescript-eslint/strict-boolean-expressions on optional booleans (is
         assert.equal(countOf('nullable-object.ts', STRICT_BOOLEAN), 1);
     });
 
-    it('should still reject comparing an optional boolean to true', () => {
-        // llm-core reads syntax only, so `=== true` stays reported — the fix
-        // is that the truthy form is now legal too, not that this one is.
-        assert.equal(countOf('explicit-comparison.ts', REDUNDANT_LOGIC), 1);
+    it('should accept the explicit-comparison spelling too', () => {
+        // Issue #21 left `x === true` reported by `llm-core/no-redundant-logic`
+        // as the one spelling that had to stay. That rule is off by default as
+        // of 11.3.0 — it reads syntax only, so it reported the comparison
+        // without being able to see that the operand is nullable. With it off,
+        // all three spellings are legal and the two-rule deadlock is gone rather
+        // than merely narrowed.
+        assert.equal(countOf('explicit-comparison.ts', REDUNDANT_LOGIC), 0);
         assert.equal(countOf('explicit-comparison.ts', STRICT_BOOLEAN), 0);
     });
 });

@@ -1,5 +1,32 @@
 CHANGELOG
 =========
+## 11.3.0 (2026-10-04)
+
+Addresses [#24](https://github.com/shaunburdick/style/issues/24), filed by the
+first consumer to adopt 11.2.0. Each change was reproduced against the shipped
+config before being applied. Expect *fewer* findings, except under "Rules
+Tightened".
+
+### Rules Relaxed
+* **RELAXED:** `unicorn/prefer-export-from` now ships `checkUsedVariables: false` in `es6/rules.js`. Upstream defaults it to `true`, and the skip at `prefer-export-from.js:342-347` only runs when the option is `false` — so by default the rule reports a re-exported binding that the module body also reads, and its fix appends `from './m'` to the existing `export {x}`, leaving both `import {x} from './m'` and `export {x} from './m'` in the file. The module specifier has to be written twice to satisfy a rule that never had a working alternative. With the option `false` the rule still reports a binding whose *only* reference is the export specifier itself — the genuine passthrough case, where `export {x} from './m'` is a real improvement and is still autofixed
+* **RELAXED:** `unicorn/consistent-boolean-name` now ships `checkFunctions: 'never'` in `es6/rules.js`. The variable half is sound and stays on. The function half required `is`/`has` prefixes on boolean-returning functions, which reads as worse English for a function named for what it did — `appendConfigApplied` had to become `isAppendConfigApplied`. A verb phrase is not a boolean state name. `checkVariables`, `checkArguments`, `checkMethods`, and `checkFields` keep their upstream defaults
+* **RELAXED:** `unicorn/no-top-level-assignment-in-function` is off in test files, joining `sonarjs/no-duplicate-string` in the existing `shaunburdick/js-test-files` block in `es6/index.js` (same globs, same rationale: a suite built on fixtures declares them at module scope and assigns them in a `beforeEach` hook, which is the only way to get per-test isolation). Upstream offers no option to exempt tests. Product code is unaffected
+
+### Rules Tightened
+* **TIGHTENED:** `unicorn/numeric-separators-style` now ships `number: { minimumDigits: 4 }` in `es6/rules.js` (the radix key is quoted — `id-denylist` forbids `number` as an identifier). Upstream ships `5`, so a hand-written `1_000` was reported and "fixed" down to `1000`: the rule's first act on a correctly grouped literal was to delete the grouping. Other radixes keep their upstream defaults. **This is the one change in the release that produces new errors.** A bare four-digit literal (`1000`) now reports where it previously did not, so consumers carrying ungrouped four-digit numbers will see new findings on upgrade; four literals in this package were grouped to comply. A minor release rather than a patch, since it tightens enforcement
+
+### Rules Disabled
+* **DISABLED:** `llm-core/no-unknown-parameters`, `llm-core/no-unsafe-dictionary-type`, and `llm-core/no-redundant-logic`. All three state an architectural assumption as a per-node syntactic error, and none can distinguish the case they target from the cases they break — so each fires about as often on correct code as on the pattern it was written for. Each is one line to re-enable by id; the rule-groups reference carries the reasoning and a table of when you would want one back
+  * `no-unknown-parameters` fires on *every* `unknown` parameter, including a queue forwarder and an error-details passthrough, and declares `schema: []` / `defaultOptions: []` — exempting only `cause`. Where a decoder takes `unknown` by design, the rule asks it not to do the thing it exists to do, and the only ways to satisfy it are renaming the parameter or misdeclaring its type
+  * `no-unsafe-dictionary-type` fires on a function-local `Record<string, unknown>` and on a plain in-memory cache, neither of which is an external payload — contradicting its own message ("parse external payloads before insertion")
+  * `no-redundant-logic` reads syntax only, so it reports `x === true` whether `x` is `boolean`, `boolean | undefined`, or `unknown`, justified by "the expression already evaluates to a boolean" — a type claim it cannot check. On `unknown` the suggestion breaks compilation and no other spelling is legal; on a real `boolean` the comparison is redundant code that type-aware `@typescript-eslint/no-unnecessary-condition` already catches correctly. It still catches one defect the type-aware rule does not — comparing a non-boolean to a boolean literal, which is always false — so it is off rather than dismissed
+* **BREAKING, in the useful direction:** these three were `error`; they are now off, so a consumer carrying local overrides for them can delete those lines. `llm-core` active rules drop from 42 to 39 on `.js`/`.jsx` and 43 to 40 on `.ts`/`.tsx`
+* Side effect worth knowing: the issue #21 deadlock is gone rather than narrowed. `strict-boolean-expressions` with `allowNullableBoolean: true` previously left `x === true` reported by `no-redundant-logic`, so `x ?? false` was the only survivable spelling for a `boolean | undefined` field. With that rule off, all three spellings are legal
+
+### Documentation
+* **NEW:** the rule-groups reference gains a re-enable table for the three disabled rules above, with copy-pasteable config and the conditions under which you'd want each one back
+* **FIXED:** `AGENTS.md` claimed upstream recommended sets are spread *before* the `rules.js` block so explicit rules there win any conflict — true for `unicorn`, false for `llm-core`, whose recommended set was spread after. Any newly adopted recommended set must go above `shaunburdick/js`; blocks after it are only the `files`-scoped `js-config-files` and `js-test-files` exceptions. No behavior change: the resolved config for 10 representative file types is identical before and after, compared rule by rule
+
 ## 11.2.0 (2026-10-03)
 
 ### Rules Relaxed

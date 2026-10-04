@@ -336,6 +336,36 @@ export default Object.freeze({
     // issue #18.
     'unicorn/no-non-function-verb-prefix': ['error', { ignore: ['.*(?:Spy|Mock)$'] }],
 
+    // Requires boolean *functions* to be named `isX`/`hasX`, which reads as
+    // worse English for a function named for what it did: `appendConfigApplied`
+    // has to become `isAppendConfigApplied`. A verb phrase is not a boolean
+    // state name, so the prefix requirement does not fit function names. The
+    // variable half is sound and stays on — it catches `present`/`connected`
+    // for genuine state. See issue #24.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/consistent-boolean-name.md
+    'unicorn/consistent-boolean-name': ['error', { checkFunctions: 'never' }],
+
+    // Upstream ships `minimumDigits: 5`, so a hand-written `1_000` is reported
+    // and "fixed" down to `1000` — the rule's first act on a correctly grouped
+    // literal is to delete the grouping. Four is where a reader starts wanting
+    // the separator. Other radixes keep their upstream defaults. The radix key
+    // is quoted because `id-denylist` (above) forbids `number` as an
+    // identifier, and this is the upstream schema's name for the radix rather
+    // than a binding that shadows the type. See issue #24.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/numeric-separators-style.md
+    'unicorn/numeric-separators-style': ['error', { 'number': { minimumDigits: 4 } }],
+
+    // Reports a re-exported binding that the module body also reads, and its
+    // fix appends `from './m'` to the existing `export {x}` — leaving
+    // `import {x} from './m'` *and* `export {x} from './m'` in the file. The
+    // specifier gets written twice to satisfy a rule that never had a working
+    // alternative. `checkUsedVariables` is the option that skips this, but it
+    // defaults to `true`, so the skip never runs. With `false` the rule still
+    // reports a binding whose only reference is the export specifier itself —
+    // the genuine passthrough case, where the fix is right. See issue #24.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-export-from.md
+    'unicorn/prefer-export-from': ['error', { checkUsedVariables: false }],
+
     // Modern JavaScript Best Practices — Agentic Programming Extensions
     // These rules target patterns that AI coding agents consistently produce.
 
@@ -390,6 +420,71 @@ export default Object.freeze({
     // Agentic Programming - llm-core Best Practices
     // These rules target patterns AI coding agents consistently get wrong,
     // from the eslint-plugin-llm-core research-backed rule set.
+    //
+    // llm-core's recommended set is spread BEFORE this block (see
+    // es6/index.js), so every entry below wins — this file is the only place an
+    // llm-core rule is configured.
+
+    // The length caps drive decomposition pressure that surfaces in consuming
+    // projects as file and helper count rather than as shorter functions.
+    // Neither rule can skip comments — both count every non-blank line and
+    // expose only max/skipBlankLines/skipTestFiles — so a documented file
+    // cannot buy headroom.
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/max-file-length.md
+    'llm-core/max-file-length': ['error', { max: 1_000 }],
+    'llm-core/max-function-length': ['error', { max: 100 }],
+
+    // Upstream's 2 positional parameters forced bundling wrappers, or a
+    // rest-parameter plus destructuring workaround that then tripped
+    // no-unsafe-array-access. 4 stays under the core max-params: 5 below, which
+    // remains the backstop. maxConstructor (5) and maxInternal fall back via
+    // `??`, so naming `max` alone suffices.
+    'llm-core/max-params': ['error', { max: 4 }],
+    'llm-core/no-magic-numbers': ['error', {
+        ignore: [0, 1, 2, 3, 4, 5, 10, 12, 15, 120],
+        ignoreObjectProperties: true,
+    }],
+
+    // Three rules are off. Each states an architectural assumption as a
+    // per-node syntactic error, and none can tell the case it targets from the
+    // cases it breaks, so each fires about as often on correct code as on the
+    // pattern it was written for. All three are one line to re-enable by id;
+    // the rule-groups reference records when you would want one back.
+
+    // Fires on *every* `unknown` parameter, including a queue forwarder and an
+    // error-details passthrough, and declares `schema: []` / `defaultOptions: []`
+    // — exempting only `cause`. Where a decoder takes `unknown` by design the
+    // rule asks it not to do the thing it exists to do.
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-unknown-parameters.md
+    'llm-core/no-unknown-parameters': 'off',
+
+    // Fires on a function-local `Record<string, unknown>` and on a plain
+    // in-memory cache, neither of which is an external payload — contradicting
+    // its own message ("parse external payloads before insertion").
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-unsafe-dictionary-type.md
+    'llm-core/no-unsafe-dictionary-type': 'off',
+
+    // Reads syntax only, so it reports `x === true` whether `x` is `boolean`,
+    // `boolean | undefined`, or `unknown`, justified by "the expression already
+    // evaluates to a boolean" — a type claim it cannot check. On `unknown` the
+    // suggestion breaks compilation and no other spelling is legal; on a real
+    // `boolean` the comparison is redundant code that type-aware
+    // `@typescript-eslint/no-unnecessary-condition` already catches correctly.
+    // It does still catch one real defect — comparing a non-boolean to a
+    // boolean literal, which is always false — so reach for it by id rather
+    // than assuming it has no value.
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-redundant-logic.md
+    'llm-core/no-redundant-logic': 'off',
+
+    // Our graduated disable flow permits 1-2 inline disables per file and
+    // escalates beyond that, so llm-core's blanket ban is redundant.
+    'llm-core/no-inline-disable': 'off',
+
+    // Syntactic `||` -> `??` suggestion that false-positives on boolean
+    // operands (`foo.includes(x) || foo.includes(y)`), where `??` is not a valid
+    // substitute. TypeScript projects get the type-aware, correct
+    // `@typescript-eslint/prefer-nullish-coalescing` from the ts config.
+    'llm-core/prefer-nullish-coalescing': 'off',
 
     // Disallow async callbacks passed to array methods (.map, .filter, .forEach)
     // AI frequently uses `array.map(async ...)` expecting resolved values,
