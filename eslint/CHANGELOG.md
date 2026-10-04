@@ -2,12 +2,10 @@ CHANGELOG
 =========
 ## 11.3.0 (2026-10-04)
 
-All four reconfigurations below came from issue #24, filed by the first consumer
-to adopt 11.2.0. Each was reproduced against the shipped config before being
-applied, and each keeps its rule on with a narrower scope rather than
-disabling it. Expect *fewer* findings, except where noted under
-"Rules Tightened". Three further `llm-core` rules are disabled outright —
-see "Rules Disabled".
+Addresses [#24](https://github.com/shaunburdick/style/issues/24), filed by the
+first consumer to adopt 11.2.0. Each change was reproduced against the shipped
+config before being applied. Expect *fewer* findings, except under "Rules
+Tightened".
 
 ### Rules Relaxed
 * **RELAXED:** `unicorn/prefer-export-from` now ships `checkUsedVariables: false` in `es6/rules.js`. Upstream defaults it to `true`, and the skip at `prefer-export-from.js:342-347` only runs when the option is `false` — so by default the rule reports a re-exported binding that the module body also reads, and its fix appends `from './m'` to the existing `export {x}`, leaving both `import {x} from './m'` and `export {x} from './m'` in the file. The module specifier has to be written twice to satisfy a rule that never had a working alternative. With the option `false` the rule still reports a binding whose *only* reference is the export specifier itself — the genuine passthrough case, where `export {x} from './m'` is a real improvement and is still autofixed
@@ -26,16 +24,8 @@ see "Rules Disabled".
 * Side effect worth knowing: the issue #21 deadlock is gone rather than narrowed. `strict-boolean-expressions` with `allowNullableBoolean: true` previously left `x === true` reported by `no-redundant-logic`, so `x ?? false` was the only survivable spelling for a `boolean | undefined` field. With that rule off, all three spellings are legal
 
 ### Documentation
-* **NEW:** `es6/llm-core-disabled.test.js` — asserts severity `0` for all three rules on `.ts` and `.js`, read back from `calculateConfigForFile` rather than inferred from findings, plus a re-enabled pass proving each fixture carries a real trigger. It exists because an `llm-core/` entry written in `rules.js` resolves to nothing (that recommended set is spread *after* it) and fails silently; the same assertion catches that mistake
-* **NEW:** `es6/rule-defaults.test.js` — integration tests asserting the shipped config for all four reconfigurations. Each case pairs its suppression assertion with a control that must still fire, so the suite fails if a rule is switched off wholesale rather than narrowed; verified by reverting `checkUsedVariables` and confirming exactly the one covering test fails
-* **FIXED:** `rules.js` is now the single place any `unicorn/` or `llm-core/` rule is configured. `llm-core.configs.recommended` was spread *after* the `shaunburdick/js` block, so an `llm-core/` entry in `rules.js` was silently overwritten back to `'error'` on flattening — invisible, because the entry looks right and the file lints clean. That is why the three disabled rules in this release initially had to live in a separate `shaunburdick/js-overrides` block. The spread now sits above `shaunburdick/js` alongside unicorn's, and those nine rules moved into `rules.js`, where they belong. `AGENTS.md` carried the same incorrect claim ("upstream recommended configs are spread *before* the rules block") and is corrected. Blocks after `shaunburdick/js` are now only the `files`-scoped `js-config-files` and `js-test-files` exceptions. Verified behavior-preserving: the resolved config for 10 representative file types is byte-identical before and after, rule for rule
-* `AGENTS.md` and the rule-groups reference: llm-core active counts updated to 39/40, disabled-rule count to 5, and a re-enable table with copy-pasteable config added
-* `typescript/rules.js` and `typescript/strict-boolean-expressions.test.js`: the issue #21 notes described `x === true` as still reported by `no-redundant-logic`. That is no longer true, so the deadlock those comments described is resolved rather than narrowed
-* rule-groups reference records the three `unicorn/` reconfigurations and the `no-top-level-assignment-in-function` test-file exemption alongside the existing `no-non-function-verb-prefix` note
-* agent skill `metadata.version` and `AGENTS.md` "Current Version" → 11.3.0
-
-### Not Taken
-* `llm-core/no-unknown-parameters` and `llm-core/no-redundant-logic` are both genuinely unsatisfiable in some architectures — the first declares `schema: []` and `defaultOptions: []`, the second reads syntax only and so asserts "the expression already evaluates to a boolean" about operands it cannot see. Neither is fixable from this config, and disabling either by default would cost every consumer a guardrail to serve one architecture. They stay on. `unicorn/prefer-combined-guards` was also left alone: it *does* compare consequent bodies (`prefer-combined-guards.js:149`), so two guards throwing different messages are not reported
+* **NEW:** the rule-groups reference gains a re-enable table for the three disabled rules above, with copy-pasteable config and the conditions under which you'd want each one back
+* **FIXED:** `AGENTS.md` claimed upstream recommended sets are spread *before* the `rules.js` block so explicit rules there win any conflict — true for `unicorn`, false for `llm-core`, whose recommended set was spread after. Any newly adopted recommended set must go above `shaunburdick/js`; blocks after it are only the `files`-scoped `js-config-files` and `js-test-files` exceptions. No behavior change: the resolved config for 10 representative file types is identical before and after, compared rule by rule
 
 ## 11.2.0 (2026-10-03)
 
