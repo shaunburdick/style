@@ -312,11 +312,14 @@ export default Object.freeze({
     // For a `boolean | undefined` field, `if (x)`, `if (x === true)` and
     // `if (x ?? false)` all map `undefined` to `false` — they are the same
     // program, so refusing the truthy form buys no safety, only a spelling.
-    // Worse, the two workarounds it forced are each punished by another rule
-    // this config enables: `x === true` trips `llm-core/no-redundant-logic`
+    // Worse, the two workarounds it forced were each punished by another rule
+    // this config enabled: `x === true` tripped `llm-core/no-redundant-logic`
     // (which reads syntax only, so it cannot see the operand is nullable),
-    // leaving `x ?? false` as the sole survivor of the pair. Nullable strings,
-    // numbers and objects keep their nullish guardrails. See issue #21.
+    // leaving `x ?? false` as the sole survivor of the pair — a two-rule
+    // deadlock over one field. That rule is off by default as of 11.3.0, so all
+    // three spellings are now legal and this option no longer breaks the tie.
+    // Nullable strings, numbers and objects keep their nullish guardrails.
+    // See issue #21.
     '@typescript-eslint/strict-boolean-expressions': [
         'error',
         {

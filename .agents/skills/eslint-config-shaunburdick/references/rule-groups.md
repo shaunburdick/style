@@ -87,11 +87,37 @@ produce consistently: over-engineering, swallowed errors, unsafe types, and
 type assertions that hide real problems. Backed by research on machine
 signatures of defects (Columbia DAPLab, arXiv 2605.02741, SlopCodeBench).
 
-42 rules are active on `.js`/`.jsx` files, 43 on `.ts`/`.tsx` (the extra one is
+39 rules are active on `.js`/`.jsx` files, 40 on `.ts`/`.tsx` (the extra one is
 `explicit-export-types`). Upstream scopes these rules to `.js`, `.mjs`, `.cjs`,
 `.ts`, and `.tsx` only — this config widens the globs to also cover `.jsx`,
 `.mjsx`, `.cjsx`, `.mts`, and `.cts`, which would otherwise receive 9 of the 44
-instead of 42.
+instead of 39.
+
+### Disabled from recommended, on purpose
+
+These are off. Do not "fix" them, and do not assume a violation is a mistake —
+if you need one, re-enable it by id in your own config:
+
+```js
+export default [
+    ...shaunburdick.config.js,
+    {
+        rules: {
+            'llm-core/no-unknown-parameters': 'error',
+        },
+    },
+];
+```
+
+Put the override in **your** config, after the layers you spread. Note that an
+`llm-core/` entry added to this package's own `es6/rules.js` would not take
+effect — see the layer-order note in `AGENTS.md`.
+
+| Rule | Why it is off | Re-enable if |
+| --- | --- | --- |
+| `llm-core/no-unknown-parameters` | Fires on *every* `unknown` parameter — including a queue forwarder and an error-details passthrough — and declares `schema: []` / `defaultOptions: []`, exempting only `cause`. Where a decoder takes `unknown` by design, the rule asks it not to do the thing it exists to do, and the only ways to satisfy it are renaming the parameter or misdeclaring its type | You want `unknown` banned outright and have no decode boundaries |
+| `llm-core/no-unsafe-dictionary-type` | Fires on a function-local `Record<string, unknown>` and on a plain in-memory cache, neither of which is an external payload — contradicting its own message ("parse external payloads before insertion"). No option to narrow it | Your dictionaries genuinely all have an owning type you can name |
+| `llm-core/no-redundant-logic` | Reads syntax only, so it reports `x === true` whether `x` is `boolean`, `boolean \| undefined`, or `unknown`, justified by "the expression already evaluates to a boolean" — a type claim it cannot check. On `unknown` the suggestion breaks compilation and no other spelling is legal. On a real `boolean` the comparison is redundant code that type-aware `@typescript-eslint/no-unnecessary-condition` already catches correctly, which leaves this rule dominated | You want the one case it uniquely catches: comparing a non-boolean to a boolean literal, which is always false |
 
 ### Error handling
 

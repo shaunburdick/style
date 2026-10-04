@@ -420,6 +420,71 @@ export default Object.freeze({
     // Agentic Programming - llm-core Best Practices
     // These rules target patterns AI coding agents consistently get wrong,
     // from the eslint-plugin-llm-core research-backed rule set.
+    //
+    // llm-core's recommended set is spread BEFORE this block (see
+    // es6/index.js), so every entry below wins — this file is the only place an
+    // llm-core rule is configured.
+
+    // The length caps drive decomposition pressure that surfaces in consuming
+    // projects as file and helper count rather than as shorter functions.
+    // Neither rule can skip comments — both count every non-blank line and
+    // expose only max/skipBlankLines/skipTestFiles — so a documented file
+    // cannot buy headroom.
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/max-file-length.md
+    'llm-core/max-file-length': ['error', { max: 1_000 }],
+    'llm-core/max-function-length': ['error', { max: 100 }],
+
+    // Upstream's 2 positional parameters forced bundling wrappers, or a
+    // rest-parameter plus destructuring workaround that then tripped
+    // no-unsafe-array-access. 4 stays under the core max-params: 5 below, which
+    // remains the backstop. maxConstructor (5) and maxInternal fall back via
+    // `??`, so naming `max` alone suffices.
+    'llm-core/max-params': ['error', { max: 4 }],
+    'llm-core/no-magic-numbers': ['error', {
+        ignore: [0, 1, 2, 3, 4, 5, 10, 12, 15, 120],
+        ignoreObjectProperties: true,
+    }],
+
+    // Three rules are off. Each states an architectural assumption as a
+    // per-node syntactic error, and none can tell the case it targets from the
+    // cases it breaks, so each fires about as often on correct code as on the
+    // pattern it was written for. All three are one line to re-enable by id;
+    // the rule-groups reference records when you would want one back.
+
+    // Fires on *every* `unknown` parameter, including a queue forwarder and an
+    // error-details passthrough, and declares `schema: []` / `defaultOptions: []`
+    // — exempting only `cause`. Where a decoder takes `unknown` by design the
+    // rule asks it not to do the thing it exists to do.
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-unknown-parameters.md
+    'llm-core/no-unknown-parameters': 'off',
+
+    // Fires on a function-local `Record<string, unknown>` and on a plain
+    // in-memory cache, neither of which is an external payload — contradicting
+    // its own message ("parse external payloads before insertion").
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-unsafe-dictionary-type.md
+    'llm-core/no-unsafe-dictionary-type': 'off',
+
+    // Reads syntax only, so it reports `x === true` whether `x` is `boolean`,
+    // `boolean | undefined`, or `unknown`, justified by "the expression already
+    // evaluates to a boolean" — a type claim it cannot check. On `unknown` the
+    // suggestion breaks compilation and no other spelling is legal; on a real
+    // `boolean` the comparison is redundant code that type-aware
+    // `@typescript-eslint/no-unnecessary-condition` already catches correctly.
+    // It does still catch one real defect — comparing a non-boolean to a
+    // boolean literal, which is always false — so reach for it by id rather
+    // than assuming it has no value.
+    // https://github.com/pertrai1/eslint-plugin-llm-core/blob/main/docs/rules/no-redundant-logic.md
+    'llm-core/no-redundant-logic': 'off',
+
+    // Our graduated disable flow permits 1-2 inline disables per file and
+    // escalates beyond that, so llm-core's blanket ban is redundant.
+    'llm-core/no-inline-disable': 'off',
+
+    // Syntactic `||` -> `??` suggestion that false-positives on boolean
+    // operands (`foo.includes(x) || foo.includes(y)`), where `??` is not a valid
+    // substitute. TypeScript projects get the type-aware, correct
+    // `@typescript-eslint/prefer-nullish-coalescing` from the ts config.
+    'llm-core/prefer-nullish-coalescing': 'off',
 
     // Disallow async callbacks passed to array methods (.map, .filter, .forEach)
     // AI frequently uses `array.map(async ...)` expecting resolved values,
