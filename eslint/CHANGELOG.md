@@ -1,5 +1,27 @@
 CHANGELOG
 =========
+## 11.3.0 (2026-10-04)
+
+All four changes below came from issue #24, filed by the first consumer to
+adopt 11.2.0. Each was reproduced against the shipped config before being
+applied, and each keeps the rule on with a narrower scope rather than
+disabling it. No rule was removed, so this is a minor release: expect
+*fewer* findings, with one exception noted below.
+
+### Rules Relaxed
+* **RELAXED:** `unicorn/prefer-export-from` now ships `checkUsedVariables: false` in `es6/rules.js`. Upstream defaults it to `true`, and the skip at `prefer-export-from.js:342-347` only runs when the option is `false` — so by default the rule reports a re-exported binding that the module body also reads, and its fix appends `from './m'` to the existing `export {x}`, leaving both `import {x} from './m'` and `export {x} from './m'` in the file. The module specifier has to be written twice to satisfy a rule that never had a working alternative. With the option `false` the rule still reports a binding whose *only* reference is the export specifier itself — the genuine passthrough case, where `export {x} from './m'` is a real improvement and is still autofixed
+* **RELAXED:** `unicorn/consistent-boolean-name` now ships `checkFunctions: 'never'` in `es6/rules.js`. The variable half is sound and stays on. The function half required `is`/`has` prefixes on boolean-returning functions, which reads as worse English for a function named for what it did — `appendConfigApplied` had to become `isAppendConfigApplied`. A verb phrase is not a boolean state name. `checkVariables`, `checkArguments`, `checkMethods`, and `checkFields` keep their upstream defaults
+* **RELAXED:** `unicorn/numeric-separators-style` now ships `number: { minimumDigits: 4 }` in `es6/rules.js` (the radix key is quoted — `id-denylist` forbids `number` as an identifier). Upstream ships `5`, so a hand-written `1_000` was reported and "fixed" down to `1000`: the rule's first act on a correctly grouped literal was to delete the grouping. Other radixes keep their upstream defaults. **This is the one change that adds findings** — a bare four-digit literal (`1000`) now reports where it did not before. Four literals in this package were grouped to comply
+* **RELAXED:** `unicorn/no-top-level-assignment-in-function` is off in test files, joining `sonarjs/no-duplicate-string` in the existing `shaunburdick/js-test-files` block in `es6/index.js` (same globs, same rationale: a suite built on fixtures declares them at module scope and assigns them in a `beforeEach` hook, which is the only way to get per-test isolation). Upstream offers no option to exempt tests. Product code is unaffected
+
+### Documentation
+* **NEW:** `es6/rule-defaults.test.js` — integration tests asserting the shipped config for all four changes. Each case pairs its suppression assertion with a control that must still fire, so the suite fails if a rule is switched off wholesale rather than narrowed; verified by reverting `checkUsedVariables` and confirming exactly the one covering test fails
+* rule-groups reference records the three `unicorn/` reconfigurations and the `no-top-level-assignment-in-function` test-file exemption alongside the existing `no-non-function-verb-prefix` note
+* agent skill `metadata.version` and `AGENTS.md` "Current Version" → 11.3.0
+
+### Not Taken
+* `llm-core/no-unknown-parameters` and `llm-core/no-redundant-logic` are both genuinely unsatisfiable in some architectures — the first declares `schema: []` and `defaultOptions: []`, the second reads syntax only and so asserts "the expression already evaluates to a boolean" about operands it cannot see. Neither is fixable from this config, and disabling either by default would cost every consumer a guardrail to serve one architecture. They stay on. `unicorn/prefer-combined-guards` was also left alone: it *does* compare consequent bodies (`prefer-combined-guards.js:149`), so two guards throwing different messages are not reported
+
 ## 11.2.0 (2026-10-03)
 
 ### Rules Relaxed

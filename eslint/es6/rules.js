@@ -336,6 +336,36 @@ export default Object.freeze({
     // issue #18.
     'unicorn/no-non-function-verb-prefix': ['error', { ignore: ['.*(?:Spy|Mock)$'] }],
 
+    // Requires boolean *functions* to be named `isX`/`hasX`, which reads as
+    // worse English for a function named for what it did: `appendConfigApplied`
+    // has to become `isAppendConfigApplied`. A verb phrase is not a boolean
+    // state name, so the prefix requirement does not fit function names. The
+    // variable half is sound and stays on — it catches `present`/`connected`
+    // for genuine state. See issue #24.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/consistent-boolean-name.md
+    'unicorn/consistent-boolean-name': ['error', { checkFunctions: 'never' }],
+
+    // Upstream ships `minimumDigits: 5`, so a hand-written `1_000` is reported
+    // and "fixed" down to `1000` — the rule's first act on a correctly grouped
+    // literal is to delete the grouping. Four is where a reader starts wanting
+    // the separator. Other radixes keep their upstream defaults. The radix key
+    // is quoted because `id-denylist` (above) forbids `number` as an
+    // identifier, and this is the upstream schema's name for the radix rather
+    // than a binding that shadows the type. See issue #24.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/numeric-separators-style.md
+    'unicorn/numeric-separators-style': ['error', { 'number': { minimumDigits: 4 } }],
+
+    // Reports a re-exported binding that the module body also reads, and its
+    // fix appends `from './m'` to the existing `export {x}` — leaving
+    // `import {x} from './m'` *and* `export {x} from './m'` in the file. The
+    // specifier gets written twice to satisfy a rule that never had a working
+    // alternative. `checkUsedVariables` is the option that skips this, but it
+    // defaults to `true`, so the skip never runs. With `false` the rule still
+    // reports a binding whose only reference is the export specifier itself —
+    // the genuine passthrough case, where the fix is right. See issue #24.
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-export-from.md
+    'unicorn/prefer-export-from': ['error', { checkUsedVariables: false }],
+
     // Modern JavaScript Best Practices — Agentic Programming Extensions
     // These rules target patterns that AI coding agents consistently produce.
 

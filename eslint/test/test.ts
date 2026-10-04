@@ -77,7 +77,7 @@ class UserService {
     private readonly baseUrl: string;
     private readonly timeout: number;
 
-    public constructor(baseUrl: string, timeout = 5000) {
+    public constructor(baseUrl: string, timeout = 5_000) {
         this.baseUrl = baseUrl;
         this.timeout = timeout;
     }
@@ -126,7 +126,7 @@ export function handleStatus(status: Status): string {
 // ✅ Use const assertions for immutable data
 const defaultConfig = {
     apiUrl: 'https://api.example.com',
-    timeout: 5000,
+    timeout: 5_000,
     retries: 3
 } as const;
 

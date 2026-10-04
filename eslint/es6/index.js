@@ -102,7 +102,7 @@ export default [
             // shorter functions. Neither rule can skip comments — both count
             // every non-blank line and expose only max/skipBlankLines/
             // skipTestFiles — so a documented file cannot buy headroom.
-            'llm-core/max-file-length': ['error', { max: 1000 }],
+            'llm-core/max-file-length': ['error', { max: 1_000 }],
             'llm-core/max-function-length': ['error', { max: 100 }],
             // Upstream's 2 positional parameters forced bundling wrappers, or a
             // rest-parameter plus destructuring workaround that then tripped
@@ -144,6 +144,11 @@ export default [
     // so the exemption is scoped here. Globs mirror TEST_FILE_PATTERNS in
     // custom-rules.js so both families agree on what counts as a test.
     // See issue #13.
+    //
+    // unicorn/no-top-level-assignment-in-function is the same shape: a suite
+    // built on fixtures declares them at module scope and assigns them in a
+    // `beforeEach` hook, which is the only way to get per-test isolation. The
+    // rule has no option to exempt tests. See issue #24.
     {
         name: 'shaunburdick/js-test-files',
         files: [
@@ -157,6 +162,7 @@ export default [
         ],
         rules: {
             'sonarjs/no-duplicate-string': 'off',
+            'unicorn/no-top-level-assignment-in-function': 'off',
         }
     }
 ];

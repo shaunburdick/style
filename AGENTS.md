@@ -7,7 +7,7 @@ This document provides comprehensive context about the `style` repository to hel
 **Repository Name:** `shaunburdick/style`
 **Purpose:** Personal ESLint configuration package for JavaScript, TypeScript, and React development
 **Package Name:** `eslint-config-shaunburdick`
-**Current Version:** 11.2.0
+**Current Version:** 11.3.0
 **License:** UNLICENSED (Public Domain)
 
 ## Project Structure

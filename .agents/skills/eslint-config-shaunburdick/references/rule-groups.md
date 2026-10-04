@@ -54,10 +54,29 @@ help. Each one has a stated reason, below.
   TypeScript into TS2349 while `eslint --fix && eslint .` still exits 0. A
   fixer that can break compilation is worse than the style it enforces.
 
-Also *configured* rather than left at its default: `no-non-function-verb-prefix`
-ships `ignore: ['.*(?:Spy|Mock)$']`, so jest spies — `const addEventListenerSpy
-= jest.spyOn(...)`, whose `MockInstance` type has no call signature — are not
-flagged for starting with a verb.
+Also *configured* rather than left at their default:
+
+- `no-non-function-verb-prefix` ships `ignore: ['.*(?:Spy|Mock)$']`, so jest
+  spies — `const addEventListenerSpy = jest.spyOn(...)`, whose `MockInstance`
+  type has no call signature — are not flagged for starting with a verb.
+- `prefer-export-from` ships `checkUsedVariables: false`. At the upstream
+  default of `true` the rule reports a re-exported binding that the module body
+  also reads, and its fix leaves *both* `import {x} from './m'` and
+  `export {x} from './m'` in the file. If you hit this, you do not have a fix
+  available — the specifier genuinely has to be written twice. A binding whose
+  only reference is the export specifier is still reported, and still
+  autofixed; that case is a real improvement.
+- `consistent-boolean-name` ships `checkFunctions: 'never'`. A boolean *variable*
+  must still be `isX`/`hasX` (`present` reports), but a boolean *function* named
+  for what it did (`appendConfigApplied`) is left alone — `isAppendConfigApplied`
+  is worse English, and a verb phrase is not a boolean state name.
+- `numeric-separators-style` ships `number: { minimumDigits: 4 }`. A four-digit
+  literal now wants a separator: `1_000` is fine, `1000` reports. At the upstream
+  default of 5 the rule did the reverse — it stripped the grouping you wrote.
+- `no-top-level-assignment-in-function` is off in test files, alongside
+  `sonarjs/no-duplicate-string`. A suite built on fixtures declares them at
+  module scope and assigns them in a `beforeEach` hook, which is the only way to
+  get per-test isolation. Product code is unaffected.
 
 ---
 

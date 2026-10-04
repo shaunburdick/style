@@ -1,6 +1,6 @@
 {
     "name": "eslint-config-shaunburdick",
-    "version": "11.2.0",
+    "version": "11.3.0",
     "description": "Shaun's style configuration",
     "main": "index.js",
     "type": "module",
